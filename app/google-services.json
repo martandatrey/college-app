@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "790212309033",
+    "firebase_url": "https://pimpmyapp-5726c.firebaseio.com",
+    "project_id": "pimpmyapp-5726c",
+    "storage_bucket": "pimpmyapp-5726c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:790212309033:android:2e0bf2f5c72143b1",
+        "android_client_info": {
+          "package_name": "com.pimpmyapp.collegeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "790212309033-16jrtvk0n5usb4n7ifeke23fgpvb6h59.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pimpmyapp.collegeapp",
+            "certificate_hash": "7b7b7489bcb06ebc3c22cc426b9ba9bb2adb6c42"
+          }
+        },
+        {
+          "client_id": "790212309033-46hntf2cvjb4n4rvrkehpu6b34aeubia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT5f44KbfV7qcSb9UC1NKJUQ7UOYyMhyk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "790212309033-46hntf2cvjb4n4rvrkehpu6b34aeubia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
