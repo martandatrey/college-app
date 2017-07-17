@@ -68,6 +68,10 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/college_branches"
                 />
+            <TextView
+                android:id="@+id/errorSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -78,7 +82,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/ic_email_black_24dp"
-                    android:hint="Email" />
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"/>
 
 
             </android.support.design.widget.TextInputLayout>
@@ -92,7 +97,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Phone Number"
-                    android:drawableRight="@drawable/ic_call_black_24dp"/>
+                    android:drawableRight="@drawable/ic_call_black_24dp"
+                    android:maxLength="10"
+                    android:inputType="phone"/>
 
 
             </android.support.design.widget.TextInputLayout>
