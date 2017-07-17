@@ -2,13 +2,20 @@ package com.pimpmyapp.collegeapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pimpmyapp.collegeapp.R;
+import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -56,8 +63,52 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login() {
 
-        String username = loginId.getText().toString();
-        String password = loginpass.getText().toString();
-        
+        final String username = loginId.getText().toString();
+        final String password = loginpass.getText().toString();
+
+        if(username.equals(""))
+        {
+            loginId.setError("this field is required");
+        }
+        else if(password.equals(""))
+        {
+            loginpass.setError("this filed is required");
+        }
+        else
+        {
+            FirebaseDatabase userDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference userReference = userDatabase.getReference("Users");
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for(DataSnapshot childDataSnapshot : dataSnapshot.getChildren())
+                    {
+                        UserPojo userPojo = childDataSnapshot.getValue(UserPojo.class);
+
+                        if((username.equals(userPojo.getEmail())||username.equals(userPojo.getPhoneNo()))&&password.equals(userPojo.getPass()))
+                        {
+                            startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
+                        }
+                        else
+                        {
+                            Snackbar.make(loginBtn,"Check your Email/Password.",Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+
+
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+
     }
 }
