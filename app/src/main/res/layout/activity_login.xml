@@ -80,8 +80,9 @@
                 android:id="@+id/loginBtn"
                 android:textColor="#000"
                 android:text="login"
-                android:background="#81ffffff"
-                android:layout_marginTop="10dp"/>
+                android:background="#60ffffff"
+                android:layout_marginTop="10dp"
+                android:clickable="true"/>
 
 
         </LinearLayout>
@@ -93,7 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="not registered? Sign up."
+        android:text="Not registered? Sign up."
         android:textSize="20sp"
         android:textColor="#000"
         android:gravity="center_horizontal"

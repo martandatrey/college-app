@@ -147,6 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             Snackbar.make(regBtn, "You have registered sucessfully.", Snackbar.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
 
