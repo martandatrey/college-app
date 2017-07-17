@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
@@ -23,7 +27,8 @@ public class RegisterActivity extends AppCompatActivity {
     Button regBtn;
     TextView errorSpinner;
     Spinner branch, semester;
-
+    UserPojo userPojoForRegister;
+    int flag = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,15 +61,49 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register() {
+        flag = 0;
         String name = nameET.getText().toString();
         String rollNo = rollnoET.getText().toString();
-        String phno = phnoET.getText().toString();
-        String email = emailET.getText().toString();
+        final String phno = phnoET.getText().toString();
+        final String email = emailET.getText().toString();
         String pass = passwordET.getText().toString();
         String cpass = cpasswordET.getText().toString();
         String selBranch = branch.getSelectedItem().toString();
         String sem = semester.getSelectedItem().toString();
+
         errorSpinner.setText("");
+        FirebaseDatabase userDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = userDatabase.getReference("Users");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    userPojoForRegister = childDataSnapshot.getValue(UserPojo.class);
+                    Log.d("1234", ""+userPojoForRegister.getEmail());
+
+
+                    if (email.equals(userPojoForRegister.getEmail())) {
+
+                        flag = 1;
+
+                    }
+
+                    else if (phno.equals(userPojoForRegister.getPhoneNo())) {
+                        flag = 1;
+                    }
+
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+
+            }
+        });
+
 
         if (name.equals(""))
             nameET.setError("Name is required.");
@@ -76,34 +115,39 @@ public class RegisterActivity extends AppCompatActivity {
         else if (selBranch.equals("-- Select Branch --")) {
             errorSpinner.setVisibility(View.VISIBLE);
             errorSpinner.setText("Select your branch");
-        }
-
-        else  if (sem.equals("-- Select Semester --"))
+        } else if (sem.equals("-- Select Semester --")) {
+            errorSpinner.setVisibility(View.VISIBLE);
             errorSpinner.append("Enter your semester.");
-
-        else if (email.equals(""))
+        } else if (email.equals("")) {
             emailET.setError("Email is required.");
 
-        else if (!(Pattern.matches("\\w*[@]\\w*", email)))
+        } else if (!(Pattern.matches("\\w*[@]\\w*", email)))
             emailET.setError("Email is not valid.");
 
-        else  if (phno.equals(""))
+
+        else if (phno.equals(""))
             phnoET.setError("Phone number is required.");
 
 
-        else  if (pass.equals(""))
+        else if (phno.length() < 10) {
+            phnoET.setError("Enter valid phone no.");
+        } else if (pass.equals(""))
             passwordET.setError("Password is required.");
 
-        else  if (cpass.equals(""))
+        else if (pass.length() < 8) {
+            passwordET.setError("Minimum 8 characters are required");
+        } else if (cpass.equals(""))
             cpasswordET.setError("Re-enter your password.");
 
-        else if (!cpass.equals(pass))
-        {
+        else if (!cpass.equals(pass)) {
             cpasswordET.setError("password doesn't matches");
         }
+        else if (flag == 1) {
+        Snackbar.make(regBtn,"Account already exist.",Snackbar.LENGTH_LONG).show();
+        }
+        else
 
-
-        else {
+        {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference ref = database.getReference("Users");
             UserPojo user = new UserPojo();
