@@ -5,12 +5,32 @@ package com.pimpmyapp.collegeapp.pojo;
  */
 
 public class UserPojo {
-    String name;
-    String pass;
-    String email;
-    String rollNo;
-    String phoneNo;
-    String branch;
+    String name = "";
+    String pass = "";
+    String email = "";
+    String rollNo = "";
+    String phoneNo = "";
+    String branch = "";
+    String year = "";
+    String user_id;
+    String sem = "";
+
+    public String getSem() {
+        return sem;
+    }
+
+    public void setSem(String sem) {
+        this.sem = sem;
+    }
+
+    public String getYear() {
+
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
 
     public String getUser_id() {
         return user_id;
@@ -20,19 +40,6 @@ public class UserPojo {
         this.user_id = user_id;
     }
 
-    String user_id;
-
-    @Override
-    public String toString() {
-        return "UserPojo{" +
-                "name='" + name + '\'' +
-                ", pass='" + pass + '\'' +
-                ", email='" + email + '\'' +
-                ", rollNo='" + rollNo + '\'' +
-                ", phoneNo='" + phoneNo + '\'' +
-                ", branch='" + branch + '\'' +
-                '}';
-    }
 
     public String getName() {
         return name;

@@ -68,6 +68,11 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/college_branches"
                 />
+            <Spinner
+                android:id="@+id/semester"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/semester"/>
             <TextView
                 android:id="@+id/errorSpinner"
                 android:layout_width="wrap_content"
