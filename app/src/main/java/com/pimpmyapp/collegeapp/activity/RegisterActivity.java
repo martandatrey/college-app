@@ -16,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
 
     EditText nameET, emailET, passwordET, rollnoET, phnoET, cpasswordET;
@@ -63,13 +65,15 @@ public class RegisterActivity extends AppCompatActivity {
         String cpass = cpasswordET.getText().toString();
         String selBranch = branch.getSelectedItem().toString();
         String sem = semester.getSelectedItem().toString();
-
+        errorSpinner.setText("");
 
         if (name.equals(""))
             nameET.setError("Name is required.");
 
         if (email.equals(""))
             emailET.setError("Email is required.");
+        if ((Pattern.matches("\\w*[@]\\w*", email)))
+            emailET.setError("Email is not valid.");
         if (rollNo.equals(""))
             rollnoET.setError("Roll Number is required.");
         if (selBranch.equals("-- Select Branch --")) {
