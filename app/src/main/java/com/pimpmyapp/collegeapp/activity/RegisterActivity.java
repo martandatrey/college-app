@@ -20,7 +20,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText nameET, emailET, passwordET, rollnoET, phnoET, cpasswordET;
     Button regBtn;
     TextView errorSpinner;
-    Spinner branch;
+    Spinner branch,semester;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
         regBtn = (Button) findViewById(R.id.registerBtn);
         errorSpinner = (TextView) findViewById(R.id.errorSpinner);
         errorSpinner.setVisibility(View.GONE);
+        semester = (Spinner) findViewById(R.id.semester);
     }
 
     private void methodListner() {
@@ -60,6 +61,8 @@ public class RegisterActivity extends AppCompatActivity {
         String pass = passwordET.getText().toString();
         String cpass = cpasswordET.getText().toString();
         String selBranch = branch.getSelectedItem().toString();
+        String sem = semester.getSelectedItem().toString();
+
 
             if (name.equals(""))
                 nameET.setError("Name is required.");
@@ -76,7 +79,8 @@ public class RegisterActivity extends AppCompatActivity {
                 passwordET.setError("Password is required.");
             if (cpass.equals(""))
                 cpasswordET.setError("Re-enter your password.");
-
+            if (sem.equals(""))
+                errorSpinner.setText("Enter your semester.");
         else {
                 FirebaseDatabase  database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference("Users");
@@ -86,9 +90,11 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setPass(pass);
                 user.setBranch(selBranch);
                 user.setRollNo(rollNo);
+                if (!phno.equals(""))
                 user.setPhoneNo(phno);
                 String user_ID = ref.push().getKey();
                 user.setUser_id(user_ID);
+                //user.setSem();
 
                 ref.child(user_ID).setValue(user);
 

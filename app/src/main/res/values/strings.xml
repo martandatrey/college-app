@@ -5,4 +5,15 @@
         <item>Civil Engineering</item>
         <item>Computer Science</item>
     </string-array>
+    <string-array name="semester">
+        <item>-- Select Branch --</item>
+        <item>I</item>
+        <item>II</item>
+        <item>III</item>
+        <item>IV</item>
+        <item>V</item>
+        <item>VI</item>
+        <item>VII</item>
+        <item>VIII</item>
+    </string-array>
 </resources>
