@@ -127,6 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
+                    android:inputType="textPassword"
                     android:maxLines="1"/>
 
 
@@ -142,6 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
+                    android:inputType="textPassword"
                     android:maxLines="1"/>
 
             </android.support.design.widget.TextInputLayout>
