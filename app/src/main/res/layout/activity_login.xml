@@ -24,7 +24,6 @@
 
 
     <ScrollView
-        android:layout_below="@id/loginTitle"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +46,7 @@
                 <EditText
                     android:id="@+id/loginId"
                     android:maxLines="1"
+                    android:drawableLeft=""
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Email/Mobile no"
