@@ -42,7 +42,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/ic_person_black_24dp"
-                    android:hint="Name" />
+                    android:hint="Name"
+                    android:maxLines="1"/>
 
 
             </android.support.design.widget.TextInputLayout>
@@ -70,13 +71,16 @@
                 />
             <Spinner
                 android:id="@+id/semester"
-                android:layout_width="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/semester"/>
             <TextView
                 android:id="@+id/errorSpinner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text=""/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -88,7 +92,8 @@
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/ic_email_black_24dp"
                     android:hint="Email"
-                    android:inputType="textEmailAddress"/>
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"/>
 
 
             </android.support.design.widget.TextInputLayout>
@@ -104,7 +109,8 @@
                     android:hint="Phone Number"
                     android:drawableRight="@drawable/ic_call_black_24dp"
                     android:maxLength="10"
-                    android:inputType="phone"/>
+                    android:inputType="phone"
+                    android:maxLines="1"/>
 
 
             </android.support.design.widget.TextInputLayout>
@@ -117,7 +123,8 @@
                     android:id="@+id/passET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password" />
+                    android:hint="Password"
+                    android:maxLines="1"/>
 
 
             </android.support.design.widget.TextInputLayout>
@@ -131,7 +138,8 @@
                     android:id="@+id/cpassET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Confirm Password" />
+                    android:hint="Confirm Password"
+                    android:maxLines="1"/>
 
             </android.support.design.widget.TextInputLayout>
 

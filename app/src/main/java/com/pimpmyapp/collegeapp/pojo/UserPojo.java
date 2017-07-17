@@ -5,6 +5,7 @@ package com.pimpmyapp.collegeapp.pojo;
  */
 
 public class UserPojo {
+    String user_id;
     String name = "";
     String pass = "";
     String email = "";
@@ -12,7 +13,6 @@ public class UserPojo {
     String phoneNo = "";
     String branch = "";
     String year = "";
-    String user_id;
     String sem = "";
 
     public String getSem() {

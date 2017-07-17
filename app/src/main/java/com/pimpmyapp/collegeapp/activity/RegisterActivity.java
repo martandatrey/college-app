@@ -1,6 +1,7 @@
 package com.pimpmyapp.collegeapp.activity;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText nameET, emailET, passwordET, rollnoET, phnoET, cpasswordET;
     Button regBtn;
     TextView errorSpinner;
-    Spinner branch,semester;
+    Spinner branch, semester;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,43 +65,70 @@ public class RegisterActivity extends AppCompatActivity {
         String sem = semester.getSelectedItem().toString();
 
 
-            if (name.equals(""))
-                nameET.setError("Name is required.");
+        if (name.equals(""))
+            nameET.setError("Name is required.");
 
-            if (email.equals(""))
-                emailET.setError("Email is required.");
-            if (rollNo.equals(""))
-                rollnoET.setError("Roll Number is required.");
-            if (selBranch.equals("-- Select Branch --")) {
-                errorSpinner.setVisibility(View.VISIBLE);
-                errorSpinner.setText("Select your branch");
-            }
-            if (pass.equals(""))
-                passwordET.setError("Password is required.");
-            if (cpass.equals(""))
-                cpasswordET.setError("Re-enter your password.");
-            if (sem.equals(""))
-                errorSpinner.setText("Enter your semester.");
+        if (email.equals(""))
+            emailET.setError("Email is required.");
+        if (rollNo.equals(""))
+            rollnoET.setError("Roll Number is required.");
+        if (selBranch.equals("-- Select Branch --")) {
+            errorSpinner.setVisibility(View.VISIBLE);
+            errorSpinner.setText("Select your branch");
+        }
+        if (pass.equals(""))
+            passwordET.setError("Password is required.");
+        if (phno.equals(""))
+            phnoET.setError("Phone number is required.");
+        if (cpass.equals(""))
+            cpasswordET.setError("Re-enter your password.");
+        if (sem.equals("-- Select semester --"))
+            errorSpinner.append("Enter your semester.");
         else {
-                FirebaseDatabase  database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference("Users");
-                UserPojo user = new UserPojo();
-                user.setName(name);
-                user.setEmail(email);
-                user.setPass(pass);
-                user.setBranch(selBranch);
-                user.setRollNo(rollNo);
-                if (!phno.equals(""))
-                user.setPhoneNo(phno);
-                String user_ID = ref.push().getKey();
-                user.setUser_id(user_ID);
-                //user.setSem();
-
-                ref.child(user_ID).setValue(user);
-
-                Toast.makeText(this, "You have registered sucessfully.", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, LoginActivity.class));
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("Users");
+            UserPojo user = new UserPojo();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPass(pass);
+            user.setBranch(selBranch);
+            user.setRollNo(rollNo);
+            user.setPhoneNo(phno);
+            String user_ID = ref.push().getKey();
+            user.setUser_id(user_ID);
+            user.setSem(sem);
+            switch (sem) {
+                case "I":
+                    user.setYear("1st");
+                    break;
+                case "II":
+                    user.setYear("1st");
+                    break;
+                case "III":
+                    user.setYear("2nd");
+                    break;
+                case "IV":
+                    user.setYear("2nd");
+                    break;
+                case "V":
+                    user.setYear("3rd");
+                    break;
+                case "VI":
+                    user.setYear("3rd");
+                    break;
+                case "VII":
+                    user.setYear("4th");
+                    break;
+                case "VIII":
+                    user.setYear("4th");
+                    break;
             }
+
+            ref.child(user_ID).setValue(user);
+
+            Snackbar.make(regBtn, "You have registered sucessfully.", Snackbar.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
 
 
     }
