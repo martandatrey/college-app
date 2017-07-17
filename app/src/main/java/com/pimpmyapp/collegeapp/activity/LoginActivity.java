@@ -1,6 +1,7 @@
 package com.pimpmyapp.collegeapp.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -92,7 +93,13 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            Snackbar.make(loginBtn,"Check your Email/Password.",Snackbar.LENGTH_LONG).show();
+                            Snackbar snackbar;
+                            snackbar = Snackbar.make(loginBtn,"Check your Email/Password.",Snackbar.LENGTH_LONG);
+                            View snackbarView = snackbar.getView();
+                            snackbarView.setBackgroundColor(Color.rgb(98,134,241));
+                            TextView snackbarTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                            snackbarTextView.setTextColor(Color.rgb(255,255,255));
+                            snackbar.show();
                         }
                     }
 
