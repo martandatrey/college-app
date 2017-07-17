@@ -1,15 +1,14 @@
 package com.pimpmyapp.collegeapp.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -70,24 +69,40 @@ public class RegisterActivity extends AppCompatActivity {
         if (name.equals(""))
             nameET.setError("Name is required.");
 
-        if (email.equals(""))
-            emailET.setError("Email is required.");
-        if ((Pattern.matches("\\w*[@]\\w*", email)))
-            emailET.setError("Email is not valid.");
-        if (rollNo.equals(""))
+        else if (rollNo.equals(""))
             rollnoET.setError("Roll Number is required.");
-        if (selBranch.equals("-- Select Branch --")) {
+
+
+        else if (selBranch.equals("-- Select Branch --")) {
             errorSpinner.setVisibility(View.VISIBLE);
             errorSpinner.setText("Select your branch");
         }
-        if (pass.equals(""))
-            passwordET.setError("Password is required.");
-        if (phno.equals(""))
-            phnoET.setError("Phone number is required.");
-        if (cpass.equals(""))
-            cpasswordET.setError("Re-enter your password.");
-        if (sem.equals("-- Select semester --"))
+
+        else  if (sem.equals("-- Select Semester --"))
             errorSpinner.append("Enter your semester.");
+
+        else if (email.equals(""))
+            emailET.setError("Email is required.");
+
+        else if ((Pattern.matches("\\w*[@]\\w*", email)))
+            emailET.setError("Email is not valid.");
+
+        else  if (phno.equals(""))
+            phnoET.setError("Phone number is required.");
+
+
+        else  if (pass.equals(""))
+            passwordET.setError("Password is required.");
+
+        else  if (cpass.equals(""))
+            cpasswordET.setError("Re-enter your password.");
+
+        else if (!cpass.equals(pass))
+        {
+            cpasswordET.setError("password doesn't matches");
+        }
+
+
         else {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference ref = database.getReference("Users");
