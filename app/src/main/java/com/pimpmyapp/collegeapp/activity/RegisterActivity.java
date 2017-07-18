@@ -21,6 +21,9 @@ import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
 import java.util.regex.Pattern;
 
+import static android.R.attr.data;
+import static android.R.attr.value;
+
 public class RegisterActivity extends AppCompatActivity {
 
     EditText nameET, emailET, passwordET, rollnoET, phnoET, cpasswordET;
@@ -28,7 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
     TextView errorSpinner;
     Spinner branch, semester;
     UserPojo userPojoForRegister;
-    int flag = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +63,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register() {
-        flag = 0;
         String name = nameET.getText().toString();
         String rollNo = rollnoET.getText().toString();
         final String phno = phnoET.getText().toString();
@@ -72,38 +73,6 @@ public class RegisterActivity extends AppCompatActivity {
         String sem = semester.getSelectedItem().toString();
 
         errorSpinner.setText("");
-        FirebaseDatabase userDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference reference = userDatabase.getReference("Users");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-                    userPojoForRegister = childDataSnapshot.getValue(UserPojo.class);
-                    Log.d("1234", ""+userPojoForRegister.getEmail());
-
-
-                    if (email.equals(userPojoForRegister.getEmail())) {
-
-                        flag = 1;
-
-                    }
-
-                    else if (phno.equals(userPojoForRegister.getPhoneNo())) {
-                        flag = 1;
-                    }
-
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-
-            }
-        });
-
 
         if (name.equals(""))
             nameET.setError("Name is required.");
@@ -144,9 +113,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         else if (!cpass.equals(pass)) {
             cpasswordET.setError("password doesn't matches");
-        }
-        else if (flag == 1) {
-        Snackbar.make(regBtn,"Account already exist.",Snackbar.LENGTH_LONG).show();
         }
         else
 
