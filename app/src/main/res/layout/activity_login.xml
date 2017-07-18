@@ -5,11 +5,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-
-
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
     <TextView
-        android:layout_above="@+id/scrollView"
         android:id="@+id/loginTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,13 +23,14 @@
         android:textStyle="bold"
         android:textColor="#000"
         />
-
-
     <ScrollView
         android:id="@+id/scrollView"
+        android:layout_below="@id/loginTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+
+        >
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -86,13 +89,13 @@
                 android:text="login"
                 android:background="#60ffffff"
                 android:layout_marginTop="10dp"
-                android:clickable="true"/>
+                android:clickable="true"
+                android:layout_marginBottom="50dp"/>
 
 
         </LinearLayout>
     </ScrollView>
-
-
+    </RelativeLayout>
     <TextView
         android:id="@+id/registerTextView"
         android:layout_width="match_parent"

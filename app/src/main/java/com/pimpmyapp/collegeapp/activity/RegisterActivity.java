@@ -131,12 +131,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         else if (phno.length() < 10) {
             phnoET.setError("Enter valid phone no.");
-        } else if (pass.equals(""))
+        }
+        else if (pass.equals(""))
             passwordET.setError("Password is required.");
 
         else if (pass.length() < 8) {
             passwordET.setError("Minimum 8 characters are required");
-        } else if (cpass.equals(""))
+        }
+
+        else if (cpass.equals(""))
             cpasswordET.setError("Re-enter your password.");
 
         else if (!cpass.equals(pass)) {
