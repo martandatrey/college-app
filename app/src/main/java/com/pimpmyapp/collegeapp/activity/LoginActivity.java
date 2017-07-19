@@ -1,5 +1,6 @@
 package com.pimpmyapp.collegeapp.activity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -73,9 +74,9 @@ public class LoginActivity extends AppCompatActivity {
         final String password = loginpass.getText().toString();
 
         if (username.equals("")) {
-            loginId.setError("this field is required");
+            loginId.setError("This field is required");
         } else if (password.equals("")) {
-            loginpass.setError("this filed is required");
+            loginpass.setError("This field is required");
         } else {
             FirebaseDatabase userDatabase = FirebaseDatabase.getInstance();
             DatabaseReference userReference = userDatabase.getReference("Users");
@@ -91,7 +92,9 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putBoolean("isLogin", true);
                             editor.putString("user_id", userPojo.getUser_id());
+                            editor.commit();
                             startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                            finish();
                         } else {
                             Snackbar snackbar;
                             snackbar = Snackbar.make(loginBtn, "Check your Email/Password.", Snackbar.LENGTH_LONG);
@@ -102,7 +105,6 @@ public class LoginActivity extends AppCompatActivity {
                             snackbar.show();
                         }
                     }
-
 
                 }
 
