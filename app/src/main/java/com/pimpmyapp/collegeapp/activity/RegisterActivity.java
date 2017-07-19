@@ -4,25 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
-
-import static android.R.attr.data;
-import static android.R.attr.value;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -129,6 +123,9 @@ public class RegisterActivity extends AppCompatActivity {
             String user_ID = ref.push().getKey();
             user.setUser_id(user_ID);
             user.setSem(sem);
+            ArrayList<String>arrayList = new ArrayList<>();
+            arrayList.add(email);
+
             switch (sem) {
                 case "I":
                     user.setYear("1st");
