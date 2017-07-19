@@ -35,8 +35,11 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -221,7 +224,7 @@ public class DashboardActivity extends AppCompatActivity
 
                 LayoutInflater inflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                 View view = inflator.inflate(R.layout.notice_dialog_item, null);
-                Dialog dialog = new Dialog(this);
+                final Dialog dialog = new Dialog(this);
 
                 dueDateBtn = (Button) view.findViewById(R.id.DueDateBtn);
                 noticeTitle = (EditText) view.findViewById(R.id.noticeTitleTextView);
@@ -247,7 +250,9 @@ public class DashboardActivity extends AppCompatActivity
                 addNoticeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        dialog.cancel();
                         addpost();
+
                     }
                 });
                 dialog.setContentView(view);
@@ -288,12 +293,28 @@ public class DashboardActivity extends AppCompatActivity
             uploadTask[0].addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    final String[] user_name = new String[1];
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    SharedPreferences sharedPreference = getSharedPreferences("userData",MODE_PRIVATE);
+                    final String user_id =  sharedPreference.getString("user_id",null);
+                    DatabaseReference userRef = database.getReference("Users");
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                          user_name[0] =  dataSnapshot.child(user_id).child("name").getValue(String.class);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
 
 
                     String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
                     noticepojo.setImage(imageUploadUrl);
+                    noticepojo.setAddedBy(user_name[0]);
                     Snackbar.make(addNoticeBtn,"Your notice will be published shortly",Snackbar.LENGTH_LONG).show();
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("notice");
                     String noticeKey =  ref.push().getKey();
                     noticepojo.setNoticeID(noticeKey);
