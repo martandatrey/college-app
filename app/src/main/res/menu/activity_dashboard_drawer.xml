@@ -18,6 +18,10 @@
             android:id="@+id/Documents"
             android:icon="@drawable/ic_note_black_24dp"
             android:title="Documents" />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_note_black_24dp"
+            android:title="Logout" />
     </group>
 
     <item android:title="Admin Panel">
