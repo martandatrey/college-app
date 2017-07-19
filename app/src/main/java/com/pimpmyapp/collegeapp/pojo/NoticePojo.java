@@ -6,8 +6,10 @@ package com.pimpmyapp.collegeapp.pojo;
 
 public class NoticePojo {
 
-    String image,date,title,addedBy;
-    boolean published  = false;
+    String image;
+    String date;
+    String title;
+    String addedBy;
 
     @Override
     public String toString() {
@@ -16,9 +18,21 @@ public class NoticePojo {
                 ", date='" + date + '\'' +
                 ", title='" + title + '\'' +
                 ", addedBy='" + addedBy + '\'' +
+                ", noticeID='" + noticeID + '\'' +
                 ", published=" + published +
                 '}';
     }
+
+    public String getNoticeID() {
+        return noticeID;
+    }
+
+    public void setNoticeID(String noticeID) {
+        this.noticeID = noticeID;
+    }
+
+    String noticeID;
+    boolean published  = false;
 
     public String getImage() {
         return image;

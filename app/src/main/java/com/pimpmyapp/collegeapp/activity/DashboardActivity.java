@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,6 +35,8 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -41,16 +44,19 @@ import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.fragment.NoticeFragment;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
+import java.util.Calendar;
+
 //import com.pimpmyapp.collegeapp.Manifest;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionMenu floatingActionMenu;
-    FloatingActionButton floatingActionButtonNoticeFromGallary,floatingActionButtonDocument,floatingActionButtonNoticeFromCamera;
+    FloatingActionButton floatingActionButtonNoticeFromGallary, floatingActionButtonDocument, floatingActionButtonNoticeFromCamera;
     Uri selectedImageUriFromGallary;
     EditText noticeTitle;
-    Button dueDateBtn;
+    Button dueDateBtn,addNoticeBtn;
+    String dueDateSelectedByUser;
 
 
     @Override
@@ -114,8 +120,7 @@ public class DashboardActivity extends AppCompatActivity
         if (id == R.id.notices) {
 
 
-
-           changeFragment(new NoticeFragment());
+            changeFragment(new NoticeFragment());
         } else if (id == R.id.TimeTable) {
 
         } else if (id == R.id.AcedemicCalender) {
@@ -126,21 +131,19 @@ public class DashboardActivity extends AppCompatActivity
 
         } else if (id == R.id.extra) {
 
-        }
-        else if (id == R.id.logout){
-            SharedPreferences sharedpref = getSharedPreferences("userData" ,MODE_PRIVATE);
+        } else if (id == R.id.logout) {
+            SharedPreferences sharedpref = getSharedPreferences("userData", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpref.edit();
-            editor.putBoolean("isLogin" , false);
+            editor.putBoolean("isLogin", false);
             editor.commit();
 
-            startActivity(new Intent(DashboardActivity.this,LoginActivity.class));
+            startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
     private void init() {
@@ -177,7 +180,7 @@ public class DashboardActivity extends AppCompatActivity
 
     }
 
-    void changeFragment(Fragment fragment){
+    void changeFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
@@ -185,22 +188,20 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     private void openGallary() {
-        if(checkGallaryPermission()){
+        if (checkGallaryPermission()) {
             Intent i = new Intent();
             i.setAction(Intent.ACTION_GET_CONTENT);
             i.setType("image/*");
-            startActivityForResult(i,0);
-        }
+            startActivityForResult(i, 0);
+        } else {
 
-        else{
-
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},12);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
         }
 
     }
 
     private boolean checkGallaryPermission() {
-        boolean flag = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         return flag;
     }
 
@@ -214,57 +215,90 @@ public class DashboardActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 0)
-        {
-            if(resultCode == RESULT_OK)
-            {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
                 selectedImageUriFromGallary = data.getData();
 
                 LayoutInflater inflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                View view = inflator.inflate(R.layout.notice_dialog_item,null);
+                View view = inflator.inflate(R.layout.notice_dialog_item, null);
                 Dialog dialog = new Dialog(this);
 
                 dueDateBtn = (Button) view.findViewById(R.id.DueDateBtn);
                 noticeTitle = (EditText) view.findViewById(R.id.noticeTitleTextView);
+                addNoticeBtn = (Button) view.findViewById(R.id.addNoticeBtn);
                 dueDateBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DatePickerDialog dialog = new DatePickerDialog(this);
+                        Calendar calendar = Calendar.getInstance();
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(DashboardActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                dueDateSelectedByUser =  "" + day + "-" + (month+1) + "-" + year;
+                            }
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                        datePickerDialog.show();
+
+
+
+
                     }
                 });
 
-
+                addNoticeBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addpost();
+                    }
+                });
                 dialog.setContentView(view);
                 dialog.show();
-
             }
         }
     }
+
 
     private void addpost() {
         String enteredTitle = noticeTitle.getText().toString();
         final NoticePojo noticepojo = new NoticePojo();
         noticepojo.setTitle(enteredTitle);
-        if(selectedImageUriFromGallary !=null)
-        {
+        noticepojo.setDate(dueDateSelectedByUser);
+        if (selectedImageUriFromGallary != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference reference = storage.getReference("image");
-            UploadTask uploadTask = reference.putFile(selectedImageUriFromGallary);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
+            final StorageReference reference = storage.getReference("image");
+            final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallary)};
+            uploadTask[0].addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Snackbar.make(floatingActionButtonNoticeFromGallary,"image upload failed",Snackbar.LENGTH_LONG).show();
+                    Snackbar snackbar;
+                    snackbar  =  Snackbar.make(floatingActionButtonNoticeFromGallary, "Image upload failed", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    snackbar.setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            uploadTask[0] = reference.putFile(selectedImageUriFromGallary);
+                        }
+                    });
+
+
                     noticepojo.setImage("");
                 }
             });
 
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            uploadTask[0].addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
 
                     String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
                     noticepojo.setImage(imageUploadUrl);
+                    Snackbar.make(addNoticeBtn,"Your notice will be published shortly",Snackbar.LENGTH_LONG).show();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = database.getReference("notice");
+                    String noticeKey =  ref.push().getKey();
+                    noticepojo.setNoticeID(noticeKey);
+                    ref.child(noticeKey).setValue(noticepojo);
+
 
                 }
             });
