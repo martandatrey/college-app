@@ -7,18 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pimpmyapp.collegeapp.R;
-
 /**
  * Created by marta on 20-Jul-17.
  */
 
-public class AdminFragment extends Fragment {
+public class NoticeViewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.admin_fragment,null);
 
-        return view;
     }
 }
