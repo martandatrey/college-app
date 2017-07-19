@@ -71,10 +71,19 @@
                 android:id="@+id/material_design_floating_action_menu_item1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_a_photo_black_24dp"
-                fab:fab_label="Add new notice"
+                android:src="@drawable/ic_insert_photo_black_24dp"
+                fab:fab_label="Notice From Gallary"
                 fab:fab_size="mini"
                 fab:fab_colorNormal="#afa5fc"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/material_design_floating_action_menu_item3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_a_photo_black_24dp"
+                fab:fab_label="Notice From Camera"
+                fab:fab_size="mini"
+                fab:fab_colorNormal="#ede079"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/material_design_floating_action_menu_item2"
@@ -84,15 +93,8 @@
                 fab:fab_label="Add new document"
                 fab:fab_size="mini"
                 fab:fab_colorNormal="#f673fa"/>
-<!--
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_item3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_send_black_24dp"
-                fab:fab_label="Menu Item 3"
-                fab:fab_size="mini"
-                fab:fab_colorNormal="#ede079"/>-->
+
+
         </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>
 
