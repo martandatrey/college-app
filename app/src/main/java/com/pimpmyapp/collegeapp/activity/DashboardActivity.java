@@ -1,7 +1,9 @@
 package com.pimpmyapp.collegeapp.activity;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -20,9 +22,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -44,6 +49,9 @@ public class DashboardActivity extends AppCompatActivity
     FloatingActionMenu floatingActionMenu;
     FloatingActionButton floatingActionButtonNoticeFromGallary,floatingActionButtonDocument,floatingActionButtonNoticeFromCamera;
     Uri selectedImageUriFromGallary;
+    EditText noticeTitle;
+    Button dueDateBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +131,7 @@ public class DashboardActivity extends AppCompatActivity
             SharedPreferences sharedpref = getSharedPreferences("userData" ,MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpref.edit();
             editor.putBoolean("isLogin" , false);
+            editor.commit();
 
             startActivity(new Intent(DashboardActivity.this,LoginActivity.class));
         }
@@ -209,18 +218,33 @@ public class DashboardActivity extends AppCompatActivity
         {
             if(resultCode == RESULT_OK)
             {
-                Dialog dialog = new Dialog(this);
-               // dialog.setContentView();
-
                 selectedImageUriFromGallary = data.getData();
-                addpost();
+
+                LayoutInflater inflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                View view = inflator.inflate(R.layout.notice_dialog_item,null);
+                Dialog dialog = new Dialog(this);
+
+                dueDateBtn = (Button) view.findViewById(R.id.DueDateBtn);
+                noticeTitle = (EditText) view.findViewById(R.id.noticeTitleTextView);
+                dueDateBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DatePickerDialog dialog = new DatePickerDialog(this);
+                    }
+                });
+
+
+                dialog.setContentView(view);
+                dialog.show();
+
             }
         }
     }
 
     private void addpost() {
-
+        String enteredTitle = noticeTitle.getText().toString();
         final NoticePojo noticepojo = new NoticePojo();
+        noticepojo.setTitle(enteredTitle);
         if(selectedImageUriFromGallary !=null)
         {
             FirebaseStorage storage = FirebaseStorage.getInstance();
