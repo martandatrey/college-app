@@ -103,7 +103,7 @@ public class DashboardActivity extends AppCompatActivity
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
         floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
-        floatingActionButton3 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item3);
+      //  floatingActionButton3 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item3);
     }
 
     private void methodListener() {
@@ -122,13 +122,13 @@ public class DashboardActivity extends AppCompatActivity
             }
         });
 
-        floatingActionButton3.setOnClickListener(new View.OnClickListener() {
+       /* floatingActionButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(DashboardActivity.this, "clicked", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
 
     }
 }
