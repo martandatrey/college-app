@@ -1,7 +1,11 @@
 package com.pimpmyapp.collegeapp.activity;
 
+
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +19,7 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.pimpmyapp.collegeapp.R;
+import com.pimpmyapp.collegeapp.fragment.NoticeFragment;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -80,17 +85,20 @@ public class DashboardActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.notices) {
 
-        } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+           changeFragment(new NoticeFragment());
+        } else if (id == R.id.TimeTable) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.AcedemicCalender) {
+
+        } else if (id == R.id.Documents) {
+
+        } else if (id == R.id.reviewNotice) {
+
+        } else if (id == R.id.extra) {
 
         }
 
@@ -98,6 +106,8 @@ public class DashboardActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
     private void init() {
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
@@ -130,5 +140,11 @@ public class DashboardActivity extends AppCompatActivity
         });
 */
 
+    }
+    void changeFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 }
