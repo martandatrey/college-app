@@ -1,6 +1,7 @@
 package com.pimpmyapp.collegeapp.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -21,7 +22,7 @@ import com.pimpmyapp.collegeapp.pojo.UserPojo;
 public class LoginActivity extends AppCompatActivity {
 
 
-    EditText loginId,loginpass;
+    EditText loginId, loginpass;
     Button loginBtn;
     TextView registerTextView;
 
@@ -30,6 +31,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SharedPreferences pref = getSharedPreferences("userData",MODE_PRIVATE);
+        boolean isLogin = pref.getBoolean("isLogin", false);
+        if (isLogin) {
+            startActivity(new Intent(this, DashboardActivity.class));
+            finish();
+        }
         intit();
         methodListener();
     }
@@ -47,17 +54,14 @@ public class LoginActivity extends AppCompatActivity {
         registerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i  = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(i);
-
-
             }
         });
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 login();
             }
         });
@@ -68,43 +72,36 @@ public class LoginActivity extends AppCompatActivity {
         final String username = loginId.getText().toString();
         final String password = loginpass.getText().toString();
 
-        if(username.equals(""))
-        {
+        if (username.equals("")) {
             loginId.setError("this field is required");
-        }
-        else if(password.equals(""))
-        {
+        } else if (password.equals("")) {
             loginpass.setError("this filed is required");
-        }
-        else
-        {
+        } else {
             FirebaseDatabase userDatabase = FirebaseDatabase.getInstance();
             DatabaseReference userReference = userDatabase.getReference("Users");
             userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    for(DataSnapshot childDataSnapshot : dataSnapshot.getChildren())
-                    {
+                    for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                         UserPojo userPojo = childDataSnapshot.getValue(UserPojo.class);
 
-                        if((username.equals(userPojo.getEmail())||username.equals(userPojo.getPhoneNo()))&&password.equals(userPojo.getPass()))
-                        {
-                            startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
-                        }
-                        else
-                        {
+                        if ((username.equals(userPojo.getEmail()) || username.equals(userPojo.getPhoneNo())) && password.equals(userPojo.getPass())) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("isLogin", true);
+                            editor.putString("user_id", userPojo.getUser_id());
+                            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                        } else {
                             Snackbar snackbar;
-                            snackbar = Snackbar.make(loginBtn,"Check your Email/Password.",Snackbar.LENGTH_LONG);
+                            snackbar = Snackbar.make(loginBtn, "Check your Email/Password.", Snackbar.LENGTH_LONG);
                             View snackbarView = snackbar.getView();
-                            snackbarView.setBackgroundColor(Color.rgb(98,134,241));
+                            snackbarView.setBackgroundColor(Color.rgb(98, 134, 241));
                             TextView snackbarTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                            snackbarTextView.setTextColor(Color.rgb(255,255,255));
+                            snackbarTextView.setTextColor(Color.rgb(255, 255, 255));
                             snackbar.show();
                         }
                     }
-
-
 
 
                 }
