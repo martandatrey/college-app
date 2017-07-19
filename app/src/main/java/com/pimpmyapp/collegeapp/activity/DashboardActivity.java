@@ -22,6 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -141,6 +142,7 @@ public class DashboardActivity extends AppCompatActivity
             editor.commit();
 
             startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -257,6 +259,7 @@ public class DashboardActivity extends AppCompatActivity
                 });
                 dialog.setContentView(view);
                 dialog.show();
+                dialog.setCancelable(false);
             }
         }
     }
@@ -269,7 +272,10 @@ public class DashboardActivity extends AppCompatActivity
         noticepojo.setDate(dueDateSelectedByUser);
         if (selectedImageUriFromGallary != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
-            final StorageReference reference = storage.getReference("image");
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference ref = database.getReference("notice");
+            final String noticeKey =  ref.push().getKey();
+            final StorageReference reference = storage.getReference(noticeKey);
             final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallary)};
             uploadTask[0].addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -286,6 +292,9 @@ public class DashboardActivity extends AppCompatActivity
                     });
 
 
+
+
+
                     noticepojo.setImage("");
                 }
             });
@@ -294,14 +303,17 @@ public class DashboardActivity extends AppCompatActivity
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     final String[] user_name = new String[1];
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+
                     SharedPreferences sharedPreference = getSharedPreferences("userData",MODE_PRIVATE);
                     final String user_id =  sharedPreference.getString("user_id",null);
+
                     DatabaseReference userRef = database.getReference("Users");
-                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    userRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                           user_name[0] =  dataSnapshot.child(user_id).child("name").getValue(String.class);
+                            Log.d("1234", "onDataChange: " + user_name[0]);
                         }
 
                         @Override
@@ -314,11 +326,9 @@ public class DashboardActivity extends AppCompatActivity
                     String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
                     noticepojo.setImage(imageUploadUrl);
                     noticepojo.setAddedBy(user_name[0]);
-                    Snackbar.make(addNoticeBtn,"Your notice will be published shortly",Snackbar.LENGTH_LONG).show();
-                    DatabaseReference ref = database.getReference("notice");
-                    String noticeKey =  ref.push().getKey();
                     noticepojo.setNoticeID(noticeKey);
                     ref.child(noticeKey).setValue(noticepojo);
+                    Snackbar.make(floatingActionButtonNoticeFromGallary,"Your notice will be published shortly",Snackbar.LENGTH_LONG).show();
 
 
                 }
