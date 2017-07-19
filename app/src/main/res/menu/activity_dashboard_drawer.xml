@@ -24,7 +24,7 @@
         <menu>
             <item
                 android:id="@+id/reviewNotice"
-                android:icon="@drawable/ic_rate_review_black_24dp-"
+                android:icon="@drawable/ic_rate_review_black_24dp"
                 android:title="Review Notice" />
             <item
                 android:id="@+id/extra"
