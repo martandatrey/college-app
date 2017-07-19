@@ -14,6 +14,25 @@ public class UserPojo {
     String branch = "";
     String year = "";
     String sem = "";
+    boolean admin = false;
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public boolean issAdmin() {
+        return sAdmin;
+    }
+
+    public void setsAdmin(boolean sAdmin) {
+        this.sAdmin = sAdmin;
+    }
+
+    boolean sAdmin = false;
 
     public String getSem() {
         return sem;
