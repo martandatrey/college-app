@@ -25,7 +25,7 @@ public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionMenu floatingActionMenu;
-    FloatingActionButton floatingActionButton1,floatingActionButton2,floatingActionButton3;
+    FloatingActionButton floatingActionButtonNotice,floatingActionButtonDocument,floatingActionButton3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,23 +111,24 @@ public class DashboardActivity extends AppCompatActivity
 
     private void init() {
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
-        floatingActionButton2 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
+        floatingActionButtonDocument = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
+        floatingActionButtonNotice = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
       //  floatingActionButton3 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item3);
     }
 
     private void methodListener() {
 
-        floatingActionButton1.setOnClickListener(new View.OnClickListener() {
+        floatingActionButtonDocument.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(DashboardActivity.this, "clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
-        floatingActionButton2.setOnClickListener(new View.OnClickListener() {
+        floatingActionButtonNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                openGallery();
                 Toast.makeText(DashboardActivity.this, "clicked", Toast.LENGTH_SHORT).show();
             }
         });
@@ -141,10 +142,14 @@ public class DashboardActivity extends AppCompatActivity
 */
 
     }
+
     void changeFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
+    }
+
+    private void openGallery() {
     }
 }
