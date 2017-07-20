@@ -4,9 +4,12 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,6 +48,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pimpmyapp.collegeapp.R;
+import com.pimpmyapp.collegeapp.fragment.AdminFragment;
 import com.pimpmyapp.collegeapp.fragment.NoticeFragment;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
@@ -97,7 +101,7 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
+        getMenuInflater().inflate(R.menu.settings, menu);
         return true;
     }
 
@@ -137,6 +141,7 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.Documents) {
 
         } else if (id == R.id.reviewNotice) {
+            changeFragment(new AdminFragment());
 
         } else if (id == R.id.extra) {
 
@@ -263,69 +268,79 @@ public class DashboardActivity extends AppCompatActivity
     private void addpost() {
         String enteredTitle = noticeTitle.getText().toString();
         final NoticePojo noticepojo = new NoticePojo();
+
         noticepojo.setTitle(enteredTitle);
         noticepojo.setDate(dueDateSelectedByUser);
         if (selectedImageUriFromGallary != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference ref = database.getReference("notice");
-            final String noticeKey = ref.push().getKey();
-            final StorageReference reference = storage.getReference(noticeKey);
-            final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallary)};
-            uploadTask[0].addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Snackbar snackbar;
-                    snackbar = Snackbar.make(fabDoc, "Image upload failed", Snackbar.LENGTH_LONG);
-                    snackbar.show();
-                    snackbar.setAction("Retry", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
 
-                            uploadTask[0] = reference.putFile(selectedImageUriFromGallary);
-                        }
-                    });
+            if (!isNetworkAvailable()) {
+                Snackbar.make(fabGal, "No Internet Connection.", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addpost();
+                    }
+                }).show();
+            } else {
 
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference ref = database.getReference("notice");
+                final String noticeKey = ref.push().getKey();
+                final StorageReference reference = storage.getReference(noticeKey);
+                final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallary)};
+                uploadTask[0].addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Snackbar snackbar;
+                        snackbar = Snackbar.make(fabDoc, "Image upload failed", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                        snackbar.setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
 
-                    noticepojo.setImage("");
-                }
-            });
-
-            uploadTask[0].addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    final String[] user_name = new String[1];
-
-
-                    SharedPreferences sharedPreference = getSharedPreferences("userData", MODE_PRIVATE);
-                    final String user_id = sharedPreference.getString("user_id", null);
-
-                    DatabaseReference userRef = database.getReference("Users");
-                    userRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            user_name[0] = dataSnapshot.child(user_id).child("name").getValue(String.class);
-                            Log.d("1234", "onDataChange: " + user_name[0]);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                                uploadTask[0] = reference.putFile(selectedImageUriFromGallary);
+                            }
+                        });
 
 
-                    String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
-                    noticepojo.setImage(imageUploadUrl);
-                    noticepojo.setAddedBy(user_name[0]);
-                    noticepojo.setNoticeID(noticeKey);
-                    ref.child(noticeKey).setValue(noticepojo);
-                    Snackbar.make(fabDoc, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
+                        noticepojo.setImage("");
+                    }
+                });
+
+                uploadTask[0].addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        SharedPreferences sharedPreference = getSharedPreferences("userData", MODE_PRIVATE);
+                        final String user_id = sharedPreference.getString("user_id", null);
+                        Log.d("1234", "onSuccess: " + user_id);
+                        DatabaseReference userRef = database.getReference("Users");
+                        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String user_name;
+                                user_name = dataSnapshot.child(user_id).child("name").getValue(String.class);
+                                noticepojo.setAddedBy("" + user_name);
+                                Log.d("1234", "onDataChange: " + user_name);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
 
 
-                }
-            });
+                        String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
+                        noticepojo.setImage(imageUploadUrl);
+                        noticepojo.setNoticeID(noticeKey);
+                        ref.child(noticeKey).setValue(noticepojo);
+                        Snackbar.make(fabGal, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
 
+
+                    }
+                });
+            }
         }
 
     }
@@ -344,5 +359,12 @@ public class DashboardActivity extends AppCompatActivity
 
         startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
         finish();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

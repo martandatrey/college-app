@@ -38,7 +38,7 @@
             android:layout_marginLeft="11dp"
             android:layout_marginRight="11dp"
             fab:menu_animationDelayPerItem="55"
-            fab:menu_backgroundColor="@android:color/transparent"
+            fab:menu_backgroundColor="@color/transparent"
             fab:menu_buttonSpacing="0dp"
             fab:menu_colorNormal="#da3c2f"
             fab:menu_colorPressed="#dc4b3f"
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_insert_photo_black_24dp"
-                fab:fab_label="Notice From Gallary"
+                fab:fab_label="Notice From Gallery"
                 fab:fab_size="mini"
                 fab:fab_colorNormal="#afa5fc"/>
 
