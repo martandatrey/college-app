@@ -9,4 +9,6 @@
  
  add validation on add post dialogbox
  
+ check onFailure on uploadTask>????
+ 
 
