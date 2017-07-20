@@ -61,7 +61,7 @@
             fab:menu_labels_textColor="#f2f1f1"
             fab:menu_labels_textSize="15sp"
             fab:menu_openDirection="up"
-            fab:menu_shadowColor="#66aff198"
+            fab:menu_shadowColor="#30000000"
             fab:menu_shadowRadius="4dp"
             fab:menu_shadowXOffset="1dp"
             fab:menu_shadowYOffset="4dp"

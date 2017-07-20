@@ -69,6 +69,7 @@ public class DashboardActivity extends AppCompatActivity
     String dueDateSelectedByUser;
     ImageView noticeImageView;
      String enteredTitle;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class DashboardActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -150,7 +151,7 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.logout) {
             logout();
         }
-
+       navigationView.setCheckedItem(id);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

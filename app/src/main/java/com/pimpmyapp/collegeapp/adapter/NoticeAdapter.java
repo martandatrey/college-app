@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
@@ -51,7 +52,7 @@ public class NoticeAdapter extends ArrayAdapter {
         ImageView image = (ImageView) view.findViewById(R.id.imageView);
         title.setText(notice.getTitle());
         date.setText(notice.getDate());
-        Glide.with(context).load(notice.getImage()).crossFade().into(image);
+        Glide.with(context).load(notice.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).crossFade().into(image);
         return view;
 
     }
