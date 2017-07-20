@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rectangle_box"
+    android:background="#9a5283c4"
     android:padding="10dp">
 
 
@@ -30,7 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Select Image"
-            android:textAllCaps="false" />
+            android:layout_marginRight="5dp"
+            android:textAllCaps="false"
+            android:background="#cc64f9ac"/>
 
         <Button
             android:id="@+id/DueDateBtn"
@@ -38,6 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Select Due Date"
+            android:layout_marginLeft="5dp"
+            android:background="#d6b1f96e"
             android:textAllCaps="false" />
     </LinearLayout>
 
@@ -66,6 +70,9 @@
         android:layout_centerHorizontal="true"
         android:layout_weight="1"
         android:text="SUBMIT"
-        android:textAllCaps="false" />
+        android:textColor="#fff"
+        android:background="#9ae62a7e"
+        android:textAllCaps="false"
+        />
 
 </RelativeLayout>
