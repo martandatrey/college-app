@@ -15,3 +15,4 @@
  
 
 Add result page
+add trim 
