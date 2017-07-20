@@ -253,10 +253,10 @@ public class DashboardActivity extends AppCompatActivity
         dialog.setTitle("Add New Notice");
         dialog.setContentView(view);
         dialog.show();
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
     }
 
-    void changeFragment(Fragment fragment) {
+    public void changeFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
@@ -364,7 +364,7 @@ public class DashboardActivity extends AppCompatActivity
                         noticepojo.setImage(imageUploadUrl);
                         noticepojo.setNoticeID(noticeKey);
                         ref.child(noticeKey).setValue(noticepojo);
-                        Snackbar.make(fabGal, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(fabGal, "Your notice will be isPublished shortly", Snackbar.LENGTH_LONG).show();
 
 
                     }

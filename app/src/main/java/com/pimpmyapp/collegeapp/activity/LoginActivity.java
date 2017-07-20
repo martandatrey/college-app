@@ -3,9 +3,12 @@ package com.pimpmyapp.collegeapp.activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -75,54 +78,68 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Loading...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        final String username = loginId.getText().toString();
-        final String password = loginpass.getText().toString();
-
-        if (username.equals("")) {
-            loginId.setError("This field is required");
-        } else if (password.equals("")) {
-            loginpass.setError("This field is required");
-        } else {
-            FirebaseDatabase userDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference userReference = userDatabase.getReference("Users");
-            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        if (!isNetworkAvailable()) {
+            Snackbar.make(loginBtn, "No Internet Connection.", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onClick(View view) {
+                    login();
+                }
+            }).show();
+        } else {
+            final String username = loginId.getText().toString();
+            final String password = loginpass.getText().toString();
 
-                    for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-                        UserPojo userPojo = childDataSnapshot.getValue(UserPojo.class);
+            if (username.equals("")) {
+                loginId.setError("This field is required");
+            } else if (password.equals("")) {
+                loginpass.setError("This field is required");
+            } else {
+                FirebaseDatabase userDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference userReference = userDatabase.getReference("Users");
+                userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if ((username.equals(userPojo.getEmail()) || username.equals(userPojo.getPhoneNo())) && password.equals(userPojo.getPass())) {
-                            SharedPreferences sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean("isLogin", true);
-                            editor.putString("user_id", userPojo.getUser_id());
-                            editor.putString("name", userPojo.getName());
-                            editor.commit();
-                            progressDialog.cancel();
-                            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-                            finish();
-                        } else {
-                            Snackbar snackbar;
-                            snackbar = Snackbar.make(loginBtn, "Check your Email/Password.", Snackbar.LENGTH_LONG);
-                            View snackbarView = snackbar.getView();
-                            snackbarView.setBackgroundColor(Color.rgb(98, 134, 241));
-                            TextView snackbarTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                            snackbarTextView.setTextColor(Color.rgb(255, 255, 255));
-                            snackbar.show();
+                        for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                            UserPojo userPojo = childDataSnapshot.getValue(UserPojo.class);
+
+                            if ((username.equals(userPojo.getEmail()) || username.equals(userPojo.getPhoneNo())) && password.equals(userPojo.getPass())) {
+                                SharedPreferences sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("isLogin", true);
+                                editor.putString("user_id", userPojo.getUser_id());
+                                editor.putString("name", userPojo.getName());
+                                editor.commit();
+                                progressDialog.cancel();
+                                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                                finish();
+                            } else {
+                                Snackbar snackbar;
+                                snackbar = Snackbar.make(loginBtn, "Check your Email/Password.", Snackbar.LENGTH_LONG);
+                                View snackbarView = snackbar.getView();
+                                snackbarView.setBackgroundColor(Color.rgb(98, 134, 241));
+                                TextView snackbarTextView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                                snackbarTextView.setTextColor(Color.rgb(255, 255, 255));
+                                snackbar.show();
+                            }
                         }
+
                     }
 
-                }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+                    }
+                });
 
 
+            }
         }
-
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

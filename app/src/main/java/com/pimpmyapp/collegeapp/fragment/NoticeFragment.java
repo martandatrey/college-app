@@ -33,7 +33,6 @@ public class NoticeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.notice_fragment,null);
-
         lv = (ListView) view.findViewById(R.id.listView);
         noticeAdapter = new NoticeAdapter(getActivity(),R.layout.notice_list_item,noticeList);
         lv.setAdapter(noticeAdapter);
