@@ -68,7 +68,7 @@
             fab:menu_showShadow="true">
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_item1"
+                android:id="@+id/fab_gal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_insert_photo_black_24dp"
@@ -77,7 +77,7 @@
                 fab:fab_colorNormal="#afa5fc"/>
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_item3"
+                android:id="@+id/fab_cam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_a_photo_black_24dp"
@@ -86,7 +86,7 @@
                 fab:fab_colorNormal="#ede079"/>
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_item2"
+                android:id="@+id/fab_doc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_library_books_black_24dp"

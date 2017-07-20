@@ -1,6 +1,8 @@
 package com.pimpmyapp.collegeapp.activity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -69,7 +71,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
-
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         final String username = loginId.getText().toString();
         final String password = loginpass.getText().toString();
 
@@ -93,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putBoolean("isLogin", true);
                             editor.putString("user_id", userPojo.getUser_id());
                             editor.commit();
+                            progressDialog.cancel();
                             startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                             finish();
                         } else {

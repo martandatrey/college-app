@@ -3,7 +3,7 @@ package com.pimpmyapp.collegeapp.activity;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -56,10 +56,11 @@ public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionMenu floatingActionMenu;
-    FloatingActionButton floatingActionButtonNoticeFromGallary, floatingActionButtonDocument, floatingActionButtonNoticeFromCamera;
+    FloatingActionButton fabDoc, fabGal, fabCam;
     Uri selectedImageUriFromGallary;
     EditText noticeTitle;
-    Button dueDateBtn,addNoticeBtn;
+    Intent i;
+    Button dueDateBtn, addNoticeBtn;
     String dueDateSelectedByUser;
 
 
@@ -108,8 +109,14 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.Logout) {
+            SharedPreferences sharedpref = getSharedPreferences("userData", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpref.edit();
+            editor.putBoolean("isLogin", false);
+            editor.commit();
+
+            startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -122,8 +129,6 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.notices) {
-
-
             changeFragment(new NoticeFragment());
         } else if (id == R.id.TimeTable) {
 
@@ -136,13 +141,7 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.extra) {
 
         } else if (id == R.id.logout) {
-            SharedPreferences sharedpref = getSharedPreferences("userData", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedpref.edit();
-            editor.putBoolean("isLogin", false);
-            editor.commit();
-
-            startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
-            finish();
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -150,38 +149,37 @@ public class DashboardActivity extends AppCompatActivity
         return true;
     }
 
-
     private void init() {
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        floatingActionButtonDocument = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
-        floatingActionButtonNoticeFromGallary = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item2);
-        floatingActionButtonNoticeFromCamera = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item3);
+        fabGal = (FloatingActionButton) findViewById(R.id.fab_gal);
+        fabDoc = (FloatingActionButton) findViewById(R.id.fab_doc);
+        fabCam = (FloatingActionButton) findViewById(R.id.fab_cam);
     }
+
 
     private void methodListener() {
 
-        floatingActionButtonDocument.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(DashboardActivity.this, "clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        floatingActionButtonNoticeFromGallary.setOnClickListener(new View.OnClickListener() {
+        fabGal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openGallary();
-                Toast.makeText(DashboardActivity.this, "clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
-       /* floatingActionButton3.setOnClickListener(new View.OnClickListener() {
+        fabDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(DashboardActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DashboardActivity.this, "No Function assigned to this button.", Toast.LENGTH_SHORT).show();
+
             }
         });
-*/
+
+        fabCam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DashboardActivity.this, "no func assigned", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -193,8 +191,8 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     private void openGallary() {
-        if (checkGallaryPermission()) {
-            Intent i = new Intent();
+        if (checkGalleryPermission()) {
+            i = new Intent();
             i.setAction(Intent.ACTION_GET_CONTENT);
             i.setType("image/*");
             startActivityForResult(i, 0);
@@ -205,7 +203,7 @@ public class DashboardActivity extends AppCompatActivity
 
     }
 
-    private boolean checkGallaryPermission() {
+    private boolean checkGalleryPermission() {
         boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         return flag;
     }
@@ -213,7 +211,7 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Toast.makeText(this, "permission granted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -238,12 +236,10 @@ public class DashboardActivity extends AppCompatActivity
                         DatePickerDialog datePickerDialog = new DatePickerDialog(DashboardActivity.this, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                dueDateSelectedByUser =  "" + day + "-" + (month+1) + "-" + year;
+                                dueDateSelectedByUser = "" + day + "-" + (month + 1) + "-" + year;
                             }
                         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                         datePickerDialog.show();
-
-
 
 
                     }
@@ -264,7 +260,6 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
-
     private void addpost() {
         String enteredTitle = noticeTitle.getText().toString();
         final NoticePojo noticepojo = new NoticePojo();
@@ -274,14 +269,14 @@ public class DashboardActivity extends AppCompatActivity
             FirebaseStorage storage = FirebaseStorage.getInstance();
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             final DatabaseReference ref = database.getReference("notice");
-            final String noticeKey =  ref.push().getKey();
+            final String noticeKey = ref.push().getKey();
             final StorageReference reference = storage.getReference(noticeKey);
             final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallary)};
             uploadTask[0].addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Snackbar snackbar;
-                    snackbar  =  Snackbar.make(floatingActionButtonNoticeFromGallary, "Image upload failed", Snackbar.LENGTH_LONG);
+                    snackbar = Snackbar.make(fabDoc, "Image upload failed", Snackbar.LENGTH_LONG);
                     snackbar.show();
                     snackbar.setAction("Retry", new View.OnClickListener() {
                         @Override
@@ -290,9 +285,6 @@ public class DashboardActivity extends AppCompatActivity
                             uploadTask[0] = reference.putFile(selectedImageUriFromGallary);
                         }
                     });
-
-
-
 
 
                     noticepojo.setImage("");
@@ -305,14 +297,14 @@ public class DashboardActivity extends AppCompatActivity
                     final String[] user_name = new String[1];
 
 
-                    SharedPreferences sharedPreference = getSharedPreferences("userData",MODE_PRIVATE);
-                    final String user_id =  sharedPreference.getString("user_id",null);
+                    SharedPreferences sharedPreference = getSharedPreferences("userData", MODE_PRIVATE);
+                    final String user_id = sharedPreference.getString("user_id", null);
 
                     DatabaseReference userRef = database.getReference("Users");
                     userRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                          user_name[0] =  dataSnapshot.child(user_id).child("name").getValue(String.class);
+                            user_name[0] = dataSnapshot.child(user_id).child("name").getValue(String.class);
                             Log.d("1234", "onDataChange: " + user_name[0]);
                         }
 
@@ -328,7 +320,7 @@ public class DashboardActivity extends AppCompatActivity
                     noticepojo.setAddedBy(user_name[0]);
                     noticepojo.setNoticeID(noticeKey);
                     ref.child(noticeKey).setValue(noticepojo);
-                    Snackbar.make(floatingActionButtonNoticeFromGallary,"Your notice will be published shortly",Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(fabDoc, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
 
 
                 }
@@ -336,5 +328,21 @@ public class DashboardActivity extends AppCompatActivity
 
         }
 
+    }
+
+
+    private void logout() {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Logging out...");
+        dialog.setCancelable(false);
+        dialog.show();
+        SharedPreferences sharedpref = getSharedPreferences("userData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpref.edit();
+        editor.putBoolean("isLogin", false);
+        editor.commit();
+        dialog.cancel();
+
+        startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
+        finish();
     }
 }
