@@ -97,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putBoolean("isLogin", true);
                             editor.putString("user_id", userPojo.getUser_id());
+                            editor.putString("name", userPojo.getName());
                             editor.commit();
                             progressDialog.cancel();
                             startActivity(new Intent(LoginActivity.this, DashboardActivity.class));

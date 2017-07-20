@@ -312,25 +312,9 @@ public class DashboardActivity extends AppCompatActivity
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                         SharedPreferences sharedPreference = getSharedPreferences("userData", MODE_PRIVATE);
-                        final String user_id = sharedPreference.getString("user_id", null);
-                        Log.d("1234", "onSuccess: " + user_id);
-                        DatabaseReference userRef = database.getReference("Users");
-                        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String user_name;
-                                user_name = dataSnapshot.child(user_id).child("name").getValue(String.class);
-                                noticepojo.setAddedBy("" + user_name);
-                                Log.d("1234", "onDataChange: " + user_name);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-
+                         String user_name = sharedPreference.getString("name", "unknown");
+                            noticepojo.setAddedBy(user_name);
+                        Log.d("1234", "onSuccess: " + user_name);
                         String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
                         noticepojo.setImage(imageUploadUrl);
                         noticepojo.setNoticeID(noticeKey);
