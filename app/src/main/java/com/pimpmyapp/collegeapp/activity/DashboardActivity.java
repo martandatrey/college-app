@@ -217,13 +217,14 @@ public class DashboardActivity extends AppCompatActivity
 
             }
         });
-         enteredTitle = noticeTitle.getText().toString();
+
         addNoticeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                enteredTitle = noticeTitle.getText().toString();
                 if(enteredTitle.equals(""))
                 {
-                    noticeTitle.setError("select title for notice");
+                    noticeTitle.setError("Select title for notice");
                 }
                 else
                 {
@@ -241,16 +242,6 @@ public class DashboardActivity extends AppCompatActivity
 
                 openGallary();
 
-                ProgressDialog dialog = new ProgressDialog(DashboardActivity.this);
-                dialog.setMessage("Loading Image");
-                dialog.setCancelable(false);
-                dialog.show();
-                Glide.with(DashboardActivity.this)
-                        .load(selectedImageUriFromGallary)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(noticeImageView);
-                dialog.cancel();
 
 
 
@@ -300,6 +291,11 @@ public class DashboardActivity extends AppCompatActivity
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 selectedImageUriFromGallary = data.getData();
+                Glide.with(DashboardActivity.this)
+                        .load(selectedImageUriFromGallary)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(noticeImageView);
 
             }
         }
