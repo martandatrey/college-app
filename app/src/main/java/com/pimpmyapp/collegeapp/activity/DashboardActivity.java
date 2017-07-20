@@ -33,17 +33,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -64,9 +64,10 @@ public class DashboardActivity extends AppCompatActivity
     Uri selectedImageUriFromGallary;
     EditText noticeTitle;
     Intent i;
-    Button dueDateBtn, addNoticeBtn;
+    Button dueDateBtn, addNoticeBtn,selectImageBtn;
     String dueDateSelectedByUser;
-
+    ImageView noticeImageView;
+     String enteredTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +168,7 @@ public class DashboardActivity extends AppCompatActivity
         fabGal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openGallary();
+                showDialog();
             }
         });
 
@@ -186,6 +187,79 @@ public class DashboardActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private void showDialog() {
+
+
+        LayoutInflater inflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflator.inflate(R.layout.notice_dialog_item, null);
+        final Dialog dialog = new Dialog(this);
+
+        dueDateBtn = (Button) view.findViewById(R.id.DueDateBtn);
+        noticeTitle = (EditText) view.findViewById(R.id.noticeTitleEditText);
+        addNoticeBtn = (Button) view.findViewById(R.id.addNoticeBtn);
+        selectImageBtn = (Button) view.findViewById(R.id.selectImage);
+        noticeImageView = (ImageView) view.findViewById(R.id.newNoticeAddImage);
+        dueDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DashboardActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        dueDateSelectedByUser = "" + day + "-" + (month + 1) + "-" + year;
+                        dueDateBtn.setText(dueDateSelectedByUser);
+                    }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+
+
+            }
+        });
+         enteredTitle = noticeTitle.getText().toString();
+        addNoticeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(enteredTitle.equals(""))
+                {
+                    noticeTitle.setError("select title for notice");
+                }
+                else
+                {
+                    dialog.cancel();
+                    addpost();
+                }
+
+
+            }
+        });
+
+        selectImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                openGallary();
+
+                ProgressDialog dialog = new ProgressDialog(DashboardActivity.this);
+                dialog.setMessage("Loading Image");
+                dialog.setCancelable(false);
+                dialog.show();
+                Glide.with(DashboardActivity.this)
+                        .load(selectedImageUriFromGallary)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(noticeImageView);
+                dialog.cancel();
+
+
+
+            }
+        });
+        dialog.setTitle("Add New Notice");
+        dialog.setContentView(view);
+        dialog.show();
+        dialog.setCancelable(false);
     }
 
     void changeFragment(Fragment fragment) {
@@ -227,48 +301,20 @@ public class DashboardActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 selectedImageUriFromGallary = data.getData();
 
-                LayoutInflater inflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                View view = inflator.inflate(R.layout.notice_dialog_item, null);
-                final Dialog dialog = new Dialog(this);
-
-                dueDateBtn = (Button) view.findViewById(R.id.DueDateBtn);
-                noticeTitle = (EditText) view.findViewById(R.id.noticeTitleTextView);
-                addNoticeBtn = (Button) view.findViewById(R.id.addNoticeBtn);
-                dueDateBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Calendar calendar = Calendar.getInstance();
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(DashboardActivity.this, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                dueDateSelectedByUser = "" + day + "-" + (month + 1) + "-" + year;
-                            }
-                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                        datePickerDialog.show();
-
-
-                    }
-                });
-
-                addNoticeBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                        addpost();
-
-                    }
-                });
-                dialog.setContentView(view);
-                dialog.show();
-                dialog.setCancelable(false);
             }
         }
     }
 
     private void addpost() {
-        String enteredTitle = noticeTitle.getText().toString();
-        final NoticePojo noticepojo = new NoticePojo();
 
+        final NoticePojo noticepojo = new NoticePojo();
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String addedOn = "" + day + "-" + (month + 1) + "-" + year;
+
+        noticepojo.setAddedOn(addedOn);
         noticepojo.setTitle(enteredTitle);
         noticepojo.setDate(dueDateSelectedByUser);
         if (selectedImageUriFromGallary != null) {

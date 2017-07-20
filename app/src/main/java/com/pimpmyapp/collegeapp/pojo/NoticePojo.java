@@ -12,6 +12,8 @@ public class NoticePojo {
     String noticeID = "";
     String addedBy = "";
     boolean published  = false;
+    String addedOn = "";
+
 
     @Override
     public String toString() {
@@ -19,11 +21,21 @@ public class NoticePojo {
                 "image='" + image + '\'' +
                 ", date='" + date + '\'' +
                 ", title='" + title + '\'' +
-                ", addedBy='" + addedBy + '\'' +
                 ", noticeID='" + noticeID + '\'' +
+                ", addedBy='" + addedBy + '\'' +
                 ", published=" + published +
+                ", addedOn='" + addedOn + '\'' +
                 '}';
     }
+
+    public String getAddedOn() {
+        return addedOn;
+    }
+
+    public void setAddedOn(String addedOn) {
+        this.addedOn = addedOn;
+    }
+
 
     public String getNoticeID() {
         return noticeID;
