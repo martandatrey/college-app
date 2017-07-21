@@ -14,15 +14,15 @@
 
 
     <TextView
+        android:layout_marginTop="30dp"
         android:id="@+id/nameTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="30sp"
         android:text="name"
         android:textColor="#fff"
         android:fontFamily="casual"
         android:textStyle="bold"
-
         />
 
     <TextView
@@ -30,26 +30,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="computer science"
-        android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:textColor="#fff"
         android:fontFamily="casual"
         android:textStyle="bold"
-
-
         />
     <TextView
         android:id="@+id/yearTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="1st year 2nd sem"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textColor="#fff"
         android:fontFamily="casual"
         android:textStyle="bold"
-
-
         />
 
 

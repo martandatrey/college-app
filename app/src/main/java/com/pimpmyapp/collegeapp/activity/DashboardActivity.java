@@ -37,6 +37,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -45,8 +46,11 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -57,6 +61,9 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
 
+import static android.R.attr.data;
+import static android.R.attr.name;
+
 //import com.pimpmyapp.collegeapp.Manifest;
 
 public class DashboardActivity extends AppCompatActivity
@@ -64,17 +71,18 @@ public class DashboardActivity extends AppCompatActivity
 
     FloatingActionMenu floatingActionMenu;
     FloatingActionButton fabDoc, fabGal, fabCam;
-    Uri selectedImageUriFromGallary ;
+    Uri selectedImageUriFromGallary;
     EditText noticeTitle;
     RelativeLayout relativeLayoutFab;
     Intent i;
-    Button dueDateBtn, addNoticeBtn,selectImageBtn;
-    String dueDateSelectedByUser;
+    TextView nameTv, branchTv, yearTv;
+    Button dueDateBtn, addNoticeBtn, selectImageBtn;
+    String dueDateSelectedByUser,user_id;
     ImageView noticeImageView;
-     String enteredTitle;
+    String enteredTitle;
     NavigationView navigationView;
     Toolbar dashboardToolbar;
-    int  imageViewCheck = 0;
+    int imageViewCheck = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +92,7 @@ public class DashboardActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         init();
+        setValues();
         methodListener();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -94,6 +103,28 @@ public class DashboardActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+    }
+
+    private void setValues() {
+        SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
+        user_id = sharedPreferences.getString("user_id","Anonymous");
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                nameTv.setText(dataSnapshot.child(user_id).child("name").getValue(String.class));
+                branchTv.setText(dataSnapshot.child(user_id).child("branch").getValue(String.class));
+                String year= dataSnapshot.child(user_id).child("year").getValue(String.class) + " year " + dataSnapshot.child(user_id).child("sem").getValue(String.class) + " semester";
+                yearTv.setText(year);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
@@ -176,7 +207,7 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.logout) {
             logout();
         }
-       navigationView.setCheckedItem(id);
+        navigationView.setCheckedItem(id);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -187,8 +218,11 @@ public class DashboardActivity extends AppCompatActivity
         fabGal = (FloatingActionButton) findViewById(R.id.fab_gal);
         fabDoc = (FloatingActionButton) findViewById(R.id.fab_doc);
         fabCam = (FloatingActionButton) findViewById(R.id.fab_cam);
-       // floatingActionMenu.setClosedOnTouchOutside(true);
+        // floatingActionMenu.setClosedOnTouchOutside(true);
         dashboardToolbar = (Toolbar) findViewById(R.id.toolbar);
+        branchTv = (TextView) findViewById(R.id.branchTv);
+        nameTv = (TextView) findViewById(R.id.nameTv);
+        yearTv = (TextView) findViewById(R.id.yearTv);
         relativeLayoutFab = (RelativeLayout) findViewById(R.id.relativeLayoutFab);
     }
 
@@ -220,7 +254,7 @@ public class DashboardActivity extends AppCompatActivity
         relativeLayoutFab.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(floatingActionMenu.isOpened())
+                if (floatingActionMenu.isOpened())
                     floatingActionMenu.close(true);
                 return true;
             }
@@ -260,16 +294,11 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 enteredTitle = noticeTitle.getText().toString();
-                if(enteredTitle.equals(""))
-                {
+                if (enteredTitle.equals("")) {
                     noticeTitle.setError("Select title for notice");
-                }
-                 else if(imageViewCheck == 0)
-                {
+                } else if (imageViewCheck == 0) {
                     Toast.makeText(DashboardActivity.this, "select an image first", Toast.LENGTH_LONG).show();
-                }
-                else
-                {
+                } else {
                     dialog.cancel();
                     addpost();
                 }
@@ -283,8 +312,6 @@ public class DashboardActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 openGallary();
-
-
 
 
             }
@@ -398,8 +425,8 @@ public class DashboardActivity extends AppCompatActivity
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                         SharedPreferences sharedPreference = getSharedPreferences("userData", MODE_PRIVATE);
-                         String user_name = sharedPreference.getString("name", "unknown");
-                            noticepojo.setAddedBy(user_name);
+                        String user_name = sharedPreference.getString("name", "unknown");
+                        noticepojo.setAddedBy(user_name);
                         Log.d("1234", "onSuccess: " + user_name);
                         String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
                         noticepojo.setImage(imageUploadUrl);

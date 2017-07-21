@@ -1,58 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-android:padding="2dp"
-
-
+    android:padding="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/noticeTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:padding="10dp"
+        android:text="Title"
+        android:textColor="#000"
+        android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher" />
 
-        <LinearLayout
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#fff"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/noticeDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="#fff"
+        android:paddingRight="10dp"
+        android:text="date:"
+        android:textColor="#000"
+        android:textSize="20sp" />
+    <!--
+        <View
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true"
-            android:background="#75ffffff">
-
-            <TextView
-                android:id="@+id/noticeTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Title"
-                android:textColor="#000"
-                android:textSize="20sp" />
+            android:layout_height="2dp"
+            android:background="@color/colorAccent" />-->
 
 
-            <TextView
-                android:id="@+id/noticeDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               android:layout_gravity="right"
-                android:text="date:"
-                android:paddingRight="10dp"
-                android:textColor="#000"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
-
-
-
-    </LinearLayout>
+</LinearLayout>
