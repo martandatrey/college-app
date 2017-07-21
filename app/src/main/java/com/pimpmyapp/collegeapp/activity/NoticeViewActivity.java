@@ -6,11 +6,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,6 +34,7 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
 
+import static android.R.attr.action;
 import static android.R.attr.key;
 
 public class NoticeViewActivity extends AppCompatActivity {
@@ -52,6 +57,8 @@ public class NoticeViewActivity extends AppCompatActivity {
         init();
         Intent i = getIntent();
         notice_id = i.getStringExtra("notice_id");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Notice");
 
         Log.d("1234", "onCreate: " + noticePojo);
 
@@ -91,6 +98,18 @@ public class NoticeViewActivity extends AppCompatActivity {
         methodListners();
         Log.d("1234", "onCreate: after method listner" + noticePojo);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+           this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     private void init() {
         title = (TextView) findViewById(R.id.titleTV);
