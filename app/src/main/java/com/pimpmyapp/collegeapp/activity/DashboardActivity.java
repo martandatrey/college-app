@@ -109,7 +109,7 @@ public class DashboardActivity extends AppCompatActivity
     private void setValues() {
         SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
         user_id = sharedPreferences.getString("user_id","Anonymous");
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
+      /*  DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -124,7 +124,7 @@ public class DashboardActivity extends AppCompatActivity
 
             }
         });
-
+*/
     }
 
     @Override

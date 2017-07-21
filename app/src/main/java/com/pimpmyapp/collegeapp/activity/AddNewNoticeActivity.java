@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,6 +41,8 @@ import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
+
+import static android.support.design.widget.Snackbar.make;
 
 public class AddNewNoticeActivity extends AppCompatActivity {
     EditText noticeTitle, noticeDes;
@@ -195,12 +199,14 @@ public class AddNewNoticeActivity extends AppCompatActivity {
 
             if (!isNetworkAvailable()) {
 
-                Snackbar.make(getWindow().getDecorView().getRootView(), "No Internet Connection.", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+                Snackbar snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), "No Internet Connection.", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         addpost();
                     }
-                }).show();
+                });
+                displaySnackBarWithBottomMargin(snackbar,getNavBarSize());
             } else {
 
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -212,7 +218,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Snackbar snackbar;
-                        snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), "Image upload failed", Snackbar.LENGTH_LONG);
+                        snackbar = make(getWindow().getDecorView().getRootView(), "Image upload failed", Snackbar.LENGTH_LONG);
                         snackbar.show();
                         snackbar.setAction("Retry", new View.OnClickListener() {
                             @Override
@@ -240,7 +246,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         noticepojo.setNoticeID(noticeKey);
                         ref.child(noticeKey).setValue(noticepojo);
                         imageCheck = 1;
-                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your notice will be published shortly", 3000).show();
+                        make(getWindow().getDecorView().getRootView(), "Your notice will be published shortly", 3000).show();
 
 
 
@@ -259,4 +265,22 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+    private void displaySnackBarWithBottomMargin(Snackbar snackbar, int marginBottom) {
+        final View snackBarView = snackbar.getView();
+        final FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getLayoutParams();
+
+        params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin + marginBottom);
+
+        snackBarView.setLayoutParams(params);
+        snackbar.show();
+    }
+    int getNavBarSize(){
+        Resources resources = this.getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return resources.getDimensionPixelSize(resourceId);
+        }
+        return 0;
+    }
+
 }
