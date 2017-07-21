@@ -251,14 +251,14 @@ public class DashboardActivity extends AppCompatActivity
                 Toast.makeText(DashboardActivity.this, "no func assigned", Toast.LENGTH_SHORT).show();
             }
         });
-        relativeLayoutFab.setOnTouchListener(new View.OnTouchListener() {
+        /*relativeLayoutFab.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (floatingActionMenu.isOpened())
                     floatingActionMenu.close(true);
                 return true;
             }
-        });
+        });*/
     }
 
     private void showDialog() {
@@ -346,12 +346,6 @@ public class DashboardActivity extends AppCompatActivity
     private boolean checkGalleryPermission() {
         boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         return flag;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
     }
 
     @Override

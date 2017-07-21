@@ -1,9 +1,12 @@
 package com.pimpmyapp.collegeapp.fragment;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +51,22 @@ public class AdminFragment extends Fragment {
         lv = (ListView) view.findViewById(R.id.listView);
         noticeAdapter = new NoticeAdapter(getActivity(), R.layout.notice_list_item, noticeList);
         lv.setAdapter(noticeAdapter);
+        fetchNotices();
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                NoticePojo noticePojo = noticeList.get(position);
+                Intent i = new Intent(getActivity(), NoticeViewActivity.class);
+                i.putExtra("notice_id", noticePojo.getNoticeID());
+                Log.d("1234", "onItemClick: "+noticePojo.getNoticeID());
+                startActivity(i);
+            }
+        });
+        return view;
+    }
+
+    public void fetchNotices() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("notice");
         ref.addValueEventListener(new ValueEventListener() {
@@ -65,17 +84,6 @@ public class AdminFragment extends Fragment {
 
             }
         });
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                NoticePojo noticePojo = noticeList.get(position);
-                Intent i = new Intent(getActivity(), NoticeViewActivity.class);
-                i.putExtra("notice_id", noticePojo.getNoticeID());
-                Log.d("1234", "onItemClick: "+noticePojo.getNoticeID());
-                startActivity(i);
-            }
-        });
-        return view;
     }
 
 

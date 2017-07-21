@@ -5,24 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:padding="10dp">
 
-    <TextView
-        android:id="@+id/noticeTitle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        android:padding="10dp"
-        android:text="Title"
-        android:textColor="#000"
-        android:textSize="20sp" />
+        android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/noticeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/deleteIV"
+            android:background="#fff"
+            android:padding="10dp"
+            android:text="Title"
+            android:textColor="#000"
+            android:textSize="20sp" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/deleteIV"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:background="#fff"
+            android:src="@drawable/ic_delete_black_24dp" />
+
+    </RelativeLayout>
 
 
     <ImageView
@@ -42,11 +51,6 @@
         android:text="date:"
         android:textColor="#000"
         android:textSize="20sp" />
-    <!--
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorAccent" />-->
 
 
 </LinearLayout>
