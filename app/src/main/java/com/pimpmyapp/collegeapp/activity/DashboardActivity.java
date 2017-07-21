@@ -30,11 +30,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -64,12 +66,15 @@ public class DashboardActivity extends AppCompatActivity
     FloatingActionButton fabDoc, fabGal, fabCam;
     Uri selectedImageUriFromGallary ;
     EditText noticeTitle;
+    RelativeLayout relativeLayoutFab;
     Intent i;
     Button dueDateBtn, addNoticeBtn,selectImageBtn;
     String dueDateSelectedByUser;
     ImageView noticeImageView;
      String enteredTitle;
     NavigationView navigationView;
+    Toolbar dashboardToolbar;
+    int  imageViewCheck = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +118,13 @@ public class DashboardActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawer.openDrawer(GravityCompat.START);  // OPEN DRAWER
+                return true;
+
+        }
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -137,16 +149,29 @@ public class DashboardActivity extends AppCompatActivity
 
         if (id == R.id.notices) {
             changeFragment(new NoticeFragment());
+            setSupportActionBar(dashboardToolbar);
+            getSupportActionBar().setTitle("Notices");
+
         } else if (id == R.id.TimeTable) {
+            setSupportActionBar(dashboardToolbar);
+            getSupportActionBar().setTitle("Time Table");
 
         } else if (id == R.id.AcedemicCalender) {
+            setSupportActionBar(dashboardToolbar);
+            getSupportActionBar().setTitle("Academic Calendar");
 
         } else if (id == R.id.Documents) {
+            setSupportActionBar(dashboardToolbar);
+            getSupportActionBar().setTitle("Documents");
 
         } else if (id == R.id.reviewNotice) {
+            setSupportActionBar(dashboardToolbar);
+            getSupportActionBar().setTitle("Review Notice");
             changeFragment(new AdminFragment());
 
         } else if (id == R.id.extra) {
+            setSupportActionBar(dashboardToolbar);
+            getSupportActionBar().setTitle("Extra");
 
         } else if (id == R.id.logout) {
             logout();
@@ -162,7 +187,9 @@ public class DashboardActivity extends AppCompatActivity
         fabGal = (FloatingActionButton) findViewById(R.id.fab_gal);
         fabDoc = (FloatingActionButton) findViewById(R.id.fab_doc);
         fabCam = (FloatingActionButton) findViewById(R.id.fab_cam);
-        floatingActionMenu.setClosedOnTouchOutside(true);
+       // floatingActionMenu.setClosedOnTouchOutside(true);
+        dashboardToolbar = (Toolbar) findViewById(R.id.toolbar);
+        relativeLayoutFab = (RelativeLayout) findViewById(R.id.relativeLayoutFab);
     }
 
 
@@ -189,7 +216,14 @@ public class DashboardActivity extends AppCompatActivity
                 Toast.makeText(DashboardActivity.this, "no func assigned", Toast.LENGTH_SHORT).show();
             }
         });
-
+        relativeLayoutFab.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(floatingActionMenu.isOpened())
+                    floatingActionMenu.close(true);
+                return true;
+            }
+        });
     }
 
     private void showDialog() {
@@ -229,7 +263,7 @@ public class DashboardActivity extends AppCompatActivity
                 {
                     noticeTitle.setError("Select title for notice");
                 }
-                 else if(!Uri.EMPTY.equals(selectedImageUriFromGallary))
+                 else if(imageViewCheck == 0)
                 {
                     Toast.makeText(DashboardActivity.this, "select an image first", Toast.LENGTH_LONG).show();
                 }
@@ -298,6 +332,7 @@ public class DashboardActivity extends AppCompatActivity
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
+                imageViewCheck = 1;
                 selectedImageUriFromGallary = data.getData();
                 Glide.with(DashboardActivity.this)
                         .load(selectedImageUriFromGallary)
