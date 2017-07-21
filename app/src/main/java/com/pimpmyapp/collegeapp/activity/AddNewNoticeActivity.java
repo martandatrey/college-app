@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -40,31 +41,35 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 import java.util.Calendar;
 
 public class AddNewNoticeActivity extends AppCompatActivity {
-    EditText noticeTitle,noticeDes;
+    EditText noticeTitle, noticeDes;
     Button dueDateBtn, selectImageBtn;
     ImageView noticeImageView;
     String dueDateSelectedByUser;
     Uri selectedImageUriFromGallary;
     int imageViewCheck = 0;
-    String enteredTitle,enteredDes;
+    String enteredTitle, enteredDes;
     Intent i;
+    View parentLayout;
+    int imageCheck = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_notice);
-        intit();
+        getSupportActionBar().setTitle("Add New Notice");
+        init();
         methodListener();
     }
 
-    private void intit() {
+    private void init() {
+        parentLayout = findViewById(android.R.id.content);
         noticeTitle = (EditText) findViewById(R.id.noticeTitleEditText);
         noticeDes = (EditText) findViewById(R.id.noticeDesEditText);
         dueDateBtn = (Button) findViewById(R.id.DueDateBtn);
         selectImageBtn = (Button) findViewById(R.id.selectImage);
         noticeImageView = (ImageView) findViewById(R.id.newNoticeAddImage);
-        enteredTitle = noticeTitle.getText().toString();
-        enteredDes = noticeDes.getText().toString();
+
 
     }
 
@@ -93,6 +98,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
             }
         });
     }
+
     private void openGallary() {
         if (checkGalleryPermission()) {
             i = new Intent();
@@ -145,27 +151,35 @@ public class AddNewNoticeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id  = item.getItemId();
-        if(id == R.id.publish)
-        {
-            if(enteredTitle.equals(""))
-            {
+        int id = item.getItemId();
+        if (id == R.id.publish) {
+            enteredTitle = noticeTitle.getText().toString();
+            enteredDes = noticeDes.getText().toString();
+            if (enteredTitle.equals("")) {
                 noticeTitle.setError("Select title for notice");
-            }
-            else if(imageViewCheck == 0)
-            {
+            } else if (imageViewCheck == 0) {
                 Toast.makeText(AddNewNoticeActivity.this, "select an image first", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
+            } else {
                 addpost();
-                startActivity(new Intent(AddNewNoticeActivity.this,DashboardActivity.class));
-                finish();
+                if(imageCheck == 1)
+                {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(AddNewNoticeActivity.this, DashboardActivity.class));
+                            finish();
+                        }
+                    }, 3000);
+                }
+
             }
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void addpost() {
+
+
         final NoticePojo noticepojo = new NoticePojo();
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -180,7 +194,8 @@ public class AddNewNoticeActivity extends AppCompatActivity {
             FirebaseStorage storage = FirebaseStorage.getInstance();
 
             if (!isNetworkAvailable()) {
-                Snackbar.make(selectImageBtn, "No Internet Connection.", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+
+                Snackbar.make(getWindow().getDecorView().getRootView(), "No Internet Connection.", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         addpost();
@@ -197,7 +212,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Snackbar snackbar;
-                        snackbar = Snackbar.make(selectImageBtn, "Image upload failed", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), "Image upload failed", Snackbar.LENGTH_LONG);
                         snackbar.show();
                         snackbar.setAction("Retry", new View.OnClickListener() {
                             @Override
@@ -220,11 +235,14 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         String user_name = sharedPreference.getString("name", "unknown");
                         noticepojo.setAddedBy(user_name);
                         Log.d("1234", "onSuccess: " + user_name);
-                        String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
+                        @SuppressWarnings("VisibleForTests") String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
                         noticepojo.setImage(imageUploadUrl);
                         noticepojo.setNoticeID(noticeKey);
                         ref.child(noticeKey).setValue(noticepojo);
-                        Snackbar.make(selectImageBtn, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
+                        imageCheck = 1;
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your notice will be published shortly", 3000).show();
+
+
 
 
                     }
@@ -232,7 +250,9 @@ public class AddNewNoticeActivity extends AppCompatActivity {
             }
         }
 
+
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

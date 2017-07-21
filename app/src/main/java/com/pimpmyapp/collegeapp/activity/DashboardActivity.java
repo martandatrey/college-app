@@ -198,7 +198,8 @@ public class DashboardActivity extends AppCompatActivity
         fabGal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                startActivity(new Intent(DashboardActivity.this,AddNewNoticeActivity.class));
+
             }
         });
 

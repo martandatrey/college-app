@@ -1,79 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#9f9191"
-    android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingTop="5dp">
 
-
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#fff"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-    <EditText
-        android:id="@+id/noticeTitleEditText"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Title"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/noticeTitleEditText"
-        android:id="@+id/noticeDesEditText"
-        android:lines="5"
-        android:hint="Enter Description"
-        android:gravity="top"
-        android:layout_marginTop="10dp"/>
-    <ImageView
-        android:id="@+id/newNoticeAddImage"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@id/noticeDesEditText"
-        android:layout_marginTop="5dp"
-        />
-
-    <LinearLayout
-        android:id="@+id/reviewLV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/newNoticeAddImage"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:weightSum="2">
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:fitsSystemWindows="true"
+        android:padding="16dp">
 
 
-        <Button
-            android:id="@+id/selectImage"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/noticeTitleEditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="10dp"
-            android:text="Photo"
-            android:background="#5a5fff"
-            android:drawableLeft="@drawable/ic_menu_camera"
-            android:layout_marginRight="5dp"
-            android:textAllCaps="false"
-            />
+            android:hint="Enter Title" />
 
-        <Button
-            android:id="@+id/DueDateBtn"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/noticeDesEditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Due Date"
-            android:padding="10dp"
-            android:background="#e44446"
-            android:layout_marginLeft="5dp"
-            android:drawableLeft="@drawable/ic_date_range_black_24dp"
-            android:textAllCaps="false" />
-    </LinearLayout>
+            android:layout_below="@id/noticeTitleEditText"
+            android:layout_marginTop="10dp"
+            android:gravity="top"
+            android:hint="Enter Description"
+            android:lines="5" />
+
+        <ImageView
+            android:id="@+id/newNoticeAddImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/noticeDesEditText"
+            android:layout_marginTop="5dp" />
+
+        <LinearLayout
+            android:id="@+id/reviewLV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/newNoticeAddImage"
+            android:layout_marginTop="10dp"
+            android:weightSum="2">
 
 
+            <Button
+                android:id="@+id/selectImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="#5a5fff"
+                android:drawableLeft="@drawable/ic_menu_camera"
+                android:padding="10dp"
+                android:text="Photo"
+                android:textAllCaps="false" />
 
-</RelativeLayout>
+            <Button
+                android:id="@+id/DueDateBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="#e44446"
+                android:drawableLeft="@drawable/ic_date_range_black_24dp"
+                android:padding="10dp"
+                android:text="Due Date"
+                android:textAllCaps="false" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
 </ScrollView>
