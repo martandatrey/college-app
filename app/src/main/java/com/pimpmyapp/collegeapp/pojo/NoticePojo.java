@@ -10,7 +10,7 @@ public class NoticePojo {
     String date = "";
     String title = "";
     String noticeID = "";
-    String desc = ""
+    String desc = "";
 
     @Override
     public String toString() {
