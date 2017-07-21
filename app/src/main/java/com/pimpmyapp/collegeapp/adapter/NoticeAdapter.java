@@ -9,20 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
-
-import static android.R.string.no;
 
 /**
  * Created by marta on 20-Jul-17.
@@ -52,7 +45,7 @@ public class NoticeAdapter extends ArrayAdapter {
         ImageView image = (ImageView) view.findViewById(R.id.imageView);
         title.setText(notice.getTitle());
         date.setText(notice.getDate());
-        Glide.with(context).load(notice.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).crossFade().into(image);
+        Glide.with(context).load(notice.getImage()).crossFade().into(image);
         return view;
 
     }

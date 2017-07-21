@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#9a5283c4"
+    android:background="@drawable/dialog_gradient"
     android:padding="10dp">
 
 
@@ -12,6 +12,7 @@
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:padding="3dp"
+
         android:background="@drawable/rectangle_box"
         android:src="@drawable/selectimage" />
 
@@ -32,7 +33,7 @@
             android:text="Select Image"
             android:layout_marginRight="5dp"
             android:textAllCaps="false"
-            android:background="#cc64f9ac"/>
+            android:background="@drawable/dialog_gradient"/>
 
         <Button
             android:id="@+id/DueDateBtn"
@@ -41,7 +42,7 @@
             android:layout_weight="1"
             android:text="Select Due Date"
             android:layout_marginLeft="5dp"
-            android:background="#d6b1f96e"
+            android:background="@drawable/dialog_gradient"
             android:textAllCaps="false" />
     </LinearLayout>
 
@@ -71,7 +72,7 @@
         android:layout_weight="1"
         android:text="SUBMIT"
         android:textColor="#fff"
-        android:background="#9ae62a7e"
+        android:background="@drawable/submit_button_gradient"
         android:textAllCaps="false"
         />
 

@@ -62,7 +62,7 @@ public class DashboardActivity extends AppCompatActivity
 
     FloatingActionMenu floatingActionMenu;
     FloatingActionButton fabDoc, fabGal, fabCam;
-    Uri selectedImageUriFromGallary;
+    Uri selectedImageUriFromGallary ;
     EditText noticeTitle;
     Intent i;
     Button dueDateBtn, addNoticeBtn,selectImageBtn;
@@ -162,6 +162,7 @@ public class DashboardActivity extends AppCompatActivity
         fabGal = (FloatingActionButton) findViewById(R.id.fab_gal);
         fabDoc = (FloatingActionButton) findViewById(R.id.fab_doc);
         fabCam = (FloatingActionButton) findViewById(R.id.fab_cam);
+        floatingActionMenu.setClosedOnTouchOutside(true);
     }
 
 
@@ -227,6 +228,10 @@ public class DashboardActivity extends AppCompatActivity
                 if(enteredTitle.equals(""))
                 {
                     noticeTitle.setError("Select title for notice");
+                }
+                 else if(!Uri.EMPTY.equals(selectedImageUriFromGallary))
+                {
+                    Toast.makeText(DashboardActivity.this, "select an image first", Toast.LENGTH_LONG).show();
                 }
                 else
                 {
