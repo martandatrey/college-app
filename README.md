@@ -20,3 +20,4 @@ add trim
 add progressbar timeout
 
 polls to chose the admin
+ edit text enter and login
