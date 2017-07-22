@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +24,14 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.ArrayList;
 
+import static android.R.attr.fragment;
+
 /**
  * Created by marta on 20-Jul-17.
  */
 
 public class NoticeAdapter extends ArrayAdapter {
-    private ArrayList<NoticePojo> noticeList = new ArrayList<>();
+    private ArrayList<NoticePojo> noticeList = new ArrayList<>(), noticeShowList = new ArrayList<>();
     private NoticePojo notice;
     private Context context;
     private int layoutRes;
@@ -40,7 +43,6 @@ public class NoticeAdapter extends ArrayAdapter {
         this.layoutRes = resource;
         this.noticeList = objects;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @NonNull
@@ -63,28 +65,29 @@ public class NoticeAdapter extends ArrayAdapter {
             }
         });
         return view;
-
     }
 
     private void deleteNotice() {
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("notice");
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Confirm");
-        builder.setMessage("Delete this notice?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                ref.child(notice.getNoticeID()).removeValue();
-                new AdminFragment().fetchNotices();
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setTitle("Confirm?");
+        builder.setMessage("Delete this notice");
+        builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
             }
         });
+        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                ref.child(notice.getNoticeID()).removeValue();
+            }
+        });
         Dialog dialog = builder.create();
         dialog.show();
     }
+
+
 }

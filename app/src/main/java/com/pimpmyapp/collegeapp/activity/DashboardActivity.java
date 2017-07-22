@@ -168,6 +168,8 @@ public class DashboardActivity extends AppCompatActivity
             startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
             finish();
         }
+        if (id == R.id.refresh){
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -422,7 +424,7 @@ public class DashboardActivity extends AppCompatActivity
                         String user_name = sharedPreference.getString("name", "unknown");
                         noticepojo.setAddedBy(user_name);
                         Log.d("1234", "onSuccess: " + user_name);
-                        String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
+                        @SuppressWarnings("VisibleForTests") String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
                         noticepojo.setImage(imageUploadUrl);
                         noticepojo.setNoticeID(noticeKey);
                         ref.child(noticeKey).setValue(noticepojo);
