@@ -2,6 +2,7 @@ package com.pimpmyapp.collegeapp.activity;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,7 +53,6 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     String enteredTitle, enteredDes;
     Intent i;
     View parentLayout;
-    int imageCheck = 0;
 
 
     @Override
@@ -163,17 +163,6 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                 Toast.makeText(AddNewNoticeActivity.this, "select an image first", Toast.LENGTH_LONG).show();
             } else {
                 addpost();
-                if(imageCheck == 1)
-                {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(AddNewNoticeActivity.this, DashboardActivity.class));
-                            finish();
-                        }
-                    }, 3000);
-                }
-
             }
         }
         return super.onOptionsItemSelected(item);
@@ -200,8 +189,12 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         addpost();
                     }
                 });
-               snackbar.show();
+                snackbar.show();
             } else {
+                final ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setMessage("Uploading...");
+                dialog.setCancelable(false);
+                dialog.show();
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference ref = database.getReference("notice");
                 final String noticeKey = ref.push().getKey();
@@ -234,9 +227,15 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         noticepojo.setImage(imageUploadUrl);
                         noticepojo.setNoticeID(noticeKey);
                         ref.child(noticeKey).setValue(noticepojo);
-                        imageCheck = 1;
-                       Snackbar.make(selectImageBtn, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
-
+                        dialog.cancel();
+                        Snackbar.make(selectImageBtn, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(AddNewNoticeActivity.this, DashboardActivity.class));
+                                finish();
+                            }
+                        }, 3000);
                     }
                 });
             }
