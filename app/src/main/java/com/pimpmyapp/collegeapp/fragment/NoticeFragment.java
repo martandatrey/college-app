@@ -35,7 +35,7 @@ public class NoticeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.notice_fragment, null);
         lv = (ListView) view.findViewById(R.id.listView);
-        noticeAdapter = new NoticeAdapter(getActivity(), R.layout.notice_list_item, noticeList,new AdminFragment());
+        noticeAdapter = new NoticeAdapter(getActivity(), R.layout.notice_list_item, noticeList);
         lv.setAdapter(noticeAdapter);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("notice");
@@ -45,7 +45,7 @@ public class NoticeFragment extends Fragment {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
                     if (notice.isPublished())
-                        noticeList.add(notice);
+                        noticeList.add(0,notice);
                 }
                 noticeAdapter.notifyDataSetChanged();
             }
@@ -55,8 +55,6 @@ public class NoticeFragment extends Fragment {
 
             }
         });
-
-
         return view;
     }
 }

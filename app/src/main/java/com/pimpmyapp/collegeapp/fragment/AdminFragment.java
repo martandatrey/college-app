@@ -67,7 +67,7 @@ public class AdminFragment extends Fragment {
                 noticeList.clear();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
-                    noticeList.add(notice);
+                    noticeList.add(0,notice);
                 }
                 noticeAdapter.notifyDataSetChanged();
             }

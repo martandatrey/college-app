@@ -182,8 +182,6 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     }
 
     private void addpost() {
-
-
         final NoticePojo noticepojo = new NoticePojo();
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -196,9 +194,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         noticepojo.setDate(dueDateSelectedByUser);
         if (selectedImageUriFromGallary != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
-
             if (!isNetworkAvailable()) {
-
                 Snackbar snackbar = Snackbar.make(getWindow().getDecorView().getRootView(), "No Internet Connection.", Snackbar.LENGTH_INDEFINITE);
                 snackbar.setAction("Retry", new View.OnClickListener() {
                     @Override
@@ -208,7 +204,6 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                 });
                 displaySnackBarWithBottomMargin(snackbar,getNavBarSize());
             } else {
-
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference ref = database.getReference("notice");
                 final String noticeKey = ref.push().getKey();
@@ -223,12 +218,9 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         snackbar.setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
                                 uploadTask[0] = reference.putFile(selectedImageUriFromGallary);
                             }
                         });
-
-
                         noticepojo.setImage("");
                     }
                 });
@@ -236,7 +228,6 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                 uploadTask[0].addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                         SharedPreferences sharedPreference = getSharedPreferences("userData", MODE_PRIVATE);
                         String user_name = sharedPreference.getString("name", "unknown");
                         noticepojo.setAddedBy(user_name);
@@ -247,10 +238,6 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         ref.child(noticeKey).setValue(noticepojo);
                         imageCheck = 1;
                         make(getWindow().getDecorView().getRootView(), "Your notice will be published shortly", 3000).show();
-
-
-
-
                     }
                 });
             }
