@@ -1,52 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/newPostrootLay"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="#fff"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
         android:fitsSystemWindows="true"
         android:padding="10dp">
 
-
-        <EditText
-            android:id="@+id/noticeTitleEditText"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Title" />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/reviewLV">
 
-        <EditText
-            android:id="@+id/noticeDesEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/noticeTitleEditText"
-            android:layout_marginTop="10dp"
-            android:gravity="top"
-            android:hint="Enter Description"
-            android:lines="5" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/newNoticeAddImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/noticeDesEditText"
-            android:layout_marginTop="5dp"
-            android:layout_above="@+id/reviewLV"/>
+
+                <EditText
+                    android:id="@+id/noticeTitleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Title" />
+
+                <EditText
+                    android:id="@+id/noticeDesEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/noticeTitleEditText"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:hint="Enter Description"
+                    android:lines="5" />
+
+                <ImageView
+                    android:id="@+id/newNoticeAddImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/noticeDesEditText"
+                    android:layout_marginTop="5dp" />
+            </RelativeLayout>
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/reviewLV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:weightSum="2">
 
 
@@ -77,5 +82,5 @@
 
 
     </RelativeLayout>
-</ScrollView>
+
 </android.support.design.widget.CoordinatorLayout>
