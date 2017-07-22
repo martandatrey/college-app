@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/newPostrootLay"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9f9191"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp">
+    android:fillViewport="true"
+    android:background="#fff"
+    >
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
         android:fitsSystemWindows="true"
-        android:padding="16dp">
+        android:padding="10dp">
 
 
         <EditText
@@ -34,16 +38,16 @@
         <ImageView
             android:id="@+id/newNoticeAddImage"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/noticeDesEditText"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:layout_above="@+id/reviewLV"/>
 
         <LinearLayout
             android:id="@+id/reviewLV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/newNoticeAddImage"
             android:layout_marginTop="10dp"
             android:weightSum="2">
 
@@ -75,4 +79,7 @@
 
 
     </RelativeLayout>
+
+
 </ScrollView>
+</android.support.design.widget.CoordinatorLayout>
