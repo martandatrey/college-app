@@ -1,12 +1,17 @@
 package com.pimpmyapp.collegeapp.activity;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,13 +44,15 @@ import static android.R.attr.action;
 import static android.R.attr.key;
 
 public class NoticeViewActivity extends AppCompatActivity {
-    TextView title, date, uploadedBy;
+    TextView title, date, uploadedBy,fileSize,uploadedOn;
     ImageView image, edit, publishIV;
     String notice_id, name;
     EditText noticeTitle;
     Button dueDateBtn, addNoticeBtn, selectImageBtn;
     String dueDateSelectedByUser;
     ImageView noticeImageView;
+    Intent i;
+    Uri selectedImageUriFromGallery;
     String enteredTitle;
     DatabaseReference ref;
     NoticePojo noticePojo = new NoticePojo();
@@ -59,9 +67,6 @@ public class NoticeViewActivity extends AppCompatActivity {
         notice_id = i.getStringExtra("notice_id");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Notice");
-
-        Log.d("1234", "onCreate: " + noticePojo);
-
         if (!isPublished) {
             publishIV.setColorFilter(Color.parseColor("#ff0000"));
         } else {
@@ -83,6 +88,8 @@ public class NoticeViewActivity extends AppCompatActivity {
                 title.setText(noticePojo.getTitle());
                 date.setText(noticePojo.getDate());
                 uploadedBy.setText(noticePojo.getAddedBy());
+                fileSize.setText(noticePojo.getImageSize() + " Bytes");
+                uploadedOn.setText(noticePojo.getAddedOn());
                 Glide.with(NoticeViewActivity.this).load(noticePojo.getImage()).crossFade().into(image);
 
 
@@ -118,11 +125,12 @@ public class NoticeViewActivity extends AppCompatActivity {
         edit = (ImageView) findViewById(R.id.editIV);
         publishIV = (ImageView) findViewById(R.id.publishedIV);
         image = (ImageView) findViewById(R.id.imageView);
+        fileSize = (TextView) findViewById(R.id.fileSize);
+        uploadedOn = (TextView) findViewById(R.id.uploadedOn);
     }
 
 
     private void methodListners() {
-        Log.d("1234", "onCreate: in method listner" + noticePojo);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,7 +177,6 @@ public class NoticeViewActivity extends AppCompatActivity {
     }
 
     private void editDialog() {
-        Log.d("1234", "edit dialog: " + noticePojo);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.notice_dialog_item, null);
         final Dialog dialog = new Dialog(this);
@@ -201,6 +208,20 @@ public class NoticeViewActivity extends AppCompatActivity {
 
             }
         });
+        selectImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkGalleryPermission()) {
+                    i = new Intent();
+                    i.setAction(Intent.ACTION_GET_CONTENT);
+                    i.setType("image/*");
+                    startActivityForResult(i, 0);
+                } else {
+
+                    ActivityCompat.requestPermissions(NoticeViewActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
+                }
+            }
+        });
 
         addNoticeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,5 +245,27 @@ public class NoticeViewActivity extends AppCompatActivity {
         dialog.setContentView(view);
         dialog.setCancelable(true);
         dialog.show();
+    }
+
+    private boolean checkGalleryPermission() {
+        boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return flag;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                selectedImageUriFromGallery = data.getData();
+                Glide.with(NoticeViewActivity.this)
+                        .load(selectedImageUriFromGallery)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(noticeImageView);
+
+            }
+        }
     }
 }

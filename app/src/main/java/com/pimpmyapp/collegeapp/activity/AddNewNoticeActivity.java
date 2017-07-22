@@ -38,6 +38,7 @@ import com.google.firebase.storage.UploadTask;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
+import java.io.File;
 import java.util.Calendar;
 
 import static android.support.design.widget.Snackbar.make;
@@ -47,7 +48,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     Button dueDateBtn, selectImageBtn;
     ImageView noticeImageView;
     String dueDateSelectedByUser;
-    Uri selectedImageUriFromGallary;
+    Uri selectedImageUriFromGallery;
     int imageViewCheck = 0;
     String enteredTitle, enteredDes;
     Intent i;
@@ -131,9 +132,9 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 imageViewCheck = 1;
-                selectedImageUriFromGallary = data.getData();
+                selectedImageUriFromGallery = data.getData();
                 Glide.with(AddNewNoticeActivity.this)
-                        .load(selectedImageUriFromGallary)
+                        .load(selectedImageUriFromGallery)
                         .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(noticeImageView);
@@ -173,12 +174,14 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        String addedOn = "" + day + "-" + (month + 1) + "-" + year;
+        final float fileSize = (new File(selectedImageUriFromGallery.getPath()).length());
+        Log.d("1234", "addpost: " + fileSize+  " uri " + selectedImageUriFromGallery.getPath());
+        final String addedOn = "" + day + "-" + (month + 1) + "-" + year;
         noticepojo.setDesc(enteredDes);
         noticepojo.setAddedOn(addedOn);
         noticepojo.setTitle(enteredTitle);
         noticepojo.setDate(dueDateSelectedByUser);
-        if (selectedImageUriFromGallary != null) {
+        if (selectedImageUriFromGallery != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             if (!isNetworkAvailable()) {
                 Snackbar snackbar = Snackbar.make(selectImageBtn, "No Internet Connection.", Snackbar.LENGTH_INDEFINITE);
@@ -198,7 +201,8 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                 final DatabaseReference ref = database.getReference("notice");
                 final String noticeKey = ref.push().getKey();
                 final StorageReference reference = storage.getReference(noticeKey);
-                final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallary)};
+                final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallery)};
+
                 uploadTask[0].addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -207,7 +211,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         snackbar.setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                uploadTask[0] = reference.putFile(selectedImageUriFromGallary);
+                                uploadTask[0] = reference.putFile(selectedImageUriFromGallery);
                             }
                         });
                         dialog.cancel();
@@ -222,10 +226,11 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         SharedPreferences sharedPreference = getSharedPreferences("userData", MODE_PRIVATE);
                         String user_name = sharedPreference.getString("name", "unknown");
                         noticepojo.setAddedBy(user_name);
-                        Log.d("1234", "onSuccess: " + user_name);
                         @SuppressWarnings("VisibleForTests") String imageUploadUrl = taskSnapshot.getDownloadUrl().toString();
                         noticepojo.setImage(imageUploadUrl);
                         noticepojo.setNoticeID(noticeKey);
+                        noticepojo.setAddedOn(addedOn);
+                        noticepojo.setImageSize(fileSize);
                         ref.child(noticeKey).setValue(noticepojo);
                         dialog.cancel();
                         Intent i = new Intent(AddNewNoticeActivity.this, DashboardActivity.class);

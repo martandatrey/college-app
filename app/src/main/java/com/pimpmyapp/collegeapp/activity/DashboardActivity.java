@@ -30,7 +30,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -46,11 +45,8 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -61,9 +57,6 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
 
-import static android.R.attr.data;
-import static android.R.attr.name;
-
 //import com.pimpmyapp.collegeapp.Manifest;
 
 public class DashboardActivity extends AppCompatActivity
@@ -71,7 +64,7 @@ public class DashboardActivity extends AppCompatActivity
 
     FloatingActionMenu floatingActionMenu;
     FloatingActionButton fabDoc, fabGal, fabCam;
-    Uri selectedImageUriFromGallary;
+    Uri selectedImageUriFromGallery;
     EditText noticeTitle;
     RelativeLayout relativeLayoutFab;
     Intent i;
@@ -366,9 +359,9 @@ public class DashboardActivity extends AppCompatActivity
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 imageViewCheck = 1;
-                selectedImageUriFromGallary = data.getData();
+                selectedImageUriFromGallery = data.getData();
                 Glide.with(DashboardActivity.this)
-                        .load(selectedImageUriFromGallary)
+                        .load(selectedImageUriFromGallery)
                         .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(noticeImageView);
@@ -389,7 +382,7 @@ public class DashboardActivity extends AppCompatActivity
         noticepojo.setAddedOn(addedOn);
         noticepojo.setTitle(enteredTitle);
         noticepojo.setDate(dueDateSelectedByUser);
-        if (selectedImageUriFromGallary != null) {
+        if (selectedImageUriFromGallery != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
 
             if (!isNetworkAvailable()) {
@@ -405,7 +398,7 @@ public class DashboardActivity extends AppCompatActivity
                 final DatabaseReference ref = database.getReference("notice");
                 final String noticeKey = ref.push().getKey();
                 final StorageReference reference = storage.getReference(noticeKey);
-                final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallary)};
+                final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallery)};
                 uploadTask[0].addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -416,7 +409,7 @@ public class DashboardActivity extends AppCompatActivity
                             @Override
                             public void onClick(View view) {
 
-                                uploadTask[0] = reference.putFile(selectedImageUriFromGallary);
+                                uploadTask[0] = reference.putFile(selectedImageUriFromGallery);
                             }
                         });
 

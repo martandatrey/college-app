@@ -11,6 +11,7 @@ public class NoticePojo {
     String title = "";
     String noticeID = "";
     String desc = "";
+    float imageSize = 0;
 
     @Override
     public String toString() {
@@ -20,10 +21,19 @@ public class NoticePojo {
                 ", title='" + title + '\'' +
                 ", noticeID='" + noticeID + '\'' +
                 ", desc='" + desc + '\'' +
+                ", imageSize=" + imageSize +
                 ", addedBy='" + addedBy + '\'' +
                 ", published=" + published +
                 ", addedOn='" + addedOn + '\'' +
                 '}';
+    }
+
+    public float getImageSize() {
+        return imageSize;
+    }
+
+    public void setImageSize(float imageSize) {
+        this.imageSize = imageSize;
     }
 
     public String getDesc() {
