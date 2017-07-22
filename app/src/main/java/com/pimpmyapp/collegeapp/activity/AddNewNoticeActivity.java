@@ -11,7 +11,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -211,6 +210,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                                 uploadTask[0] = reference.putFile(selectedImageUriFromGallary);
                             }
                         });
+                        dialog.cancel();
                         snackbar.show();
                         noticepojo.setImage("");
                     }
@@ -228,14 +228,11 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         noticepojo.setNoticeID(noticeKey);
                         ref.child(noticeKey).setValue(noticepojo);
                         dialog.cancel();
-                        Snackbar.make(selectImageBtn, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(AddNewNoticeActivity.this, DashboardActivity.class));
-                                finish();
-                            }
-                        }, 3000);
+                        Intent i = new Intent(AddNewNoticeActivity.this, DashboardActivity.class);
+                        i.putExtra("uploaded", true);
+                        startActivity(i);
+                        finish();
+
                     }
                 });
             }

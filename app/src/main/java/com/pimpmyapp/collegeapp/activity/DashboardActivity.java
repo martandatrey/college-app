@@ -106,6 +106,16 @@ public class DashboardActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent i = getIntent();
+       if(i.getBooleanExtra("uploaded",false)){
+           Snackbar.make(floatingActionMenu, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
+           i.putExtra("uploaded" , false);
+       }
+    }
+
     private void setValues() {
         SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
         user_id = sharedPreferences.getString("user_id","Anonymous");
@@ -220,7 +230,6 @@ public class DashboardActivity extends AppCompatActivity
         fabGal = (FloatingActionButton) findViewById(R.id.fab_gal);
         fabDoc = (FloatingActionButton) findViewById(R.id.fab_doc);
         fabCam = (FloatingActionButton) findViewById(R.id.fab_cam);
-        // floatingActionMenu.setClosedOnTouchOutside(true);
         dashboardToolbar = (Toolbar) findViewById(R.id.toolbar);
         branchTv = (TextView) findViewById(R.id.branchTv);
         nameTv = (TextView) findViewById(R.id.nameTv);
