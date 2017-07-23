@@ -47,7 +47,7 @@
     </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/TilteTextInput"
+        android:id="@+id/TitleTextInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/reviewLV">
@@ -61,13 +61,29 @@
 
 
     </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/DescTextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TitleTextInput">
+
+
+        <EditText
+            android:id="@+id/noticeDescEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="2"
+            android:hint="Enter Description " />
+
+
+    </android.support.design.widget.TextInputLayout>
 
 
     <Button
         android:id="@+id/addNoticeBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/TilteTextInput"
+        android:layout_below="@id/DescTextInput"
         android:layout_centerHorizontal="true"
         android:layout_weight="1"
         android:text="SUBMIT"

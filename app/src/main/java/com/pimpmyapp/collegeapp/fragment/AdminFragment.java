@@ -1,5 +1,6 @@
 package com.pimpmyapp.collegeapp.fragment;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,6 +26,8 @@ import com.pimpmyapp.collegeapp.adapter.NoticeAdapter;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.ArrayList;
+
+import static com.pimpmyapp.collegeapp.R.id.refresh;
 
 /**
  * Created by marta on 20-Jul-17.
@@ -55,7 +60,9 @@ public class AdminFragment extends Fragment {
         });
         return view;
     }
-
+public void refreshList(){
+    lv.setSelectionAfterHeaderView();
+}
 
     public void fetchValues() {
 

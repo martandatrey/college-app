@@ -9,16 +9,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +23,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -40,11 +36,8 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
 
-import static android.R.attr.action;
-import static android.R.attr.key;
-
 public class NoticeViewActivity extends AppCompatActivity {
-    TextView title, date, uploadedBy,fileSize,uploadedOn;
+    TextView title, date, uploadedBy, fileSize, uploadedOn,desc;
     ImageView image, edit, publishIV;
     String notice_id, name;
     EditText noticeTitle;
@@ -73,7 +66,7 @@ public class NoticeViewActivity extends AppCompatActivity {
             publishIV.setColorFilter(Color.parseColor("#00ff00"));
         }
 
-         ref = FirebaseDatabase.getInstance().getReference("notice");
+        ref = FirebaseDatabase.getInstance().getReference("notice");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -108,9 +101,9 @@ public class NoticeViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
-           this.finish();
+                this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -126,6 +119,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         publishIV = (ImageView) findViewById(R.id.publishedIV);
         image = (ImageView) findViewById(R.id.imageView);
         fileSize = (TextView) findViewById(R.id.fileSize);
+        desc = (TextView) findViewById(R.id.noticeDescEditText);
         uploadedOn = (TextView) findViewById(R.id.uploadedOn);
     }
 
@@ -186,6 +180,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         addNoticeBtn = (Button) view.findViewById(R.id.addNoticeBtn);
         selectImageBtn = (Button) view.findViewById(R.id.selectImage);
         noticeImageView = (ImageView) view.findViewById(R.id.newNoticeAddImage);
+        desc.setText(noticePojo.getDesc());
         noticeTitle.setText(noticePojo.getTitle());
         if (noticePojo.getDate().equals(""))
             dueDateBtn.setText("Select Date");
@@ -230,11 +225,17 @@ public class NoticeViewActivity extends AppCompatActivity {
                 if (enteredTitle.equals("")) {
                     noticeTitle.setError("Select title for notice");
                 } else {
-                    noticePojo.setAddedOn(dueDateBtn.getText().toString());
+                    noticePojo.setDate(dueDateBtn.getText().toString());
                     noticePojo.setTitle(enteredTitle);
+                    noticePojo.setDesc(desc.getText().toString());
+                    noticePojo.setImage(noticePojo.getImage());
+                    noticePojo.setAddedBy(noticePojo.getAddedBy());
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference("notice");
                     ref.child(notice_id).setValue(noticePojo);
+                    title.setText(noticePojo.getTitle());
+                    date.setText(noticePojo.getDate());
+                    Glide.with(NoticeViewActivity.this).load(noticePojo.getImage()).crossFade().into(image);
                     dialog.cancel();
                 }
             }

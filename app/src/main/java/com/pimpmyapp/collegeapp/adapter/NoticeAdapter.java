@@ -3,6 +3,7 @@ package com.pimpmyapp.collegeapp.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,7 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 import java.util.ArrayList;
 
 import static android.R.attr.fragment;
+import static android.R.string.no;
 
 /**
  * Created by marta on 20-Jul-17.
@@ -54,6 +56,13 @@ public class NoticeAdapter extends ArrayAdapter {
         TextView date = (TextView) view.findViewById(R.id.noticeDate);
         ImageView image = (ImageView) view.findViewById(R.id.imageView);
         ImageView delete = (ImageView) view.findViewById(R.id.deleteIV);
+        ImageView publishIV = (ImageView) view.findViewById(R.id.publishedIv);
+
+        if (!notice.isPublished()) {
+            publishIV.setColorFilter(Color.parseColor("#ff0000"));
+        } else {
+            publishIV.setColorFilter(Color.parseColor("#00ff00"));
+        }
         title.setText(notice.getTitle());
         date.setText(notice.getDate());
         Glide.with(context).load(notice.getImage()).crossFade().into(image);

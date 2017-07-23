@@ -172,6 +172,7 @@ public class DashboardActivity extends AppCompatActivity
             finish();
         }
         if (id == R.id.refresh){
+          new   AdminFragment().refreshList();
         }
 
         return super.onOptionsItemSelected(item);
@@ -205,7 +206,7 @@ public class DashboardActivity extends AppCompatActivity
             getSupportActionBar().setTitle("Review Notice");
             changeFragment(new AdminFragment());
 
-        } else if (id == R.id.extra) {
+        } else if (id == R.id.users) {
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Extra");
 

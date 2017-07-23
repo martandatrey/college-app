@@ -12,6 +12,9 @@ public class NoticePojo {
     String noticeID = "";
     String desc = "";
     float imageSize = 0;
+    String addedBy = "";
+    boolean published = false;
+    String addedOn = "";
 
     @Override
     public String toString() {
@@ -44,10 +47,6 @@ public class NoticePojo {
         this.desc = desc;
     }
 
-    String addedBy = "";
-    boolean published  = false;
-    String addedOn = "";
-
 
     public String getAddedOn() {
         return addedOn;
@@ -65,8 +64,6 @@ public class NoticePojo {
     public void setNoticeID(String noticeID) {
         this.noticeID = noticeID;
     }
-
-
 
 
     public String getImage() {

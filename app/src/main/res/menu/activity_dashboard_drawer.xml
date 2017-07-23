@@ -20,21 +20,25 @@
             android:title="Documents" />
         <item
             android:id="@+id/logout"
+
             android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="Logout" />
+
+
+        <item android:title="Admin Panel">
+            <menu>
+                <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/reviewNotice"
+                    android:icon="@drawable/ic_rate_review_black_24dp"
+                    android:title="Review Notice" />
+                <item
+                    android:id="@+id/users"
+                    android:icon="@drawable/ic_short_text_black_24dp"
+                    android:title="Users" />
+                </group>
+            </menu>
+
+        </item>
     </group>
-
-    <item android:title="Admin Panel">
-        <menu>
-            <item
-                android:id="@+id/reviewNotice"
-                android:icon="@drawable/ic_rate_review_black_24dp"
-                android:title="Review Notice" />
-            <item
-                android:id="@+id/extra"
-                android:icon="@drawable/ic_short_text_black_24dp"
-                android:title="Extra" />
-        </menu>
-    </item>
-
 </menu>
