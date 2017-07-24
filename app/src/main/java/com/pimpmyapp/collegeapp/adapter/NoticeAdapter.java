@@ -16,16 +16,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.koushikdutta.ion.Ion;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.ArrayList;
+
+import static com.pimpmyapp.collegeapp.R.id.imageView;
 
 /**
  * Created by marta on 20-Jul-17.
@@ -53,7 +52,7 @@ public class NoticeAdapter extends ArrayAdapter {
         notice = noticeList.get(position);
         TextView title = (TextView) view.findViewById(R.id.noticeTitle);
         TextView date = (TextView) view.findViewById(R.id.noticeDate);
-        ImageView image = (ImageView) view.findViewById(R.id.imageView);
+        ImageView image = (ImageView) view.findViewById(imageView);
         ImageView delete = (ImageView) view.findViewById(R.id.deleteIV);
         ImageView publishIV = (ImageView) view.findViewById(R.id.publishedIv);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -65,7 +64,8 @@ public class NoticeAdapter extends ArrayAdapter {
         }
         title.setText(notice.getTitle());
         date.setText(notice.getDate());
-        Glide.with(context).load(notice.getImage())
+        progressBar.setVisibility(View.GONE);
+       /* Glide.with(context).load(notice.getImage())
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -79,9 +79,17 @@ public class NoticeAdapter extends ArrayAdapter {
                         return false;
                     }
                 })
+                .fitCenter()
                 .crossFade()
-                .into(image);
-
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(image);*/
+        Ion.with(context)
+                .load(notice.getImage())
+                .withBitmap()
+                .crossfade(true)
+                .fitXY()
+                .resize(450,450)
+                .intoImageView(image);
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
