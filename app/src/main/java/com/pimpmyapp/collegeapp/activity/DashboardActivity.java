@@ -162,8 +162,6 @@ public class DashboardActivity extends AppCompatActivity
 
         }
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.Logout) {
             SharedPreferences sharedpref = getSharedPreferences("userData", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpref.edit();
@@ -172,9 +170,6 @@ public class DashboardActivity extends AppCompatActivity
 
             startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
             finish();
-        }
-        if (id == R.id.refresh){
-          new   AdminFragment().refreshList();
         }
 
         return super.onOptionsItemSelected(item);

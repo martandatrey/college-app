@@ -3,12 +3,14 @@ package com.pimpmyapp.collegeapp.fragment;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pimpmyapp.collegeapp.R;
+import com.pimpmyapp.collegeapp.activity.DashboardActivity;
+import com.pimpmyapp.collegeapp.activity.LoginActivity;
 import com.pimpmyapp.collegeapp.activity.NoticeViewActivity;
 import com.pimpmyapp.collegeapp.adapter.NoticeAdapter;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.pimpmyapp.collegeapp.R.id.refresh;
 
 /**
@@ -38,6 +43,29 @@ public class AdminFragment extends Fragment {
     ArrayList<NoticePojo> noticeList = new ArrayList<>();
     ListView lv;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.admin_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.refresh){
+            refresh();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+void refresh(){
+lv.setSelectionAfterHeaderView();
+}
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,9 +88,6 @@ public class AdminFragment extends Fragment {
         });
         return view;
     }
-public void refreshList(){
-    lv.scrollTo(0,0);
-}
 
     public void fetchValues() {
 
