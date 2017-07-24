@@ -11,7 +11,7 @@ public class NoticePojo {
     String title = "";
     String noticeID = "";
     String desc = "";
-    float imageSize = 0;
+    String imageSize = "";
     String addedBy = "";
     boolean published = false;
     String addedOn = "";
@@ -31,11 +31,11 @@ public class NoticePojo {
                 '}';
     }
 
-    public float getImageSize() {
+    public String getImageSize() {
         return imageSize;
     }
 
-    public void setImageSize(float imageSize) {
+    public void setImageSize(String imageSize) {
         this.imageSize = imageSize;
     }
 

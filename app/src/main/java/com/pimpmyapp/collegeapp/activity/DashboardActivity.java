@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -76,6 +77,7 @@ public class DashboardActivity extends AppCompatActivity
     NavigationView navigationView;
     Toolbar dashboardToolbar;
     int imageViewCheck = 0;
+    CoordinatorLayout cordlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,6 +231,7 @@ public class DashboardActivity extends AppCompatActivity
         nameTv = (TextView) findViewById(R.id.nameTv);
         yearTv = (TextView) findViewById(R.id.yearTv);
         relativeLayoutFab = (RelativeLayout) findViewById(R.id.relativeLayoutFab);
+        cordlay = (CoordinatorLayout) findViewById(R.id.cordLay);
     }
 
 
@@ -256,7 +259,7 @@ public class DashboardActivity extends AppCompatActivity
                 Toast.makeText(DashboardActivity.this, "no func assigned", Toast.LENGTH_SHORT).show();
             }
         });
-        /*relativeLayoutFab.setOnTouchListener(new View.OnTouchListener() {
+      /*  cordlay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (floatingActionMenu.isOpened())

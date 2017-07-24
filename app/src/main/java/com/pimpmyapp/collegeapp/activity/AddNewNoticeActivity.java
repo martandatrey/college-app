@@ -40,7 +40,6 @@ import com.google.firebase.storage.UploadTask;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
-import java.io.File;
 import java.util.Calendar;
 
 import static android.support.design.widget.Snackbar.make;
@@ -171,27 +170,14 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     }
 
     private void addpost() {
+        final float[] fileSize = new float[1];
         final NoticePojo noticepojo = new NoticePojo();
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        final float fileSize = (new File(selectedImageUriFromGallery.getPath()).length());
-        Cursor returnCursor =
-                getContentResolver().query(selectedImageUriFromGallery, null, null, null, null);
-    /*
-     * Get the column indexes of the data in the Cursor,
-     * move to the first row in the Cursor, get the data,
-     * and display it.
-     */
-        if (returnCursor != null) {
-            int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
 
-            Log.d("1234", "addpost: " + returnCursor.getString(nameIndex)+returnCursor.getLong(sizeIndex));
-        }
 
-        Log.d("1234", "addpost: " + fileSize+  " uri " + selectedImageUriFromGallery.getPath());
         final String addedOn = "" + day + "-" + (month + 1) + "-" + year;
         noticepojo.setDesc(enteredDes);
         noticepojo.setAddedOn(addedOn);
@@ -246,8 +232,19 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         noticepojo.setImage(imageUploadUrl);
                         noticepojo.setNoticeID(noticeKey);
                         noticepojo.setAddedOn(addedOn);
-                        noticepojo.setImageSize(fileSize);
-                        ref.child(noticeKey).setValue(noticepojo);
+
+                        fileSize[0] = (float)taskSnapshot.getBytesTransferred();
+
+                        if (fileSize[0] < 1024) {
+                            noticepojo.setImageSize(fileSize[0] + "Bytes");
+                        } else if (fileSize[0] < (1024 * 1024) && fileSize[0] >= 1024){
+                            noticepojo.setImageSize(fileSize[0]/1024 + "KB");
+                        }
+                        else if (fileSize[0] < (1024 * 1024 *1024) && fileSize[0] >= (1024*1024)){
+                            noticepojo.setImageSize(fileSize[0]/(1024*1024) + "MB");
+                        }
+
+                            ref.child(noticeKey).setValue(noticepojo);
                         dialog.cancel();
                         Intent i = new Intent(AddNewNoticeActivity.this, DashboardActivity.class);
                         i.putExtra("uploaded", true);
