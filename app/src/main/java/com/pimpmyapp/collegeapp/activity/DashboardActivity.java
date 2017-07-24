@@ -199,10 +199,11 @@ public class DashboardActivity extends AppCompatActivity
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Documents");
 
-        }else if (id == R.id.refresh) {
+        }else if (id == R.id.result) {
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Check Result");
             changeFragment(new ResultFragment());
+            floatingActionMenu.setVisibility(View.GONE);
 
         } else if (id == R.id.reviewNotice) {
             setSupportActionBar(dashboardToolbar);

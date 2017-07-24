@@ -21,12 +21,15 @@ import com.pimpmyapp.collegeapp.R;
  */
 
 public class ResultFragment extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         View view = inflater.inflate(R.layout.result_fragment, null);
         WebView webView = (WebView) view.findViewById(R.id.webView);
+
         final Activity activity = getActivity();
         webView.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -40,7 +43,6 @@ public class ResultFragment extends Fragment {
             }
         });
         webView.getSettings().setLoadsImagesAutomatically(true);
-        getActivity().getWindow().requestFeature(Window.FEATURE_PROGRESS);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.clearView();
