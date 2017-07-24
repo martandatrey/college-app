@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
@@ -64,7 +65,8 @@ public class NoticeAdapter extends ArrayAdapter {
         }
         title.setText(notice.getTitle());
         date.setText(notice.getDate());
-        progressBar.setVisibility(View.GONE);
+
+
        /* Glide.with(context).load(notice.getImage())
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
@@ -87,9 +89,16 @@ public class NoticeAdapter extends ArrayAdapter {
                 .load(notice.getImage())
                 .withBitmap()
                 .crossfade(true)
-                .fitXY()
-                .resize(450,450)
-                .intoImageView(image);
+                .smartSize(true)
+                .intoImageView(image)
+                .setCallback(new FutureCallback<ImageView>() {
+                    @Override
+                    public void onCompleted(Exception e, ImageView result) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+
+
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

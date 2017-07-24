@@ -231,7 +231,7 @@ public class DashboardActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         // fetched header from nav view
-        view = navigationView.getHeaderView(R.layout.nav_header_dashboard);
+        view = navigationView.getHeaderView(0);
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         fabGal = (FloatingActionButton) findViewById(R.id.fab_gal);
         fabDoc = (FloatingActionButton) findViewById(R.id.fab_doc);
