@@ -10,8 +10,6 @@
  
  check onFailure on uploadTask>????
  
- navigation drawer selected item 
- 
 
 Add result page
 
@@ -35,4 +33,6 @@ nav header details of the user that is logged in
 listvie design changes when posts are deleted 
 
 file size does not set
+
+selected item is not deleting 
 
