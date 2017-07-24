@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -20,6 +23,26 @@ import com.pimpmyapp.collegeapp.R;
  */
 
 public class ResultFragment extends Fragment {
+    WebView webView;
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.refresh_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.refresh) {
+            refresh();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    void refresh() {
+        webView.reload();
+    }
 
     @Nullable
     @Override
@@ -27,7 +50,7 @@ public class ResultFragment extends Fragment {
         inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.result_fragment, null);
-        WebView webView = (WebView) view.findViewById(R.id.webView);
+        webView = (WebView) view.findViewById(R.id.webView);
 
         final Activity activity = getActivity();
         webView.setWebViewClient(new WebViewClient() {

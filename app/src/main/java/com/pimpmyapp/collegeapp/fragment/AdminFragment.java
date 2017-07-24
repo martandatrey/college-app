@@ -1,9 +1,6 @@
 package com.pimpmyapp.collegeapp.fragment;
 
-import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,16 +20,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pimpmyapp.collegeapp.R;
-import com.pimpmyapp.collegeapp.activity.DashboardActivity;
-import com.pimpmyapp.collegeapp.activity.LoginActivity;
 import com.pimpmyapp.collegeapp.activity.NoticeViewActivity;
 import com.pimpmyapp.collegeapp.adapter.NoticeAdapter;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.ArrayList;
-
-import static android.content.Context.MODE_PRIVATE;
-import static com.pimpmyapp.collegeapp.R.id.refresh;
 
 /**
  * Created by marta on 20-Jul-17.
@@ -51,21 +43,23 @@ public class AdminFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.admin_fragment_menu, menu);
+        getActivity().getMenuInflater().inflate(R.menu.refresh_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.refresh){
+        if (id == R.id.refresh) {
             refresh();
         }
 
         return super.onOptionsItemSelected(item);
     }
-void refresh(){
-lv.setSelectionAfterHeaderView();
-}
+
+    void refresh() {
+        lv.setSelectionAfterHeaderView();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,7 +93,7 @@ lv.setSelectionAfterHeaderView();
                 noticeList.clear();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
-                    noticeList.add(0,notice);
+                    noticeList.add(0, notice);
                 }
                 noticeAdapter.notifyDataSetChanged();
             }
