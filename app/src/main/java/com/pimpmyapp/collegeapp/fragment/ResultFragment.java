@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -49,7 +48,7 @@ public class ResultFragment extends Fragment {
         webView.measure(100, 100);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
-        webView.loadUrl("https://www.google.co.in");
+        webView.loadUrl("http://www.esuvidha.info/");
         webView.canGoBackOrForward(1000);
         return view;
 

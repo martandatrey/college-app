@@ -7,26 +7,25 @@ import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pimpmyapp.collegeapp.R;
-import com.pimpmyapp.collegeapp.fragment.AdminFragment;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.ArrayList;
-
-import static android.R.attr.fragment;
-import static android.R.string.no;
 
 /**
  * Created by marta on 20-Jul-17.
@@ -57,6 +56,7 @@ public class NoticeAdapter extends ArrayAdapter {
         ImageView image = (ImageView) view.findViewById(R.id.imageView);
         ImageView delete = (ImageView) view.findViewById(R.id.deleteIV);
         ImageView publishIV = (ImageView) view.findViewById(R.id.publishedIv);
+        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
         if (!notice.isPublished()) {
             publishIV.setColorFilter(Color.parseColor("#ff0000"));
@@ -65,7 +65,23 @@ public class NoticeAdapter extends ArrayAdapter {
         }
         title.setText(notice.getTitle());
         date.setText(notice.getDate());
-        Glide.with(context).load(notice.getImage()).crossFade().into(image);
+        Glide.with(context).load(notice.getImage())
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .crossFade()
+                .into(image);
+
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
