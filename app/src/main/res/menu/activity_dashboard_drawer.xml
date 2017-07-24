@@ -19,6 +19,11 @@
             android:icon="@drawable/ic_note_black_24dp"
             android:title="Documents" />
         <item
+            android:id="@+id/result"
+            android:icon="@drawable/result"
+            android:title="Check Result"
+            />
+        <item
             android:id="@+id/logout"
 
             android:icon="@drawable/ic_power_settings_new_black_24dp"

@@ -54,6 +54,7 @@ import com.google.firebase.storage.UploadTask;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.fragment.AdminFragment;
 import com.pimpmyapp.collegeapp.fragment.NoticeFragment;
+import com.pimpmyapp.collegeapp.fragment.ResultFragment;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
@@ -197,6 +198,11 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.Documents) {
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Documents");
+
+        }else if (id == R.id.refresh) {
+            setSupportActionBar(dashboardToolbar);
+            getSupportActionBar().setTitle("Check Result");
+            changeFragment(new ResultFragment());
 
         } else if (id == R.id.reviewNotice) {
             setSupportActionBar(dashboardToolbar);

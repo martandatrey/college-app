@@ -69,7 +69,7 @@ lv.setSelectionAfterHeaderView();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         View view = inflater.inflate(R.layout.admin_fragment, null);
         lv = (ListView) view.findViewById(R.id.listView);
         noticeAdapter = new NoticeAdapter(getActivity(), R.layout.notice_list_item, noticeList);
