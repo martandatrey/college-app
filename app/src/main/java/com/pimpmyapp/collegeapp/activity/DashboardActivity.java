@@ -46,8 +46,11 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -70,6 +73,7 @@ public class DashboardActivity extends AppCompatActivity
     EditText noticeTitle;
     RelativeLayout relativeLayoutFab;
     Intent i;
+    View view;
     TextView nameTv, branchTv, yearTv;
     Button dueDateBtn, addNoticeBtn, selectImageBtn;
     String dueDateSelectedByUser,user_id;
@@ -97,7 +101,7 @@ public class DashboardActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
 
     }
@@ -115,7 +119,7 @@ public class DashboardActivity extends AppCompatActivity
     private void setValues() {
         SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
         user_id = sharedPreferences.getString("user_id","Anonymous");
-      /*  DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -130,7 +134,6 @@ public class DashboardActivity extends AppCompatActivity
 
             }
         });
-*/
     }
 
     @Override
@@ -224,14 +227,22 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     private void init() {
+        //initialized nav view
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        // fetched header from nav view
+        view = navigationView.getHeaderView(R.layout.nav_header_dashboard);
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         fabGal = (FloatingActionButton) findViewById(R.id.fab_gal);
         fabDoc = (FloatingActionButton) findViewById(R.id.fab_doc);
         fabCam = (FloatingActionButton) findViewById(R.id.fab_cam);
         dashboardToolbar = (Toolbar) findViewById(R.id.toolbar);
-        branchTv = (TextView) findViewById(R.id.branchTv);
-        nameTv = (TextView) findViewById(R.id.nameTv);
-        yearTv = (TextView) findViewById(R.id.yearTv);
+        // these are the elements of nav header view
+        // they are not initialized
+
+        branchTv = (TextView) view.findViewById(R.id.branchTv);
+        nameTv = (TextView) view.findViewById(R.id.nameTv);
+        yearTv = (TextView) view.findViewById(R.id.yearTv);
         relativeLayoutFab = (RelativeLayout) findViewById(R.id.relativeLayoutFab);
         cordlay = (CoordinatorLayout) findViewById(R.id.cordLay);
     }
