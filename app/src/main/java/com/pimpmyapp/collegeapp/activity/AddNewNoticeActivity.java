@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -175,6 +177,20 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         final float fileSize = (new File(selectedImageUriFromGallery.getPath()).length());
+        Cursor returnCursor =
+                getContentResolver().query(selectedImageUriFromGallery, null, null, null, null);
+    /*
+     * Get the column indexes of the data in the Cursor,
+     * move to the first row in the Cursor, get the data,
+     * and display it.
+     */
+        if (returnCursor != null) {
+            int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+
+            Log.d("1234", "addpost: " + returnCursor.getString(nameIndex)+returnCursor.getLong(sizeIndex));
+        }
+
         Log.d("1234", "addpost: " + fileSize+  " uri " + selectedImageUriFromGallery.getPath());
         final String addedOn = "" + day + "-" + (month + 1) + "-" + year;
         noticepojo.setDesc(enteredDes);

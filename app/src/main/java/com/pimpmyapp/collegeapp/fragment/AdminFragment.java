@@ -61,7 +61,7 @@ public class AdminFragment extends Fragment {
         return view;
     }
 public void refreshList(){
-    lv.setSelectionAfterHeaderView();
+    lv.scrollTo(0,0);
 }
 
     public void fetchValues() {
