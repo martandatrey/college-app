@@ -37,27 +37,85 @@ public class NoticeAdapter extends ArrayAdapter {
     private Context context;
     private int layoutRes;
     private LayoutInflater inflater;
+public static class ViewHolder{
+    TextView title,date;
+    ImageView image,delete,publishIV;
+    ProgressBar progressBar;
+
+}
+
 
     public NoticeAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<NoticePojo> objects) {
         super(context, resource, objects);
         this.context = context;
         this.layoutRes = resource;
         this.noticeList = objects;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(layoutRes, null);
+        final ViewHolder viewHolder;
+        if(inflater == null)
+        {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+        if(convertView == null)
+        {
+         convertView = inflater.inflate(layoutRes, null);
+            notice = noticeList.get(position);
+            viewHolder = new ViewHolder();
+            viewHolder.title = (TextView) convertView.findViewById(R.id.noticeTitle);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.noticeDate);
+            viewHolder.image = (ImageView) convertView.findViewById(imageView);
+            viewHolder.delete = (ImageView) convertView.findViewById(R.id.deleteIV);
+           viewHolder.publishIV = (ImageView) convertView.findViewById(R.id.publishedIv);
+           viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
+            if (!notice.isPublished()) {
+               viewHolder.publishIV.setColorFilter(Color.parseColor("#ff0000"));
+            } else {
+                viewHolder.publishIV.setColorFilter(Color.parseColor("#00ff00"));
+            }
+            viewHolder.title.setText(notice.getTitle());
+            viewHolder.date.setText(notice.getDate());
+            Ion.with(context)
+                    .load(notice.getImage())
+                    .withBitmap()
+                    .crossfade(true)
+                    .smartSize(true)
+                    .intoImageView(viewHolder.image)
+
+                    .setCallback(new FutureCallback<ImageView>() {
+                        @Override
+                        public void onCompleted(Exception e, ImageView result) {
+                            viewHolder.progressBar.setVisibility(View.GONE);
+                        }
+                    });
+
+
+
+            viewHolder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteNotice();
+                }
+            });
+            convertView.setTag(viewHolder);
+        }
+        else
+        {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+       /* *//*View view = inflater.inflate(layoutRes, null);
         notice = noticeList.get(position);
         TextView title = (TextView) view.findViewById(R.id.noticeTitle);
         TextView date = (TextView) view.findViewById(R.id.noticeDate);
         ImageView image = (ImageView) view.findViewById(imageView);
         ImageView delete = (ImageView) view.findViewById(R.id.deleteIV);
-        ImageView publishIV = (ImageView) view.findViewById(R.id.publishedIv);
-        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        if (!notice.isPublished()) {
+        ImageView publishIV = (ImageView) view.findViewById(R.id.publishedIv);*//*
+        final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);*/
+        /*if (!notice.isPublished()) {
             publishIV.setColorFilter(Color.parseColor("#ff0000"));
         } else {
             publishIV.setColorFilter(Color.parseColor("#00ff00"));
@@ -70,6 +128,7 @@ public class NoticeAdapter extends ArrayAdapter {
                 .crossfade(true)
                 .smartSize(true)
                 .intoImageView(image)
+
                 .setCallback(new FutureCallback<ImageView>() {
                     @Override
                     public void onCompleted(Exception e, ImageView result) {
@@ -84,8 +143,8 @@ public class NoticeAdapter extends ArrayAdapter {
             public void onClick(View view) {
                 deleteNotice();
             }
-        });
-        return view;
+        });*/
+        return convertView;
     }
 
     private void deleteNotice() {
