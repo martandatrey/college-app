@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/side_nav_bar"
+    android:background="@drawable/nav_header"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:text="name"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:fontFamily="casual"
         android:textStyle="bold"
         />
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:text="computer science"
         android:textSize="20sp"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:fontFamily="casual"
         android:textStyle="bold"
         />
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:text="1st year 2nd sem"
         android:textSize="15sp"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:fontFamily="casual"
         android:textStyle="bold"
         />

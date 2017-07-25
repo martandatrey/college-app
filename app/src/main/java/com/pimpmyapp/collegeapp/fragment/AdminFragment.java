@@ -57,6 +57,7 @@ public class AdminFragment extends Fragment {
     }
 
     void refresh() {
+        fetchValues();
         lv.setSelectionAfterHeaderView();
     }
 
@@ -93,7 +94,7 @@ public class AdminFragment extends Fragment {
                 noticeList.clear();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
-                    noticeList.add(0, notice);
+                    noticeList.add(notice);
                 }
                 noticeAdapter.notifyDataSetChanged();
             }

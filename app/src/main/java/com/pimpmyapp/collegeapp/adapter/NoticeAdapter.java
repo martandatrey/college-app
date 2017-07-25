@@ -8,6 +8,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.pimpmyapp.collegeapp.R;
@@ -26,6 +32,7 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 import java.util.ArrayList;
 
 import static com.pimpmyapp.collegeapp.R.id.imageView;
+import static com.pimpmyapp.collegeapp.R.id.loginBtn;
 
 /**
  * Created by marta on 20-Jul-17.
@@ -65,6 +72,8 @@ public static class ViewHolder{
         {
          convertView = inflater.inflate(layoutRes, null);
             notice = noticeList.get(position);
+            Log.d("1234", "getView: notice " + notice);
+            Log.d("1234", "getView: position " +  position );
             viewHolder = new ViewHolder();
             viewHolder.title = (TextView) convertView.findViewById(R.id.noticeTitle);
             viewHolder.date = (TextView) convertView.findViewById(R.id.noticeDate);
@@ -85,7 +94,6 @@ public static class ViewHolder{
                     .crossfade(true)
                     .smartSize(true)
                     .intoImageView(viewHolder.image)
-
                     .setCallback(new FutureCallback<ImageView>() {
                         @Override
                         public void onCompleted(Exception e, ImageView result) {
@@ -161,8 +169,10 @@ public static class ViewHolder{
         builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                Log.d("1234", "onClick: ref child notice id " + notice.getNoticeID());
                 ref.child(notice.getNoticeID()).removeValue();
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference("notices/" + notice.getNoticeID());
+                storageRef.delete();
             }
         });
         Dialog dialog = builder.create();

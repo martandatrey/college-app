@@ -202,7 +202,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference ref = database.getReference("notice");
                 final String noticeKey = ref.push().getKey();
-                final StorageReference reference = storage.getReference(noticeKey);
+                final StorageReference reference = storage.getReference("notices/" + noticeKey);
                 final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallery)};
 
                 uploadTask[0].addOnFailureListener(new OnFailureListener() {
