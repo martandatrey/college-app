@@ -50,13 +50,14 @@ public class NoticeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.refresh) {
-            refresh();
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     void refresh() {
+        noticeList.clear();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("notice");
         ref.addValueEventListener(new ValueEventListener() {
@@ -65,7 +66,7 @@ public class NoticeFragment extends Fragment {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
                     if (notice.isPublished())
-                        noticeList.add(0,notice);
+                        noticeList.add(notice);
                 }
                 noticeAdapter.notifyDataSetChanged();
             }
@@ -100,7 +101,7 @@ public class NoticeFragment extends Fragment {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
                     if (notice.isPublished())
-                        noticeList.add(0,notice);
+                        noticeList.add(notice);
                 }
                 noticeAdapter.notifyDataSetChanged();
             }

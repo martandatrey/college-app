@@ -45,6 +45,13 @@ public class NoticeAdapter extends ArrayAdapter {
     private Context context;
     private int layoutRes;
     private LayoutInflater inflater;
+    private static class ViewHolder {
+        TextView title, date;
+        ImageView image, delete, publishIV;
+        ProgressBar progressBar;
+
+    }
+
 
     public NoticeAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<NoticePojo> objects) {
         super(context, resource, objects);
@@ -62,13 +69,59 @@ public class NoticeAdapter extends ArrayAdapter {
         if (inflater == null) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
+        notice = (NoticePojo) getItem(position);
+
+
+        if (convertView == null) {
+            convertView = inflater.inflate(layoutRes, null);
+            Log.d("1234", "getView: notice " + notice);
+            Log.d("1234", "getView: position " + position);
+            viewHolder = new ViewHolder();
+            viewHolder.title = (TextView) convertView.findViewById(R.id.noticeTitle);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.noticeDate);
+            viewHolder.image = (ImageView) convertView.findViewById(R.id.imageView);
+            viewHolder.delete = (ImageView) convertView.findViewById(R.id.deleteIV);
+            viewHolder.publishIV = (ImageView) convertView.findViewById(R.id.publishedIv);
+            viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
+
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+        if (!notice.isPublished()) {
+            viewHolder.publishIV.setColorFilter(Color.parseColor("#ff0000"));
+        } else {
+            viewHolder.publishIV.setColorFilter(Color.parseColor("#00ff00"));
+        }
+
+        viewHolder.title.setText(notice.getTitle());
+        viewHolder.date.setText(notice.getDate());
+        Ion.with(context)
+                .load(notice.getImage())
+                .withBitmap()
+                .crossfade(true)
+                .smartSize(true)
+                .intoImageView(viewHolder.image)
+                .setCallback(new FutureCallback<ImageView>() {
+                    @Override
+                    public void onCompleted(Exception e, ImageView result) {
+                        viewHolder.progressBar.setVisibility(View.GONE);
+                    }
+                });
         SharedPreferences pref = context.getSharedPreferences("userData", Context.MODE_PRIVATE);
         final String user_id = pref.getString("user_id", "Anonymous");
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        Log.d("1234", "ref: " + ref);
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                 isAdmin[0] = dataSnapshot.child(user_id).child("admin").getValue(boolean.class);
+                isAdmin[0] = dataSnapshot.child(user_id).child("admin").getValue(boolean.class);
+
+                if (!isAdmin[0]){
+                    viewHolder.publishIV.setVisibility(View.GONE);
+                    viewHolder.delete.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -76,56 +129,16 @@ public class NoticeAdapter extends ArrayAdapter {
 
             }
         });
-        if (convertView == null) {
-            convertView = inflater.inflate(layoutRes, null);
-            notice = noticeList.get(position);
-            Log.d("1234", "getView: notice " + notice);
-            Log.d("1234", "getView: position " + position);
-            viewHolder = new ViewHolder();
-            viewHolder.title = (TextView) convertView.findViewById(R.id.noticeTitle);
-            viewHolder.date = (TextView) convertView.findViewById(R.id.noticeDate);
-            viewHolder.image = (ImageView) convertView.findViewById(imageView);
-            viewHolder.delete = (ImageView) convertView.findViewById(R.id.deleteIV);
-            viewHolder.publishIV = (ImageView) convertView.findViewById(R.id.publishedIv);
-            viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
-            if (!notice.isPublished()) {
-                viewHolder.publishIV.setColorFilter(Color.parseColor("#ff0000"));
-            } else {
-                viewHolder.publishIV.setColorFilter(Color.parseColor("#00ff00"));
+
+
+
+        viewHolder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteNotice();
+                Toast.makeText(context, "Title " + notice.getTitle(), Toast.LENGTH_SHORT).show();
             }
-
-            Log.d("1234", "getView: " + isAdmin);
-            if (!isAdmin[0]){
-                viewHolder.publishIV.setVisibility(View.GONE);
-                viewHolder.delete.setVisibility(View.GONE);
-            }
-                viewHolder.title.setText(notice.getTitle());
-            viewHolder.date.setText(notice.getDate());
-            Ion.with(context)
-                    .load(notice.getImage())
-                    .withBitmap()
-                    .crossfade(true)
-                    .smartSize(true)
-                    .intoImageView(viewHolder.image)
-                    .setCallback(new FutureCallback<ImageView>() {
-                        @Override
-                        public void onCompleted(Exception e, ImageView result) {
-                            viewHolder.progressBar.setVisibility(View.GONE);
-                        }
-                    });
-
-
-            viewHolder.delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    deleteNotice();
-                    Toast.makeText(context, "Title " + notice.getTitle(), Toast.LENGTH_SHORT).show();
-                }
-            });
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
+        });
        /* *//*View view = inflater.inflate(layoutRes, null);
         notice = noticeList.get(position);
         TextView title = (TextView) view.findViewById(R.id.noticeTitle);
@@ -189,13 +202,6 @@ public class NoticeAdapter extends ArrayAdapter {
         });
         Dialog dialog = builder.create();
         dialog.show();
-    }
-
-    public static class ViewHolder {
-        TextView title, date;
-        ImageView image, delete, publishIV;
-        ProgressBar progressBar;
-
     }
 
 

@@ -51,13 +51,14 @@ public class AdminFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.refresh) {
-            refresh();
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     void refresh() {
+        noticeList.clear();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("notice");
         ref.addValueEventListener(new ValueEventListener() {
@@ -65,8 +66,7 @@ public class AdminFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
-                    if (notice.isPublished())
-                        noticeList.add(0,notice);
+                        noticeList.add(notice);
                 }
                 noticeAdapter.notifyDataSetChanged();
             }
@@ -102,6 +102,7 @@ public class AdminFragment extends Fragment {
     }
 
     public void fetchValues() {
+        noticeList.clear();
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Fetching Notices...");
         dialog.setCancelable(false);
@@ -111,7 +112,7 @@ public class AdminFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                noticeList.clear();
+
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
                     noticeList.add(notice);
