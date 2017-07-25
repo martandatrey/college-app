@@ -32,7 +32,7 @@ import static com.pimpmyapp.collegeapp.R.id.imageView;
  */
 
 public class NoticeAdapter extends ArrayAdapter {
-    private ArrayList<NoticePojo> noticeList = new ArrayList<>(), noticeShowList = new ArrayList<>();
+    private ArrayList<NoticePojo> noticeList = new ArrayList<>();
     private NoticePojo notice;
     private Context context;
     private int layoutRes;
@@ -57,7 +57,6 @@ public class NoticeAdapter extends ArrayAdapter {
         ImageView delete = (ImageView) view.findViewById(R.id.deleteIV);
         ImageView publishIV = (ImageView) view.findViewById(R.id.publishedIv);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
         if (!notice.isPublished()) {
             publishIV.setColorFilter(Color.parseColor("#ff0000"));
         } else {
@@ -65,26 +64,6 @@ public class NoticeAdapter extends ArrayAdapter {
         }
         title.setText(notice.getTitle());
         date.setText(notice.getDate());
-
-
-       /* Glide.with(context).load(notice.getImage())
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
-                })
-                .fitCenter()
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(image);*/
         Ion.with(context)
                 .load(notice.getImage())
                 .withBitmap()

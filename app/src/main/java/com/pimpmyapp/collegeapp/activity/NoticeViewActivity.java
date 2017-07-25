@@ -37,7 +37,7 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 import java.util.Calendar;
 
 public class NoticeViewActivity extends AppCompatActivity {
-    TextView title, date, uploadedBy, fileSize, uploadedOn,desc;
+    TextView title, date, uploadedBy, fileSize, uploadedOn, desc;
     ImageView image, edit, publishIV;
     String notice_id, name;
     EditText noticeTitle;
@@ -60,11 +60,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         notice_id = i.getStringExtra("notice_id");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Notice");
-        if (!isPublished) {
-            publishIV.setColorFilter(Color.parseColor("#ff0000"));
-        } else {
-            publishIV.setColorFilter(Color.parseColor("#00ff00"));
-        }
+
 
         ref = FirebaseDatabase.getInstance().getReference("notice");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,14 +73,18 @@ public class NoticeViewActivity extends AppCompatActivity {
                         noticePojo = child.getValue(NoticePojo.class);
                         Log.d("1234", "onDataChange: " + noticePojo);
                     }
-
+                isPublished = noticePojo.isPublished();
                 title.setText(noticePojo.getTitle());
                 date.setText(noticePojo.getDate());
                 uploadedBy.setText(noticePojo.getAddedBy());
                 fileSize.setText(noticePojo.getImageSize() + " Bytes");
                 uploadedOn.setText(noticePojo.getAddedOn());
                 Glide.with(NoticeViewActivity.this).load(noticePojo.getImage()).crossFade().into(image);
-
+                if (isPublished) {
+                    publishIV.setColorFilter(Color.parseColor("#00ff00"));
+                } else {
+                    publishIV.setColorFilter(Color.parseColor("#ff0000"));
+                }
 
             }
 
@@ -95,8 +95,8 @@ public class NoticeViewActivity extends AppCompatActivity {
         });
         Log.d("1234", "onCreate: before " + noticePojo);
 
-        methodListners();
-        Log.d("1234", "onCreate: after method listner" + noticePojo);
+        methodListeners();
+        Log.d("1234", "onCreate: after method listener" + noticePojo);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class NoticeViewActivity extends AppCompatActivity {
     }
 
 
-    private void methodListners() {
+    private void methodListeners() {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
