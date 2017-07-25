@@ -44,6 +44,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -61,6 +62,8 @@ import com.pimpmyapp.collegeapp.fragment.ResultFragment;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
+
+import static com.pimpmyapp.collegeapp.R.id.admin_menu;
 
 //import com.pimpmyapp.collegeapp.Manifest;
 
@@ -119,6 +122,7 @@ public class DashboardActivity extends AppCompatActivity
     private void setValues() {
         SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
         user_id = sharedPreferences.getString("user_id","Anonymous");
+
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -127,6 +131,12 @@ public class DashboardActivity extends AppCompatActivity
                 branchTv.setText(dataSnapshot.child(user_id).child("branch").getValue(String.class));
                 String year= dataSnapshot.child(user_id).child("year").getValue(String.class) + " year " + dataSnapshot.child(user_id).child("sem").getValue(String.class) + " semester";
                 yearTv.setText(year);
+                boolean isAdmin = dataSnapshot.child(user_id).child("admin").getValue(boolean.class);
+                MenuItem admin_menu = navigationView.getMenu().getItem(6);
+
+                if(!isAdmin){
+                    admin_menu.setVisible(false);
+                }
             }
 
             @Override

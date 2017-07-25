@@ -3,6 +3,7 @@ package com.pimpmyapp.collegeapp.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -18,10 +19,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.koushikdutta.async.future.FutureCallback;
@@ -32,7 +34,6 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 import java.util.ArrayList;
 
 import static com.pimpmyapp.collegeapp.R.id.imageView;
-import static com.pimpmyapp.collegeapp.R.id.loginBtn;
 
 /**
  * Created by marta on 20-Jul-17.
@@ -44,13 +45,6 @@ public class NoticeAdapter extends ArrayAdapter {
     private Context context;
     private int layoutRes;
     private LayoutInflater inflater;
-public static class ViewHolder{
-    TextView title,date;
-    ImageView image,delete,publishIV;
-    ProgressBar progressBar;
-
-}
-
 
     public NoticeAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull ArrayList<NoticePojo> objects) {
         super(context, resource, objects);
@@ -64,29 +58,47 @@ public static class ViewHolder{
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         final ViewHolder viewHolder;
-        if(inflater == null)
-        {
+        final boolean[] isAdmin = new boolean[1];
+        if (inflater == null) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
-        if(convertView == null)
-        {
-         convertView = inflater.inflate(layoutRes, null);
+        SharedPreferences pref = context.getSharedPreferences("userData", Context.MODE_PRIVATE);
+        final String user_id = pref.getString("user_id", "Anonymous");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                 isAdmin[0] = dataSnapshot.child(user_id).child("admin").getValue(boolean.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        if (convertView == null) {
+            convertView = inflater.inflate(layoutRes, null);
             notice = noticeList.get(position);
             Log.d("1234", "getView: notice " + notice);
-            Log.d("1234", "getView: position " +  position );
+            Log.d("1234", "getView: position " + position);
             viewHolder = new ViewHolder();
             viewHolder.title = (TextView) convertView.findViewById(R.id.noticeTitle);
             viewHolder.date = (TextView) convertView.findViewById(R.id.noticeDate);
             viewHolder.image = (ImageView) convertView.findViewById(imageView);
             viewHolder.delete = (ImageView) convertView.findViewById(R.id.deleteIV);
-           viewHolder.publishIV = (ImageView) convertView.findViewById(R.id.publishedIv);
-           viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
+            viewHolder.publishIV = (ImageView) convertView.findViewById(R.id.publishedIv);
+            viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
             if (!notice.isPublished()) {
-               viewHolder.publishIV.setColorFilter(Color.parseColor("#ff0000"));
+                viewHolder.publishIV.setColorFilter(Color.parseColor("#ff0000"));
             } else {
                 viewHolder.publishIV.setColorFilter(Color.parseColor("#00ff00"));
             }
-            viewHolder.title.setText(notice.getTitle());
+
+            if (!isAdmin[0]){
+                viewHolder.publishIV.setVisibility(View.GONE);
+                viewHolder.delete.setVisibility(View.GONE);
+            }
+                viewHolder.title.setText(notice.getTitle());
             viewHolder.date.setText(notice.getDate());
             Ion.with(context)
                     .load(notice.getImage())
@@ -102,17 +114,15 @@ public static class ViewHolder{
                     });
 
 
-
             viewHolder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     deleteNotice();
+                    Toast.makeText(context, "Title " + notice.getTitle(), Toast.LENGTH_SHORT).show();
                 }
             });
             convertView.setTag(viewHolder);
-        }
-        else
-        {
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
        /* *//*View view = inflater.inflate(layoutRes, null);
@@ -177,6 +187,13 @@ public static class ViewHolder{
         });
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    public static class ViewHolder {
+        TextView title, date;
+        ImageView image, delete, publishIV;
+        ProgressBar progressBar;
+
     }
 
 

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -38,8 +39,8 @@ import java.util.Calendar;
 
 public class NoticeViewActivity extends AppCompatActivity {
     TextView title, date, uploadedBy, fileSize, uploadedOn, desc;
-    ImageView image, edit, publishIV;
-    String notice_id, name;
+    ImageView image, editIV, publishIV;
+    String notice_id;
     EditText noticeTitle;
     Button dueDateBtn, addNoticeBtn, selectImageBtn;
     String dueDateSelectedByUser;
@@ -50,7 +51,10 @@ public class NoticeViewActivity extends AppCompatActivity {
     DatabaseReference ref;
     NoticePojo noticePojo = new NoticePojo();
     boolean isPublished;
+    SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
+    String user_id = sharedPreferences.getString("user_id","Anonymous");
 
+    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +70,6 @@ public class NoticeViewActivity extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-
                 for (DataSnapshot child : dataSnapshot.getChildren())
                     if (child.getKey().equals(notice_id)) {
                         noticePojo = child.getValue(NoticePojo.class);
@@ -85,6 +87,20 @@ public class NoticeViewActivity extends AppCompatActivity {
                 } else {
                     publishIV.setColorFilter(Color.parseColor("#ff0000"));
                 }
+                databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        boolean isAdmin = dataSnapshot.child(user_id).child("admin").getValue(boolean.class);
+                        if (!isAdmin) {
+                            editIV.setVisibility(View.GONE);
+                            publishIV.setVisibility(View.GONE);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
             }
 
@@ -115,17 +131,16 @@ public class NoticeViewActivity extends AppCompatActivity {
         title = (TextView) findViewById(R.id.titleTV);
         date = (TextView) findViewById(R.id.date);
         uploadedBy = (TextView) findViewById(R.id.uploadedBy);
-        edit = (ImageView) findViewById(R.id.editIV);
+        editIV = (ImageView) findViewById(R.id.editIV);
         publishIV = (ImageView) findViewById(R.id.publishedIV);
         image = (ImageView) findViewById(R.id.imageView);
         fileSize = (TextView) findViewById(R.id.fileSize);
-        desc = (TextView) findViewById(R.id.noticeDescEditText);
         uploadedOn = (TextView) findViewById(R.id.uploadedOn);
     }
 
 
     private void methodListeners() {
-        edit.setOnClickListener(new View.OnClickListener() {
+        editIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 editDialog();
@@ -180,6 +195,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         addNoticeBtn = (Button) view.findViewById(R.id.addNoticeBtn);
         selectImageBtn = (Button) view.findViewById(R.id.selectImage);
         noticeImageView = (ImageView) view.findViewById(R.id.newNoticeAddImage);
+        desc = (TextView) view.findViewById(R.id.noticeDescEditText);
         desc.setText(noticePojo.getDesc());
         noticeTitle.setText(noticePojo.getTitle());
         if (noticePojo.getDate().equals(""))

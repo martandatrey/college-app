@@ -77,7 +77,6 @@ public class AdminFragment extends Fragment {
                 NoticePojo noticePojo = noticeList.get(position);
                 Intent i = new Intent(getActivity(), NoticeViewActivity.class);
                 i.putExtra("notice_id", noticePojo.getNoticeID());
-                Log.d("1234", "onItemClick: " + noticePojo.getNoticeID());
                 startActivity(i);
             }
         });

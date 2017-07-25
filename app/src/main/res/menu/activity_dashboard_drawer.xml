@@ -30,8 +30,8 @@
             android:title="Logout" />
 
 
-        <item android:title="Admin Panel">
-            <menu>
+        <item android:title="Admin Panel" >
+            <menu android:id="@+id/admin_menu">
                 <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/reviewNotice"
