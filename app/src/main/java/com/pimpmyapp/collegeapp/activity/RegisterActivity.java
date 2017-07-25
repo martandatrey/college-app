@@ -84,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (email.equals("")) {
             emailET.setError("Email is required.");
 
-        } else if (!(Pattern.matches("\\w*[@]\\w*", email)))
+        } else if (!(Pattern.matches("\\w*[@]\\w[.]\\w*", email)))
             emailET.setError("Email is not valid.");
 
 

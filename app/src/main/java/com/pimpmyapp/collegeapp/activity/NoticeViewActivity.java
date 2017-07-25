@@ -51,8 +51,7 @@ public class NoticeViewActivity extends AppCompatActivity {
     DatabaseReference ref;
     NoticePojo noticePojo = new NoticePojo();
     boolean isPublished;
-    SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
-    String user_id = sharedPreferences.getString("user_id","Anonymous");
+
 
     DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
     @Override
@@ -62,6 +61,8 @@ public class NoticeViewActivity extends AppCompatActivity {
         init();
         Intent i = getIntent();
         notice_id = i.getStringExtra("notice_id");
+        SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
+        final String user_id = sharedPreferences.getString("user_id","Anonymous");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Notice");
 

@@ -94,6 +94,7 @@ public class NoticeAdapter extends ArrayAdapter {
                 viewHolder.publishIV.setColorFilter(Color.parseColor("#00ff00"));
             }
 
+            Log.d("1234", "getView: " + isAdmin);
             if (!isAdmin[0]){
                 viewHolder.publishIV.setVisibility(View.GONE);
                 viewHolder.delete.setVisibility(View.GONE);
@@ -180,9 +181,10 @@ public class NoticeAdapter extends ArrayAdapter {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d("1234", "onClick: ref child notice id " + notice.getNoticeID());
-                ref.child(notice.getNoticeID()).removeValue();
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference("notices/" + notice.getNoticeID());
                 storageRef.delete();
+                ref.child(notice.getNoticeID()).removeValue();
+
             }
         });
         Dialog dialog = builder.create();

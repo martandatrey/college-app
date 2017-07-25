@@ -1,5 +1,6 @@
 package com.pimpmyapp.collegeapp.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -57,7 +58,24 @@ public class AdminFragment extends Fragment {
     }
 
     void refresh() {
-        fetchValues();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("notice");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
+                    if (notice.isPublished())
+                        noticeList.add(0,notice);
+                }
+                noticeAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         lv.setSelectionAfterHeaderView();
     }
 
@@ -84,7 +102,10 @@ public class AdminFragment extends Fragment {
     }
 
     public void fetchValues() {
-
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Fetching Notices...");
+        dialog.setCancelable(false);
+        dialog.show();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("notice");
         ref.addValueEventListener(new ValueEventListener() {
@@ -96,6 +117,7 @@ public class AdminFragment extends Fragment {
                     noticeList.add(notice);
                 }
                 noticeAdapter.notifyDataSetChanged();
+                dialog.cancel();
             }
 
             @Override

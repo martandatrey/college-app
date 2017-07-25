@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             } else {
                                 Snackbar snackbar;
+                                progressDialog.cancel();
                                 snackbar = Snackbar.make(loginBtn, "Check your Email/Password.", Snackbar.LENGTH_LONG);
                                 View snackbarView = snackbar.getView();
                                 snackbarView.setBackgroundColor(Color.rgb(98, 134, 241));
