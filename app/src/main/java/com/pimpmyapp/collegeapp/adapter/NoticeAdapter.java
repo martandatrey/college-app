@@ -254,13 +254,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
                         holder.progressBar.setVisibility(View.GONE);
                     }
                 });
-         holder.delete.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 deleteNotice();
 
-             }
-         });
 
 
 
@@ -279,21 +273,20 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
     public static class PersonViewHolder extends RecyclerView.ViewHolder{
 
         TextView title, date;
-        ImageView image, delete, publishIV;
+        ImageView image, publishIV;
         ProgressBar progressBar;
         public PersonViewHolder(View itemView) {
             super(itemView);
            title = (TextView) itemView.findViewById(R.id.noticeTitle);
            date = (TextView) itemView.findViewById(R.id.noticeDate);
            image = (ImageView) itemView.findViewById(imageView);
-           delete = (ImageView) itemView.findViewById(R.id.deleteIV);
            publishIV = (ImageView) itemView.findViewById(R.id.publishedIv);
            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
         }
 
     }
     private void deleteNotice() {
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("notice");
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Notice");
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm?");
         builder.setMessage("Delete this notice");
@@ -307,7 +300,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d("1234", "onClick: ref child notice id " + noticePojo.getNoticeID());
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference("notices/" + noticePojo.getNoticeID());
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference("Notice/" + noticePojo.getNoticeID());
                 storageRef.delete();
                 ref.child(noticePojo.getNoticeID()).removeValue();
 

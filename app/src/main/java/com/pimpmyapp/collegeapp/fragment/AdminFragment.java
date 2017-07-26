@@ -163,7 +163,7 @@ public class AdminFragment extends Fragment {
     }
 
     public void fetchValues() {
-        noticeList.clear();
+
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Fetching Notices...");
         dialog.setCancelable(false);
@@ -173,7 +173,7 @@ public class AdminFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                noticeList.clear();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
                     noticeList.add(notice);

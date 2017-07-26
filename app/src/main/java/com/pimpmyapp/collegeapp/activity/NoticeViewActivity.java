@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -31,11 +32,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
@@ -44,7 +49,7 @@ import java.util.Calendar;
 public class NoticeViewActivity extends AppCompatActivity {
     TextView title, date, uploadedBy, fileSize, uploadedOn, desc, expand;
     Drawable expandDrawable, contractDrawable;
-    ImageView image, editIV, publishIV;
+    ImageView image, editIV, publishIV,deleteIV;
     String notice_id;
     EditText noticeTitle;
     Button dueDateBtn, addNoticeBtn, selectImageBtn;
@@ -143,6 +148,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         uploadedBy = (TextView) findViewById(R.id.uploadedBy);
         editIV = (ImageView) findViewById(R.id.editIV);
         publishIV = (ImageView) findViewById(R.id.publishedIV);
+        deleteIV = (ImageView) findViewById(R.id.deleteIV);
         image = (ImageView) findViewById(R.id.imageView);
         fileSize = (TextView) findViewById(R.id.fileSize);
         uploadedOn = (TextView) findViewById(R.id.uploadedOn);
@@ -176,6 +182,13 @@ public class NoticeViewActivity extends AppCompatActivity {
                     expand.setCompoundDrawablesWithIntrinsicBounds(null, null, contractDrawable, null);
                     tabLay.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        deleteIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteNotice();
             }
         });
     }
@@ -319,5 +332,45 @@ public class NoticeViewActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    private void deleteNotice() {
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Notice");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm?");
+        builder.setMessage("Delete this notice");
+        builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d("1234", "onClick: ref child notice id " + noticePojo.getNoticeID());
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference("Notice/" + noticePojo.getNoticeID());
+                storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(NoticeViewActivity.this, "Post Deleted", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(NoticeViewActivity.this, "Delete Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                ref.child(noticePojo.getNoticeID()).removeValue();
+                finish();
+
+//  startActivity(new Intent(NoticeViewActivity.this,DashboardActivity.class));
+
+            }
+
+        });
+
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 }

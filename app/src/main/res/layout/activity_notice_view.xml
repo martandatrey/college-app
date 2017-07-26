@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/publishedIV"
                 android:text="Desc"
+                android:layout_toLeftOf="@+id/deleteIV"
                 android:textColor="#000" />
 
 
@@ -65,6 +66,14 @@
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
                 android:src="@drawable/ic_public_black_24dp" />
+            <ImageView
+                android:id="@+id/deleteIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/publishedIV"
+                android:padding="10dp"
+                android:src="@drawable/ic_delete_black_24dp" />
         </RelativeLayout>
 
         <ImageView
