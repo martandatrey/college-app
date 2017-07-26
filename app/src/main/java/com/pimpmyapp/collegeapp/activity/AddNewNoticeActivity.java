@@ -163,9 +163,9 @@ public class AddNewNoticeActivity extends AppCompatActivity {
             if (enteredTitle.equals("")) {
                 noticeTitle.setError("Select title for notice");
             } else if (imageViewCheck == 0) {
-                Snackbar.make(corLay,"Select Image",Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(corLay, "Select Image", Snackbar.LENGTH_SHORT).show();
             } else if (catSpinner.getSelectedItem().toString().equals("Select Category")) {
-                Snackbar.make(corLay,"Select Category",Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(corLay, "Select Category", Snackbar.LENGTH_SHORT).show();
             } else {
                 addpost();
             }
@@ -181,7 +181,8 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-String cat = catSpinner.getSelectedItem().toString();
+        String cat = catSpinner.getSelectedItem().toString();
+        noticepojo.setCategory(cat);
         final String addedOn = "" + day + "-" + (month + 1) + "-" + year;
         noticepojo.setDesc(enteredDes);
         noticepojo.setAddedOn(addedOn);
