@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -38,15 +40,17 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 import java.util.Calendar;
 
 public class NoticeViewActivity extends AppCompatActivity {
-    TextView title, date, uploadedBy, fileSize, uploadedOn, desc;
+    TextView title, date, uploadedBy, fileSize, uploadedOn, desc, expand;
+    Drawable expandDrawable, contractDrawable;
     ImageView image, editIV, publishIV;
     String notice_id;
     EditText noticeTitle;
     Button dueDateBtn, addNoticeBtn, selectImageBtn;
-    String dueDateSelectedByUser;
+    String dueDateSelectedByUser = "";
     ImageView noticeImageView;
     Intent i;
     Uri selectedImageUriFromGallery;
+    TableLayout tabLay;
     String enteredTitle;
     DatabaseReference ref;
     NoticePojo noticePojo = new NoticePojo();
@@ -54,6 +58,7 @@ public class NoticeViewActivity extends AppCompatActivity {
 
 
     DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +66,8 @@ public class NoticeViewActivity extends AppCompatActivity {
         init();
         Intent i = getIntent();
         notice_id = i.getStringExtra("notice_id");
-        SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
-        final String user_id = sharedPreferences.getString("user_id","Anonymous");
+        SharedPreferences sharedPreferences = getSharedPreferences("userData", MODE_PRIVATE);
+        final String user_id = sharedPreferences.getString("user_id", "Anonymous");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Notice");
 
@@ -78,7 +83,7 @@ public class NoticeViewActivity extends AppCompatActivity {
                     }
                 isPublished = noticePojo.isPublished();
                 title.setText(noticePojo.getTitle());
-                date.setText(noticePojo.getDate());
+                date.setText("Due Date: "+noticePojo.getDate());
                 uploadedBy.setText(noticePojo.getAddedBy());
                 fileSize.setText(noticePojo.getImageSize() + " Bytes");
                 uploadedOn.setText(noticePojo.getAddedOn());
@@ -97,6 +102,7 @@ public class NoticeViewActivity extends AppCompatActivity {
                             publishIV.setVisibility(View.GONE);
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -137,6 +143,10 @@ public class NoticeViewActivity extends AppCompatActivity {
         image = (ImageView) findViewById(R.id.imageView);
         fileSize = (TextView) findViewById(R.id.fileSize);
         uploadedOn = (TextView) findViewById(R.id.uploadedOn);
+        expand = (TextView) findViewById(R.id.expand);
+        tabLay = (TableLayout) findViewById(R.id.tabLay);
+        contractDrawable = this.getResources().getDrawable(R.drawable.ic_remove_circle_outline_black_24dp);
+        expandDrawable = this.getResources().getDrawable(R.drawable.ic_add_circle_outline_black_24dp);
     }
 
 
@@ -151,6 +161,18 @@ public class NoticeViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showAlertDialog();
+            }
+        });
+        expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (tabLay.getVisibility() == View.VISIBLE) {
+                    tabLay.setVisibility(View.INVISIBLE);
+                    expand.setCompoundDrawablesWithIntrinsicBounds(null, null, expandDrawable, null);
+                } else {
+                    expand.setCompoundDrawablesWithIntrinsicBounds(null, null, contractDrawable, null);
+                    tabLay.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -199,7 +221,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         desc = (TextView) view.findViewById(R.id.noticeDescEditText);
         desc.setText(noticePojo.getDesc());
         noticeTitle.setText(noticePojo.getTitle());
-        if (noticePojo.getDate().equals(""))
+        if (noticePojo.getDate().equals("No Due Date"))
             dueDateBtn.setText("Select Date");
         else
             dueDateBtn.setText(noticePojo.getDate());
@@ -242,7 +264,10 @@ public class NoticeViewActivity extends AppCompatActivity {
                 if (enteredTitle.equals("")) {
                     noticeTitle.setError("Select title for notice");
                 } else {
-                    noticePojo.setDate(dueDateBtn.getText().toString());
+                    if(!dueDateSelectedByUser.equals(""))
+                        noticePojo.setDate("Due Date: "+dueDateSelectedByUser);
+                    else
+                        noticePojo.setDate("No Due Date");
                     noticePojo.setTitle(enteredTitle);
                     noticePojo.setDesc(desc.getText().toString());
                     noticePojo.setImage(noticePojo.getImage());

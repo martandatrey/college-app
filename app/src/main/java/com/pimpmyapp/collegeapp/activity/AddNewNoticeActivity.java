@@ -7,18 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,7 +45,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     EditText noticeTitle, noticeDes;
     Button dueDateBtn, selectImageBtn;
     ImageView noticeImageView;
-    String dueDateSelectedByUser;
+    String dueDateSelectedByUser = "";
     Uri selectedImageUriFromGallery;
     int imageViewCheck = 0;
     String enteredTitle, enteredDes;
@@ -182,7 +179,10 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         noticepojo.setDesc(enteredDes);
         noticepojo.setAddedOn(addedOn);
         noticepojo.setTitle(enteredTitle);
+        if(!dueDateSelectedByUser.equals(""))
         noticepojo.setDate(dueDateSelectedByUser);
+        else
+            noticepojo.setDate("No Due Date");
         if (selectedImageUriFromGallery != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             if (!isNetworkAvailable()) {
@@ -233,18 +233,17 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         noticepojo.setNoticeID(noticeKey);
                         noticepojo.setAddedOn(addedOn);
 
-                        fileSize[0] = (float)taskSnapshot.getBytesTransferred();
+                        fileSize[0] = (float) taskSnapshot.getBytesTransferred();
 
                         if (fileSize[0] < 1024) {
                             noticepojo.setImageSize(fileSize[0] + "Bytes");
-                        } else if (fileSize[0] < (1024 * 1024) && fileSize[0] >= 1024){
-                            noticepojo.setImageSize(fileSize[0]/1024 + "KB");
-                        }
-                        else if (fileSize[0] < (1024 * 1024 *1024) && fileSize[0] >= (1024*1024)){
-                            noticepojo.setImageSize(fileSize[0]/(1024*1024) + "MB");
+                        } else if (fileSize[0] < (1024 * 1024) && fileSize[0] >= 1024) {
+                            noticepojo.setImageSize(fileSize[0] / 1024 + "KB");
+                        } else if (fileSize[0] < (1024 * 1024 * 1024) && fileSize[0] >= (1024 * 1024)) {
+                            noticepojo.setImageSize(fileSize[0] / (1024 * 1024) + "MB");
                         }
 
-                            ref.child(noticeKey).setValue(noticepojo);
+                        ref.child(noticeKey).setValue(noticepojo);
                         dialog.cancel();
                         Intent i = new Intent(AddNewNoticeActivity.this, DashboardActivity.class);
                         i.putExtra("uploaded", true);
