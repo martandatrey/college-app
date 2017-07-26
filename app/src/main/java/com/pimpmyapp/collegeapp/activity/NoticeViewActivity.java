@@ -75,7 +75,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Notice");
 
 
-        ref = FirebaseDatabase.getInstance().getReference("notice");
+        ref = FirebaseDatabase.getInstance().getReference("Notice");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

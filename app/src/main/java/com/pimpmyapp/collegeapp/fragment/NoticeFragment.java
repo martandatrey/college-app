@@ -1,18 +1,21 @@
 package com.pimpmyapp.collegeapp.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -32,9 +35,48 @@ import java.util.ArrayList;
  */
 
 public class NoticeFragment extends Fragment {
-    ArrayAdapter noticeAdapter;
+    NoticeAdapter noticeAdapter;
     ArrayList<NoticePojo> noticeList = new ArrayList<>();
     ListView lv;
+    RecyclerView rv;
+
+    public static class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
+        private OnItemClickListener mListener;
+
+        public interface OnItemClickListener {
+            public void onItemClick(View view, int position);
+        }
+
+        GestureDetector mGestureDetector;
+
+        public RecyclerItemClickListener(Context context, OnItemClickListener listener) {
+            mListener = listener;
+            mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+            View childView = view.findChildViewUnder(e.getX(), e.getY());
+            if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
+                mListener.onItemClick(childView, view.getChildAdapterPosition(childView));
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +124,24 @@ public class NoticeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.notice_fragment, null);
-        lv = (ListView) view.findViewById(R.id.listView);
+        rv = (RecyclerView) view.findViewById(R.id.rv);
+        rv.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(llm);
+        noticeAdapter = new NoticeAdapter(getActivity(),noticeList);
+        rv.setAdapter(noticeAdapter);
+        rv.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),new RecyclerItemClickListener.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(View view, int position) {
+                NoticePojo noticePojo = noticeList.get(position);
+                Intent i = new Intent(getActivity(), NoticeViewActivity.class);
+                i.putExtra("notice_id", noticePojo.getNoticeID());
+                startActivity(i);
+            }
+        }));
+
+        /*lv = (ListView) view.findViewById(R.id.listView);
         noticeAdapter = new NoticeAdapter(getActivity(), R.layout.notice_list_item, noticeList);
         lv.setAdapter(noticeAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,9 +151,9 @@ public class NoticeFragment extends Fragment {
                 Intent i = new Intent(getActivity(), NoticeViewActivity.class);
                 i.putExtra("notice_id", noticePojo.getNoticeID());
                 startActivity(i);            }
-        });
+        });*/
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("notice");
+        DatabaseReference ref = database.getReference("Notice");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -111,6 +170,10 @@ public class NoticeFragment extends Fragment {
 
             }
         });
+
+
         return view;
     }
+
+
 }

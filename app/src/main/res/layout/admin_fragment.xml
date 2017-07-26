@@ -5,10 +5,8 @@
     android:background="#fff"
     android:animateLayoutChanges="true"
     >
-    <ListView
-        android:id="@+id/listView"
-        android:divider="@null"
-        android:dividerHeight="0dp"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>
