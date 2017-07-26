@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -50,7 +52,9 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     int imageViewCheck = 0;
     String enteredTitle, enteredDes;
     Intent i;
+    Spinner catSpinner;
     View parentLayout;
+    CoordinatorLayout corLay;
 
 
     @Override
@@ -69,7 +73,8 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         dueDateBtn = (Button) findViewById(R.id.DueDateBtn);
         selectImageBtn = (Button) findViewById(R.id.selectImage);
         noticeImageView = (ImageView) findViewById(R.id.newNoticeAddImage);
-
+        catSpinner = (Spinner) findViewById(R.id.catSpinner);
+        corLay = (CoordinatorLayout) findViewById(R.id.newPostrootLay);
 
     }
 
@@ -158,7 +163,9 @@ public class AddNewNoticeActivity extends AppCompatActivity {
             if (enteredTitle.equals("")) {
                 noticeTitle.setError("Select title for notice");
             } else if (imageViewCheck == 0) {
-                Toast.makeText(AddNewNoticeActivity.this, "select an image first", Toast.LENGTH_LONG).show();
+                Snackbar.make(corLay,"Select Image",Snackbar.LENGTH_SHORT).show();
+            } else if (catSpinner.getSelectedItem().toString().equals("Select Category")) {
+                Snackbar.make(corLay,"Select Category",Snackbar.LENGTH_SHORT).show();
             } else {
                 addpost();
             }
@@ -174,17 +181,17 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-
+String cat = catSpinner.getSelectedItem().toString();
         final String addedOn = "" + day + "-" + (month + 1) + "-" + year;
         noticepojo.setDesc(enteredDes);
         noticepojo.setAddedOn(addedOn);
         noticepojo.setTitle(enteredTitle);
-        if(!dueDateSelectedByUser.equals(""))
-        noticepojo.setDate(dueDateSelectedByUser);
+        if (!dueDateSelectedByUser.equals(""))
+            noticepojo.setDate(dueDateSelectedByUser);
         else
             noticepojo.setDate("No Due Date");
         if (selectedImageUriFromGallery != null) {
-            FirebaseStorage storage = FirebaseStorage.getInstance();
+
             if (!isNetworkAvailable()) {
                 Snackbar snackbar = Snackbar.make(selectImageBtn, "No Internet Connection.", Snackbar.LENGTH_INDEFINITE);
                 snackbar.setAction("Retry", new View.OnClickListener() {
@@ -199,10 +206,11 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                 dialog.setMessage("Uploading...");
                 dialog.setCancelable(false);
                 dialog.show();
+                FirebaseStorage storage = FirebaseStorage.getInstance();
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                final DatabaseReference ref = database.getReference("notice");
+                final DatabaseReference ref = database.getReference(cat);
                 final String noticeKey = ref.push().getKey();
-                final StorageReference reference = storage.getReference("notices/" + noticeKey);
+                final StorageReference reference = storage.getReference(cat + "/" + noticeKey);
                 final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallery)};
 
                 uploadTask[0].addOnFailureListener(new OnFailureListener() {

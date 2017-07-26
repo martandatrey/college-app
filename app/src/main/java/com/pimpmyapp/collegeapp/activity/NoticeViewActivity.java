@@ -24,8 +24,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -49,6 +51,7 @@ public class NoticeViewActivity extends AppCompatActivity {
     String dueDateSelectedByUser = "";
     ImageView noticeImageView;
     Intent i;
+    Spinner catSpinner;
     Uri selectedImageUriFromGallery;
     TableLayout tabLay;
     String enteredTitle;
@@ -219,6 +222,8 @@ public class NoticeViewActivity extends AppCompatActivity {
         selectImageBtn = (Button) view.findViewById(R.id.selectImage);
         noticeImageView = (ImageView) view.findViewById(R.id.newNoticeAddImage);
         desc = (TextView) view.findViewById(R.id.noticeDescEditText);
+        catSpinner = (Spinner) findViewById(R.id.catSpinner);
+
         desc.setText(noticePojo.getDesc());
         noticeTitle.setText(noticePojo.getTitle());
         if (noticePojo.getDate().equals("No Due Date"))
@@ -266,19 +271,23 @@ public class NoticeViewActivity extends AppCompatActivity {
                 } else {
                     if(!dueDateSelectedByUser.equals(""))
                         noticePojo.setDate("Due Date: "+dueDateSelectedByUser);
-                    else
+                    else if (catSpinner.getSelectedItem().toString().equals("Select Category")){
+                        Toast.makeText(NoticeViewActivity.this, "Select Category", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
                         noticePojo.setDate("No Due Date");
-                    noticePojo.setTitle(enteredTitle);
-                    noticePojo.setDesc(desc.getText().toString());
-                    noticePojo.setImage(noticePojo.getImage());
-                    noticePojo.setAddedBy(noticePojo.getAddedBy());
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference ref = database.getReference("notice");
-                    ref.child(notice_id).setValue(noticePojo);
-                    title.setText(noticePojo.getTitle());
-                    date.setText(noticePojo.getDate());
-                    Glide.with(NoticeViewActivity.this).load(noticePojo.getImage()).crossFade().into(image);
-                    dialog.cancel();
+                        noticePojo.setTitle(enteredTitle);
+                        noticePojo.setDesc(desc.getText().toString());
+                        noticePojo.setImage(noticePojo.getImage());
+                        noticePojo.setAddedBy(noticePojo.getAddedBy());
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference ref = database.getReference(catSpinner.getSelectedItem().toString());
+                        ref.child(notice_id).setValue(noticePojo);
+                        title.setText(noticePojo.getTitle());
+                        date.setText(noticePojo.getDate());
+                        Glide.with(NoticeViewActivity.this).load(noticePojo.getImage()).crossFade().into(image);
+                        dialog.cancel();
+                    }
                 }
             }
         });

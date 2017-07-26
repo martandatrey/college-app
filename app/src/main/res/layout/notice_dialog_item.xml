@@ -77,13 +77,20 @@
 
 
     </android.support.design.widget.TextInputLayout>
-
+    <Spinner
+        android:id="@+id/catSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/DescTextInput"
+        android:entries="@array/category"/>
 
     <Button
         android:id="@+id/addNoticeBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/DescTextInput"
+        android:layout_below="@id/catSpinner"
         android:layout_centerHorizontal="true"
         android:layout_weight="1"
         android:text="SUBMIT"

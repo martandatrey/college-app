@@ -16,6 +16,12 @@
         <item>VII</item>
         <item>VIII</item>
     </string-array>
+    <string-array name="category">
+        <item>Select Category</item>
+        <item>Notice</item>
+        <item>Time Table</item>
+        <item>Document</item>
+    </string-array>
     <string name="title_activity_dashboard">DashboardActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
