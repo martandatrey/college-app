@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +40,7 @@ public class AdminFragment extends Fragment {
     ArrayList<NoticePojo> noticeList = new ArrayList<>();
     ListView lv;
     RecyclerView rv;
+    FloatingActionMenu floatingActionMenu;
 
     public static class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
         private OnItemClickListener mListener;
@@ -126,6 +128,8 @@ public class AdminFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.admin_fragment, null);
+        floatingActionMenu = (FloatingActionMenu) getActivity().findViewById(R.id.material_design_android_floating_action_menu);
+
 
        /* lv = (ListView) view.findViewById(R.id.listView);
         noticeAdapter = new NoticeAdapter(getActivity(), R.layout.notice_list_item, noticeList);
@@ -141,12 +145,43 @@ public class AdminFragment extends Fragment {
 
             @Override
             public void onItemClick(View view, int position) {
+                if (floatingActionMenu.isOpened())
+                    floatingActionMenu.close(true);
                 NoticePojo noticePojo = noticeList.get(position);
                 Intent i = new Intent(getActivity(), NoticeViewActivity.class);
                 i.putExtra("notice_id", noticePojo.getNoticeID());
                 startActivity(i);
             }
         }));
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        floatingActionMenu.showMenuButton(true);
+                        System.out.println("The RecyclerView is not scrolling");
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        System.out.println("Scrolling now");
+                        if (floatingActionMenu.isOpened())
+                            floatingActionMenu.close(true);
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        System.out.println("Scroll Settling");
+                        break;
+
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && floatingActionMenu.isShown()) {
+                    floatingActionMenu.hideMenuButton(true);
+                }
+            }
+        });
+
 
 
 

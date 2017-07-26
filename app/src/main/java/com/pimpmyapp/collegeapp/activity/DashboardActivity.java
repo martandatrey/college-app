@@ -44,7 +44,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -62,8 +61,6 @@ import com.pimpmyapp.collegeapp.fragment.ResultFragment;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
-
-import static com.pimpmyapp.collegeapp.R.id.admin_menu;
 
 //import com.pimpmyapp.collegeapp.Manifest;
 
@@ -255,6 +252,7 @@ public class DashboardActivity extends AppCompatActivity
         yearTv = (TextView) view.findViewById(R.id.yearTv);
         relativeLayoutFab = (RelativeLayout) findViewById(R.id.relativeLayoutFab);
         cordlay = (CoordinatorLayout) findViewById(R.id.cordLay);
+        floatingActionMenu.setClosedOnTouchOutside(true);
     }
 
 
@@ -282,14 +280,7 @@ public class DashboardActivity extends AppCompatActivity
                 Toast.makeText(DashboardActivity.this, "no func assigned", Toast.LENGTH_SHORT).show();
             }
         });
-      /*  cordlay.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (floatingActionMenu.isOpened())
-                    floatingActionMenu.close(true);
-                return true;
-            }
-        });*/
+
     }
 
     private void showDialog() {

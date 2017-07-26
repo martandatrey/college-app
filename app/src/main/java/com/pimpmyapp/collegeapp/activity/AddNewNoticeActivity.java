@@ -2,6 +2,7 @@ package com.pimpmyapp.collegeapp.activity;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +12,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +28,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -36,11 +40,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.koushikdutta.ion.loader.MediaFile;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
 
+import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
+import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 import static android.support.design.widget.Snackbar.make;
 
 public class AddNewNoticeActivity extends AppCompatActivity {
@@ -55,6 +62,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     Spinner catSpinner;
     View parentLayout;
     CoordinatorLayout corLay;
+    TableRow cameraRow, galleryRow;
 
 
     @Override
@@ -99,7 +107,8 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         selectImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openGallary();
+                openDialog();
+                /*openGallary();*/
             }
         });
     }
@@ -132,8 +141,9 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
+        switch (requestCode) {
+            case 0:
+                if (resultCode == RESULT_OK) {
                 imageViewCheck = 1;
                 selectedImageUriFromGallery = data.getData();
                 Glide.with(AddNewNoticeActivity.this)
@@ -143,7 +153,20 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                         .into(noticeImageView);
 
             }
+                break;
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    imageViewCheck = 1;
+                    selectedImageUriFromGallery = data.getData();
+                    Glide.with(AddNewNoticeActivity.this)
+                            .load(selectedImageUriFromGallery)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(noticeImageView);
+                }
         }
+
+
     }
 
     @Override
@@ -271,6 +294,46 @@ String cat = catSpinner.getSelectedItem().toString();
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void openDialog() {
+        LayoutInflater inflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflator.inflate(R.layout.image_dialog_item, null);
+        final Dialog dialog = new Dialog(this);
+        cameraRow = (TableRow) view.findViewById(R.id.cameraRow);
+        galleryRow = (TableRow) view.findViewById(R.id.galleryRow);
+        cameraRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkCameraPermission()) {
+                    Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(i, 0);
+                } else {
+
+                    ActivityCompat.requestPermissions(AddNewNoticeActivity.this, new String[]{Manifest.permission.CAMERA}, 12);
+                }
+
+                dialog.cancel();
+            }
+        });
+
+        galleryRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGallary();
+                dialog.cancel();
+            }
+
+        });
+        dialog.setContentView(view);
+        dialog.setCancelable(true);
+        dialog.show();
+    }
+
+    private boolean checkCameraPermission() {
+        boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        return flag;
+
     }
 
 

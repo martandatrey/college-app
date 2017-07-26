@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="#fff"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        style="@style/sectionHeader"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Select Action"
+        android:textAllCaps="false"
+        android:gravity="center_horizontal"
+        android:textSize="30dp"
+        android:textColor="#f8da4446" />
+
+    <TableRow android:id="@+id/cameraRow">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/camer_colored"
+            android:layout_margin="10dp"
+
+            />
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:text="Camera"
+            android:gravity="center_vertical"
+            android:textSize="30sp"
+            android:layout_marginLeft="40dp"
+            android:textColor="#000"
+
+            />
+
+
+    </TableRow>
+
+
+    <TableRow android:id="@+id/galleryRow">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/gallery_colored2"
+            android:layout_margin="10dp"
+
+            />
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="Gallery"
+            android:gravity="center_vertical"
+            android:textSize="30sp"
+            android:layout_marginLeft="40dp"
+            android:textColor="#000"
+
+            />
+
+
+    </TableRow>
+
+
+</TableLayout>
