@@ -196,7 +196,7 @@ public class NoticeViewActivity extends AppCompatActivity {
     private void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Publish Settings");
-        String publicity = isPublished ? "Published." : " not Published.";
+        String publicity = isPublished ? "Published." : "not Published.";
         builder.setMessage("This Post is " + publicity);
         builder.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
             @Override
@@ -279,12 +279,13 @@ public class NoticeViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 enteredTitle = noticeTitle.getText().toString();
+                String category =catSpinner.getSelectedItem().toString();
                 if (enteredTitle.equals("")) {
                     noticeTitle.setError("Select title for notice");
                 } else {
                     if(!dueDateSelectedByUser.equals(""))
                         noticePojo.setDate("Due Date: "+dueDateSelectedByUser);
-                    else if (catSpinner.getSelectedItem().toString().equals("Select Category")){
+                    else if (category.equals("Select Category")){
                         Toast.makeText(NoticeViewActivity.this, "Select Category", Toast.LENGTH_SHORT).show();
                     }
                     else {
@@ -293,6 +294,7 @@ public class NoticeViewActivity extends AppCompatActivity {
                         noticePojo.setDesc(desc.getText().toString());
                         noticePojo.setImage(noticePojo.getImage());
                         noticePojo.setAddedBy(noticePojo.getAddedBy());
+                        noticePojo.setCategory(category);
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference ref = database.getReference(catSpinner.getSelectedItem().toString());
                         ref.child(notice_id).setValue(noticePojo);
@@ -349,18 +351,8 @@ public class NoticeViewActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d("1234", "onClick: ref child notice id " + noticePojo.getNoticeID());
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference("Notice/" + noticePojo.getNoticeID());
-                storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(NoticeViewActivity.this, "Post Deleted", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(NoticeViewActivity.this, "Delete Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference(noticePojo.getCategory()+"/" + noticePojo.getNoticeID());
+                storageRef.delete();
                 ref.child(noticePojo.getNoticeID()).removeValue();
                 finish();
 
