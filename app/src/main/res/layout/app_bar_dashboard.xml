@@ -74,18 +74,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_insert_photo_black_24dp"
-                fab:fab_label="Notice From Gallery"
+                fab:fab_label="Notice"
                 fab:fab_size="mini"
                 fab:fab_colorNormal="#afa5fc"/>
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/fab_cam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_a_photo_black_24dp"
-                fab:fab_label="Notice From Camera"
-                fab:fab_size="mini"
-                fab:fab_colorNormal="#ede079"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/fab_doc"

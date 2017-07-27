@@ -8,17 +8,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,14 +44,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.koushikdutta.ion.loader.MediaFile;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 
-import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 import static android.support.design.widget.Snackbar.make;
 
 public class AddNewNoticeActivity extends AppCompatActivity {
@@ -56,13 +59,15 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     ImageView noticeImageView;
     String dueDateSelectedByUser = "";
     Uri selectedImageUriFromGallery;
-    int imageViewCheck = 0;
+    int imageViewCheck = 0, year, month, day;
     String enteredTitle, enteredDes;
     Intent i;
     Spinner catSpinner;
     View parentLayout;
     CoordinatorLayout corLay;
     TableRow cameraRow, galleryRow;
+    Calendar calendar;
+    NoticePojo noticepojo;
 
 
     @Override
@@ -108,23 +113,10 @@ public class AddNewNoticeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openDialog();
-                /*openGallary();*/
             }
         });
     }
 
-    private void openGallary() {
-        if (checkGalleryPermission()) {
-            i = new Intent();
-            i.setAction(Intent.ACTION_GET_CONTENT);
-            i.setType("image/*");
-            startActivityForResult(i, 0);
-        } else {
-
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
-        }
-
-    }
 
     private boolean checkGalleryPermission() {
         boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
@@ -144,22 +136,22 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         switch (requestCode) {
             case 0:
                 if (resultCode == RESULT_OK) {
-                imageViewCheck = 1;
-                selectedImageUriFromGallery = data.getData();
-                Glide.with(AddNewNoticeActivity.this)
-                        .load(selectedImageUriFromGallery)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(noticeImageView);
-
-            }
-                break;
-            case 1:
-                if (resultCode == RESULT_OK) {
                     imageViewCheck = 1;
                     selectedImageUriFromGallery = data.getData();
                     Glide.with(AddNewNoticeActivity.this)
                             .load(selectedImageUriFromGallery)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(noticeImageView);
+
+                }
+                break;
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    imageViewCheck = 1;
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    Glide.with(AddNewNoticeActivity.this)
+                            .load(photo)
                             .crossFade()
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(noticeImageView);
@@ -198,11 +190,11 @@ public class AddNewNoticeActivity extends AppCompatActivity {
 
     private void addpost() {
         final float[] fileSize = new float[1];
-        final NoticePojo noticepojo = new NoticePojo();
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        noticepojo = new NoticePojo();
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
 
         String cat = catSpinner.getSelectedItem().toString();
         noticepojo.setCategory(cat);
@@ -297,6 +289,19 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    private void openGallery() {
+        if (checkGalleryPermission()) {
+            i = new Intent();
+            i.setAction(Intent.ACTION_GET_CONTENT);
+            i.setType("image/*");
+            startActivityForResult(i, 0);
+        } else {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
+        }
+
+    }
+
     private void openDialog() {
         LayoutInflater inflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflator.inflate(R.layout.image_dialog_item, null);
@@ -307,7 +312,8 @@ public class AddNewNoticeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (checkCameraPermission()) {
-                    Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent i = new Intent();
+                    i.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(i, 0);
                 } else {
 
@@ -321,7 +327,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         galleryRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openGallary();
+                openGallery();
                 dialog.cancel();
             }
 
@@ -332,9 +338,7 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     }
 
     private boolean checkCameraPermission() {
-        boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-        return flag;
-
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
 

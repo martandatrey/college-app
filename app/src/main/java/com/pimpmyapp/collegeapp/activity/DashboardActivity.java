@@ -68,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionMenu floatingActionMenu;
-    FloatingActionButton fabDoc, fabGal, fabCam;
+    FloatingActionButton fabDoc, fabGal;
     Uri selectedImageUriFromGallery;
     EditText noticeTitle;
     RelativeLayout relativeLayoutFab;
@@ -242,7 +242,6 @@ public class DashboardActivity extends AppCompatActivity
         floatingActionMenu = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
         fabGal = (FloatingActionButton) findViewById(R.id.fab_gal);
         fabDoc = (FloatingActionButton) findViewById(R.id.fab_doc);
-        fabCam = (FloatingActionButton) findViewById(R.id.fab_cam);
         dashboardToolbar = (Toolbar) findViewById(R.id.toolbar);
         // these are the elements of nav header view
         // they are not initialized
@@ -271,13 +270,6 @@ public class DashboardActivity extends AppCompatActivity
             public void onClick(View view) {
                 Toast.makeText(DashboardActivity.this, "No Function assigned to this button.", Toast.LENGTH_SHORT).show();
 
-            }
-        });
-
-        fabCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(DashboardActivity.this, "no func assigned", Toast.LENGTH_SHORT).show();
             }
         });
 
