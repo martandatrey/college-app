@@ -18,6 +18,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.kbeanie.multipicker.api.CacheLocation;
 import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
@@ -51,7 +53,7 @@ import java.util.List;
 
 import static android.support.design.widget.Snackbar.make;
 
-public class AddNewNoticeActivity extends AppCompatActivity {
+public class AddNewNoticeActivity extends AppCompatActivity implements ImagePickerCallback {
     EditText noticeTitle, noticeDes;
     Button dueDateBtn, selectImageBtn;
     ImageView noticeImageView;
@@ -66,8 +68,8 @@ public class AddNewNoticeActivity extends AppCompatActivity {
     TableRow cameraRow, galleryRow;
     Calendar calendar;
     NoticePojo noticepojo;
-    String outputPath;
-    CameraImagePicker imagePicker = new CameraImagePicker(AddNewNoticeActivity.this);
+    CameraImagePicker cameraPicker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -279,29 +281,9 @@ public class AddNewNoticeActivity extends AppCompatActivity {
         cameraRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkCameraPermission()) {
+                takePicture();
+                dialog.cancel();
 
-                    imagePicker.setImagePickerCallback(new ImagePickerCallback() {
-                                                           @Override
-                                                           public void onImagesChosen(List<ChosenImage> images) {
-                                                               // Display images
-                                                           }
-
-                                                           @Override
-                                                           public void onError(String message) {
-                                                               // Do error handling
-                                                           }
-                                                       }
-                    );
-// imagePicker.shouldGenerateMetadata(false); // Default is true
-// imagePicker.shouldGenerateThumbnails(false); // Default is true
-                    String outputPath = imagePicker.pickImage();
-
-                    Toast.makeText(AddNewNoticeActivity.this, "" + outputPath, Toast.LENGTH_SHORT).show();
-                } else {
-
-                    ActivityCompat.requestPermissions(AddNewNoticeActivity.this, new String[]{Manifest.permission.CAMERA}, 12);
-                }
             }
         });
 
@@ -337,59 +319,59 @@ public class AddNewNoticeActivity extends AppCompatActivity {
                 break;
             case Picker.PICK_IMAGE_CAMERA:
                 if (resultCode == RESULT_OK) {
-                    if (imagePicker == null) {
-                        imagePicker = new CameraImagePicker(AddNewNoticeActivity.this);
-                        imagePicker.reinitialize(outputPath);
-                        // OR in one statement
-                        // imagePicker = new CameraImagePicker(Activity.this, outputPath);
-                        imagePicker.setImagePickerCallback(new ImagePickerCallback() {
-                                                               @Override
-                                                               public void onImagesChosen(List<ChosenImage> images) {
-
-                                                                   Glide.with(AddNewNoticeActivity.this).load(images).into(noticeImageView);
-                                                               }
-
-                                                               @Override
-                                                               public void onError(String message) {
-                                                                   // Do error handling
-                                                               }
-                                                           }
-                        );
-// imagePicker.shouldGenerateMetadata(false); // Default is true
-// imagePicker.shouldGenerateThumbnails(false); // Default is true
-                        String outputPath = imagePicker.pickImage();
+                    imageViewCheck = 1;
+                    if (cameraPicker == null) {
+                        cameraPicker = new CameraImagePicker(this);
+                        cameraPicker.setImagePickerCallback(this);
+                        cameraPicker.reinitialize(String.valueOf(selectedImageUriFromGallery));
                     }
-                    imagePicker.submit(data);
+                    cameraPicker.submit(data);
+                }
+
 
                 }
-        }
 
 
     }
 
+    public void takePicture() {
+        cameraPicker = new CameraImagePicker(this);
+        cameraPicker.setDebugglable(true);
+        cameraPicker.setCacheLocation(CacheLocation.EXTERNAL_STORAGE_APP_DIR);
+        cameraPicker.setImagePickerCallback(this);
+        cameraPicker.shouldGenerateMetadata(true);
+        cameraPicker.shouldGenerateThumbnails(true);
+        selectedImageUriFromGallery = Uri.parse(cameraPicker.pickImage());
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // You have to save path in case your activity is killed.
         // In such a scenario, you will need to re-initialize the CameraImagePicker
-        outState.putString("picker_path", outputPath);
+        outState.putString("picker_path", String.valueOf(selectedImageUriFromGallery));
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        // After Activity recreate, you need to re-initialize these
-        // two values to be able to re-initialize CameraImagePicker
+        // After Activity recreate, you need to re-intialize these
+        // two values to be able to re-intialize CameraImagePicker
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("picker_path")) {
-                outputPath = savedInstanceState.getString("picker_path");
+                selectedImageUriFromGallery = Uri.parse(savedInstanceState.getString("picker_path"));
             }
         }
         super.onRestoreInstanceState(savedInstanceState);
     }
 
-    private boolean checkCameraPermission() {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    @Override
+    public void onImagesChosen(List<ChosenImage> list) {
+        Log.d("1234", "onImagesChosen: " + selectedImageUriFromGallery);
+        noticeImageView.setImageURI(selectedImageUriFromGallery);
+
     }
 
-
+    @Override
+    public void onError(String s) {
+        Toast.makeText(this, "Oops! something went wrong", Toast.LENGTH_SHORT).show();
+    }
 }
