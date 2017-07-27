@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -48,6 +50,7 @@ import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.List;
 
@@ -69,15 +72,23 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
     Calendar calendar;
     NoticePojo noticepojo;
     CameraImagePicker cameraPicker;
-
+    int flagCheck = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_notice);
         getSupportActionBar().setTitle("Add New Notice");
+        checkPermissions();
         init();
         methodListener();
+
+    }
+
+    private void checkPermissions() {
+        if(!checkCameraPermission() || !checkGalleryPermission()){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 12);
+        }
     }
 
     private void init() {
@@ -123,6 +134,9 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
         boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         return flag;
     }
+    private boolean checkCameraPermission(){
+        return ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -159,6 +173,10 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
     }
 
     private void addpost() {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Uploading...");
+        dialog.setCancelable(false);
+        dialog.show();
         final float[] fileSize = new float[1];
         noticepojo = new NoticePojo();
         calendar = Calendar.getInstance();
@@ -188,16 +206,22 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
                 });
                 snackbar.show();
             } else {
-                final ProgressDialog dialog = new ProgressDialog(this);
-                dialog.setMessage("Uploading...");
-                dialog.setCancelable(false);
-                dialog.show();
+
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference ref = database.getReference(cat);
                 final String noticeKey = ref.push().getKey();
                 final StorageReference reference = storage.getReference(cat + "/" + noticeKey);
-                final UploadTask[] uploadTask = {reference.putFile(selectedImageUriFromGallery)};
+                final UploadTask[] uploadTask = {null};
+                if (flagCheck == 1) {
+                    Bitmap src = BitmapFactory.decodeFile(selectedImageUriFromGallery.toString());
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    src.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] data = baos.toByteArray();
+                    uploadTask[0] = reference.putBytes(data);
+                } else if (flagCheck == 2) {
+                    uploadTask[0] = reference.putFile(selectedImageUriFromGallery);
+                }
 
                 uploadTask[0].addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -260,16 +284,10 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
     }
 
     private void openGallery() {
-        if (checkGalleryPermission()) {
             i = new Intent();
             i.setAction(Intent.ACTION_GET_CONTENT);
             i.setType("image/*");
             startActivityForResult(i, 0);
-        } else {
-
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
-        }
-
     }
 
     private void openDialog() {
@@ -281,7 +299,9 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
         cameraRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                flagCheck = 1;
                 takePicture();
+
                 dialog.cancel();
 
             }
@@ -290,6 +310,7 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
         galleryRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                flagCheck = 2;
                 openGallery();
                 dialog.cancel();
             }
@@ -329,7 +350,7 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
                 }
 
 
-                }
+        }
 
 
     }
@@ -343,6 +364,7 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
         cameraPicker.shouldGenerateThumbnails(true);
         selectedImageUriFromGallery = Uri.parse(cameraPicker.pickImage());
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // You have to save path in case your activity is killed.
