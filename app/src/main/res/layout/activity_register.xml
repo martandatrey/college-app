@@ -21,8 +21,10 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/registerBtn"
-        android:layout_below="@+id/regTitle">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/regTitle"
+        android:layout_above="@+id/registerBtn">
 
         <LinearLayout
             android:id="@+id/scrollLayout"
@@ -31,8 +33,28 @@
             android:layout_margin="30dp"
             android:layout_marginBottom="150dp"
             android:orientation="vertical"
-            android:paddingBottom="28dp">
+            >
 
+            <LinearLayout
+                android:id="@+id/linLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_person_black_24dp"
+                    android:tint="#636363" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Choose Profile Picture" />
+            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -44,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/ic_person_black_24dp"
                     android:hint="Name"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
 
 
             </android.support.design.widget.TextInputLayout>
@@ -58,34 +80,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Roll Number"
-                    android:maxLength="10"
-                    />
+                    android:maxLength="10" />
 
 
             </android.support.design.widget.TextInputLayout>
+
             <Spinner
                 android:id="@+id/branch"
-                android:paddingTop="20dp"
-                android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/college_branches"
-                />
+                android:paddingBottom="10dp"
+                android:paddingTop="20dp" />
+
             <Spinner
                 android:id="@+id/semester"
-                android:paddingTop="10dp"
-                android:paddingBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:entries="@array/semester"/>
+                android:entries="@array/semester"
+                android:paddingBottom="5dp"
+                android:paddingTop="10dp" />
+
             <TextView
                 android:id="@+id/errorSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="#ff0000"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -98,7 +120,7 @@
                     android:drawableRight="@drawable/ic_email_black_24dp"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
 
 
             </android.support.design.widget.TextInputLayout>
@@ -111,11 +133,11 @@
                     android:id="@+id/phnoET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Phone Number"
                     android:drawableRight="@drawable/ic_call_black_24dp"
-                    android:maxLength="10"
+                    android:hint="Phone Number"
                     android:inputType="phone"
-                    android:maxLines="1"/>
+                    android:maxLength="10"
+                    android:maxLines="1" />
 
 
             </android.support.design.widget.TextInputLayout>
@@ -128,10 +150,10 @@
                     android:id="@+id/passET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_vpn_key_black_24dp"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:drawableRight="@drawable/ic_vpn_key_black_24dp"/>
+                    android:maxLines="1" />
 
 
             </android.support.design.widget.TextInputLayout>
@@ -147,9 +169,15 @@
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Apply For Admin" />
 
         </LinearLayout>
     </ScrollView>

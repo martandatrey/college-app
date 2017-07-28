@@ -1,30 +1,54 @@
 package com.pimpmyapp.collegeapp.activity;
 
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
     EditText nameET, emailET, passwordET, rollnoET, phnoET, cpasswordET;
     Button regBtn;
+    ImageView profileImage;
     TextView errorSpinner;
     Spinner branch, semester;
-    UserPojo userPojoForRegister;
+    Intent i;
+    ScrollView scrollView;
+    LinearLayout linLay;
+    Uri selectedImageUriFromGallery;
+    CheckBox checkBox;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +69,10 @@ public class RegisterActivity extends AppCompatActivity {
         errorSpinner = (TextView) findViewById(R.id.errorSpinner);
         errorSpinner.setVisibility(View.GONE);
         semester = (Spinner) findViewById(R.id.semester);
+        profileImage = (ImageView) findViewById(R.id.profileImage);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        linLay = (LinearLayout) findViewById(R.id.linLay);
+        checkBox = (CheckBox) findViewById(R.id.checkBox);
     }
 
     private void methodListner() {
@@ -54,9 +82,47 @@ public class RegisterActivity extends AppCompatActivity {
                 register();
             }
         });
+        linLay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickImage();
+            }
+        });
+    }
+
+    private void pickImage() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            openGallery();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
+        }
+    }
+
+    private void openGallery() {
+
+        i = new Intent();
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        i.setType("image/*");
+        startActivityForResult(i, 0);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0)
+            if (resultCode == RESULT_OK) {
+                selectedImageUriFromGallery = data.getData();
+                Glide.with(RegisterActivity.this)
+                        .load(selectedImageUriFromGallery)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(profileImage);
+            }
     }
 
     private void register() {
+
         String name = nameET.getText().toString();
         String rollNo = rollnoET.getText().toString();
         final String phno = phnoET.getText().toString();
@@ -68,64 +134,67 @@ public class RegisterActivity extends AppCompatActivity {
 
         errorSpinner.setText("");
 
-        if (name.equals(""))
+        if (name.equals("")) {
             nameET.setError("Name is required.");
+            focusOnView(nameET);
 
-        else if (rollNo.equals(""))
+        } else if (rollNo.equals("")) {
             rollnoET.setError("Roll Number is required.");
-
-
-        else if (selBranch.equals("-- Select Branch --")) {
+            focusOnView(rollnoET);
+        } else if (selBranch.equals("-- Select Branch --")) {
             errorSpinner.setVisibility(View.VISIBLE);
             errorSpinner.setText("Select your branch");
+            focusOnView(errorSpinner);
         } else if (sem.equals("-- Select Semester --")) {
             errorSpinner.setVisibility(View.VISIBLE);
             errorSpinner.append("Enter your semester.");
+            focusOnView(errorSpinner);
         } else if (email.equals("")) {
             emailET.setError("Email is required.");
-
-        } else if (!(Pattern.matches("\\w*[@]\\w[.]\\w*", email)))
+            focusOnView(emailET);
+        } else if (!(Pattern.matches("\\w*[@]\\w[.]\\w*", email))) {
+            focusOnView(emailET);
             emailET.setError("Email is not valid.");
-
-
-        else if (phno.equals(""))
+        } else if (phno.equals("")) {
             phnoET.setError("Phone number is required.");
-
-
-        else if (phno.length() < 10) {
+            focusOnView(phnoET);
+        } else if (phno.length() < 10) {
+            focusOnView(phnoET);
             phnoET.setError("Enter valid phone no.");
-        }
-        else if (pass.equals(""))
+        } else if (pass.equals("")) {
+            focusOnView(passwordET);
             passwordET.setError("Password is required.");
-
-        else if (pass.length() < 8) {
+        } else if (pass.length() < 8) {
+            focusOnView(passwordET);
             passwordET.setError("Minimum 8 characters are required");
-        }
-
-        else if (cpass.equals(""))
+        } else if (cpass.equals("")) {
+            focusOnView(cpasswordET);
             cpasswordET.setError("Re-enter your password.");
-
-        else if (!cpass.equals(pass)) {
+        } else if (!cpass.equals(pass)) {
+            focusOnView(cpasswordET);
             cpasswordET.setError("password doesn't matches");
-        }
-        else
-
+        } else
         {
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setMessage("Registering...");
+            dialog.setCancelable(false);
+            dialog.show();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference ref = database.getReference("Users");
-            UserPojo user = new UserPojo();
+            final DatabaseReference ref = database.getReference("Users");
+            final UserPojo user = new UserPojo();
             user.setName(name);
             user.setEmail(email);
             user.setPass(pass);
             user.setBranch(selBranch);
             user.setRollNo(rollNo);
             user.setPhoneNo(phno);
-            String user_ID = ref.push().getKey();
+            final String user_ID = ref.push().getKey();
             user.setUser_id(user_ID);
             user.setSem(sem);
-            ArrayList<String>arrayList = new ArrayList<>();
-            arrayList.add(email);
-
+            if(checkBox.isChecked())
+                user.setWantsTobeAdmin(true);
+            else
+                user.setWantsTobeAdmin(false);
             switch (sem) {
                 case "I":
                     user.setYear("1st");
@@ -152,14 +221,40 @@ public class RegisterActivity extends AppCompatActivity {
                     user.setYear("4th");
                     break;
             }
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("Profile_Images/" + user_ID);
+            final UploadTask uploadTask = storageReference.putFile(selectedImageUriFromGallery);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-            ref.child(user_ID).setValue(user);
+                    user.setProfileImage(taskSnapshot.getDownloadUrl().toString());
+                    ref.child(user_ID).setValue(user);
+                    dialog.cancel();
+                    Snackbar.make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();
+                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                    finish();
+                }
+            });
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.cancel();
+                    Toast.makeText(RegisterActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-            Snackbar.make(regBtn, "You have registered sucessfully.", Snackbar.LENGTH_SHORT).show();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
+
         }
 
 
+    }
+
+    private final void focusOnView(final View view) {
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.scrollTo(0, view.getBottom());
+            }
+        });
     }
 }

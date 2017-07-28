@@ -35,12 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        SharedPreferences pref = getSharedPreferences("userData",MODE_PRIVATE);
-        boolean isLogin = pref.getBoolean("isLogin", false);
-        if (isLogin) {
-            startActivity(new Intent(this, DashboardActivity.class));
-            finish();
-        }
+
         intit();
         methodListener();
     }
