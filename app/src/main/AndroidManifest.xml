@@ -6,8 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.camera"></uses-feature>
-
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -31,8 +30,13 @@
         <activity
             android:name=".activity.NoticeViewActivity"
             android:theme="@style/WithActionBar" />
-        <activity android:name=".activity.AddNewNoticeActivity"
-            android:theme="@style/WithActionBar"></activity>
+        <activity
+            android:name=".activity.AddNewNoticeActivity"
+            android:theme="@style/WithActionBar" />
+        <activity android:name=".activity.CollegeDetailActivity" />
+        <activity android:name=".activity.DepartmentDetailActivity" />
+        <activity android:name=".activity.UserProfileActivity" />
+        <activity android:name=".activity.PayFeeActivtiy"></activity>
     </application>
 
 </manifest>

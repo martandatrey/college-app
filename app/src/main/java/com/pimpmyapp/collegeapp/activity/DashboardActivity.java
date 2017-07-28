@@ -58,6 +58,7 @@ import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.fragment.AdminFragment;
 import com.pimpmyapp.collegeapp.fragment.NoticeFragment;
 import com.pimpmyapp.collegeapp.fragment.ResultFragment;
+import com.pimpmyapp.collegeapp.fragment.WelcomeFragment;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
@@ -191,6 +192,11 @@ public class DashboardActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        if (id == R.id.dashboard) {
+            changeFragment(new WelcomeFragment());
+            setSupportActionBar(dashboardToolbar);
+            getSupportActionBar().setTitle("Dashboard");
+        }
 
         if (id == R.id.notices) {
             changeFragment(new NoticeFragment());
