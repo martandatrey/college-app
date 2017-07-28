@@ -78,7 +78,7 @@ public class DashboardActivity extends AppCompatActivity
     TextView nameTv, branchTv, yearTv;
     Button dueDateBtn, addNoticeBtn, selectImageBtn;
     String dueDateSelectedByUser,user_id;
-    ImageView noticeImageView;
+    ImageView noticeImageView, profileImage;
     String enteredTitle;
     NavigationView navigationView;
     Toolbar dashboardToolbar;
@@ -91,8 +91,11 @@ public class DashboardActivity extends AppCompatActivity
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("Dashboard");
         init();
+        MenuItem mi = navigationView.getMenu().getItem(0);
+        mi.setChecked(true);
+        floatingActionMenu.setVisibility(View.GONE);
         setValues();
         methodListener();
 
@@ -129,12 +132,26 @@ public class DashboardActivity extends AppCompatActivity
                 branchTv.setText(dataSnapshot.child(user_id).child("branch").getValue(String.class));
                 String year= dataSnapshot.child(user_id).child("year").getValue(String.class) + " year " + dataSnapshot.child(user_id).child("sem").getValue(String.class) + " semester";
                 yearTv.setText(year);
+                String imagePath = dataSnapshot.child(user_id).child("profileImage").getValue(String.class);
+                if (!imagePath.equals(""))
+                    Glide.with(DashboardActivity.this)
+                            .load(imagePath)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(profileImage);
+
                 boolean isAdmin = dataSnapshot.child(user_id).child("admin").getValue(boolean.class);
                 MenuItem admin_menu = navigationView.getMenu().getItem(6);
 
                 if(!isAdmin){
                     admin_menu.setVisible(false);
                 }
+                boolean isSAdmin = dataSnapshot.child(user_id).child("sAdmin").getValue(boolean.class);
+                MenuItem users = admin_menu.getSubMenu().getItem(1);
+                if (!isSAdmin) {
+                    users.setVisible(false);
+                }
+
             }
 
             @Override
@@ -193,9 +210,10 @@ public class DashboardActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.dashboard) {
-            changeFragment(new WelcomeFragment());
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Dashboard");
+            changeFragment(new WelcomeFragment());
+            floatingActionMenu.setVisibility(View.GONE);
         }
 
         if (id == R.id.notices) {
@@ -258,6 +276,7 @@ public class DashboardActivity extends AppCompatActivity
         relativeLayoutFab = (RelativeLayout) findViewById(R.id.relativeLayoutFab);
         cordlay = (CoordinatorLayout) findViewById(R.id.cordLay);
         floatingActionMenu.setClosedOnTouchOutside(true);
+        profileImage = (ImageView) view.findViewById(R.id.profile_image);
     }
 
 
