@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">College App</string>
+    <string name="app_name">College Board</string>
     <string-array name="college_branches">
         <item>-- Select Branch --</item>
         <item>Civil Engineering</item>
