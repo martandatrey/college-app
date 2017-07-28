@@ -5,6 +5,7 @@ package com.pimpmyapp.collegeapp.pojo;
  */
 
 public class UserPojo {
+    String profileImage = "";
     String user_id;
     String name = "";
     String pass = "";
@@ -15,6 +16,43 @@ public class UserPojo {
     String year = "";
     String sem = "";
     boolean admin = false;
+    boolean sAdmin = false;
+    boolean wantsTobeAdmin = false;
+
+    @Override
+    public String toString() {
+        return "UserPojo{" +
+                "profileImage='" + profileImage + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", name='" + name + '\'' +
+                ", pass='" + pass + '\'' +
+                ", email='" + email + '\'' +
+                ", rollNo='" + rollNo + '\'' +
+                ", phoneNo='" + phoneNo + '\'' +
+                ", branch='" + branch + '\'' +
+                ", year='" + year + '\'' +
+                ", sem='" + sem + '\'' +
+                ", admin=" + admin +
+                ", sAdmin=" + sAdmin +
+                ", wantsTobeAdmin=" + wantsTobeAdmin +
+                '}';
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public boolean isWantsTobeAdmin() {
+        return wantsTobeAdmin;
+    }
+
+    public void setWantsTobeAdmin(boolean wantsTobeAdmin) {
+        this.wantsTobeAdmin = wantsTobeAdmin;
+    }
 
     public boolean isAdmin() {
         return admin;
@@ -32,7 +70,7 @@ public class UserPojo {
         this.sAdmin = sAdmin;
     }
 
-    boolean sAdmin = false;
+
 
     public String getSem() {
         return sem;

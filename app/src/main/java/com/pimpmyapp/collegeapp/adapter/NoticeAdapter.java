@@ -254,10 +254,6 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
                         holder.progressBar.setVisibility(View.GONE);
                     }
                 });
-
-
-
-
     }
 
     @Override
@@ -283,30 +279,5 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
            publishIV = (ImageView) itemView.findViewById(R.id.publishedIv);
            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
         }
-
-    }
-    private void deleteNotice() {
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Notice");
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Confirm?");
-        builder.setMessage("Delete this notice");
-        builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d("1234", "onClick: ref child notice id " + noticePojo.getNoticeID());
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference("Notice/" + noticePojo.getNoticeID());
-                storageRef.delete();
-                ref.child(noticePojo.getNoticeID()).removeValue();
-
-            }
-        });
-        Dialog dialog = builder.create();
-        dialog.show();
     }
 }
