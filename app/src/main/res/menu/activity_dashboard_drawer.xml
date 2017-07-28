@@ -27,11 +27,6 @@
             android:icon="@drawable/result"
             android:title="Check Result"
             />
-        <item
-            android:id="@+id/logout"
-
-            android:icon="@drawable/ic_power_settings_new_black_24dp"
-            android:title="Logout" />
 
 
         <item android:title="Admin Panel" >
@@ -45,9 +40,16 @@
                     android:id="@+id/users"
                     android:icon="@drawable/ic_short_text_black_24dp"
                     android:title="Users" />
+
                 </group>
             </menu>
 
         </item>
+        <item
+            android:id="@+id/logout"
+
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
+            android:title="Logout" />
+
     </group>
 </menu>
