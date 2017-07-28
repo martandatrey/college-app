@@ -1,9 +1,9 @@
 package com.pimpmyapp.collegeapp.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.pimpmyapp.collegeapp.R;
 
@@ -16,8 +16,9 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                    startActivity(new Intent(SplashActivity.this,DashboardActivity.class));
+                startActivity(new Intent(SplashActivity.this, DashboardActivity.class));
+                finish();
             }
-        },3000);
+        }, 3000);
     }
 }
