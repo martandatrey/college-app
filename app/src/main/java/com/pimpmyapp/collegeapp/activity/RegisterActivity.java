@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,7 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
     ScrollView scrollView;
     LinearLayout linLay;
     Uri selectedImageUriFromGallery;
-    UserPojo userPojoForRegister;
+    CheckBox checkBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
         profileImage = (ImageView) findViewById(R.id.profileImage);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         linLay = (LinearLayout) findViewById(R.id.linLay);
+        checkBox = (CheckBox) findViewById(R.id.checkBox);
     }
 
     private void methodListner() {
@@ -189,6 +191,10 @@ public class RegisterActivity extends AppCompatActivity {
             final String user_ID = ref.push().getKey();
             user.setUser_id(user_ID);
             user.setSem(sem);
+            if(checkBox.isChecked())
+                user.setWantsTobeAdmin(true);
+            else
+                user.setWantsTobeAdmin(false);
             switch (sem) {
                 case "I":
                     user.setYear("1st");
