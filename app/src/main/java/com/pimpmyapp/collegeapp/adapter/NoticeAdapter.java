@@ -229,6 +229,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
         PersonViewHolder personViewHolder = new PersonViewHolder(view);
         return personViewHolder;
 
+
     }
 
     @Override
@@ -241,20 +242,33 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
         }
         holder.title.setText(noticePojo.getTitle());
         holder.date.setText(noticePojo.getDate());
+        holder.image.setImageDrawable(null);
         Ion.with(context)
                 .load(noticePojo.getImage())
                 .withBitmap()
                 .crossfade(true)
                 .smartSize(true)
                 .intoImageView(holder.image)
-
                 .setCallback(new FutureCallback<ImageView>() {
                     @Override
                     public void onCompleted(Exception e, ImageView result) {
                         holder.progressBar.setVisibility(View.GONE);
                     }
                 });
+       /* Glide.with(context)
+                .load(noticePojo.getImage())
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.image);
+
+        holder.progressBar.setVisibility(View.GONE);*/
     }
+
+
+   /* @Override
+    public void onViewRecycled(PersonViewHolder holder) {
+        holder.image.setImageDrawable(null);
+    }*/
 
     @Override
     public int getItemCount() {
@@ -279,5 +293,31 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
            publishIV = (ImageView) itemView.findViewById(R.id.publishedIv);
            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
         }
+
+    }
+
+    private void deleteNotice() {
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Notice");
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Confirm?");
+        builder.setMessage("Delete this notice");
+        builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d("1234", "onClick: ref child notice id " + noticePojo.getNoticeID());
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference("Notice/" + noticePojo.getNoticeID());
+                storageRef.delete();
+                ref.child(noticePojo.getNoticeID()).removeValue();
+
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 }
