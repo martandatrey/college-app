@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -48,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
     LinearLayout linLay;
     Uri selectedImageUriFromGallery;
     CheckBox checkBox;
+    int profileImageSelected= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0)
             if (resultCode == RESULT_OK) {
+                profileImageSelected =1;
                 selectedImageUriFromGallery = data.getData();
                 Glide.with(RegisterActivity.this)
                         .load(selectedImageUriFromGallery)
@@ -152,7 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (email.equals("")) {
             emailET.setError("Email is required.");
             focusOnView(emailET);
-        } else if (!(Pattern.matches("\\w*[@]\\w[.]\\w*", email))) {
+        } else if (!(Pattern.matches("\\w*[@]\\w*[.]\\w*", email))) {
             focusOnView(emailET);
             emailET.setError("Email is not valid.");
         } else if (phno.equals("")) {
@@ -221,28 +224,36 @@ public class RegisterActivity extends AppCompatActivity {
                     user.setYear("4th");
                     break;
             }
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference("Profile_Images/" + user_ID);
-            final UploadTask uploadTask = storageReference.putFile(selectedImageUriFromGallery);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            if(profileImageSelected==1) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference("Profile_Images/" + user_ID);
+                final UploadTask uploadTask = storageReference.putFile(selectedImageUriFromGallery);
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    user.setProfileImage(taskSnapshot.getDownloadUrl().toString());
-                    ref.child(user_ID).setValue(user);
-                    dialog.cancel();
-                    Snackbar.make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();
-                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                    finish();
-                }
-            });
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    dialog.cancel();
-                    Toast.makeText(RegisterActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-
+                        user.setProfileImage(taskSnapshot.getDownloadUrl().toString());
+                        ref.child(user_ID).setValue(user);
+                        dialog.cancel();
+                        Snackbar.make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                });
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        dialog.cancel();
+                        Toast.makeText(RegisterActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            else{
+                ref.child(user_ID).setValue(user);
+                dialog.cancel();
+                Snackbar.make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                finish();
+            }
 
         }
 

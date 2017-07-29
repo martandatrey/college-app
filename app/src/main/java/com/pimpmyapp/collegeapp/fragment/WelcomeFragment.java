@@ -1,5 +1,6 @@
 package com.pimpmyapp.collegeapp.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ public class WelcomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         View view = inflater.inflate(R.layout.welcome_fragment,null);
 
         userProfileLay = (RelativeLayout) view.findViewById(R.id.user_profileLay);

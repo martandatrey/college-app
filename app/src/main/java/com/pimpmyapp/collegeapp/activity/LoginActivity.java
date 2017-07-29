@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,13 +69,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage("Logging In...");
         progressDialog.setCancelable(false);
         progressDialog.show();
         if (!isNetworkAvailable()) {
             Snackbar.make(loginBtn, "No Internet Connection.", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    progressDialog.cancel();
                     login();
                 }
             }).show();

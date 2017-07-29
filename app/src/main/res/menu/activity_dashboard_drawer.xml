@@ -36,15 +36,16 @@
                     android:id="@+id/reviewNotice"
                     android:icon="@drawable/ic_rate_review_black_24dp"
                     android:title="Review Notice" />
-                <item
-                    android:id="@+id/users"
-                    android:icon="@drawable/ic_short_text_black_24dp"
-                    android:title="Users" />
+
 
                 </group>
             </menu>
 
         </item>
+        <item
+            android:id="@+id/users"
+            android:icon="@drawable/ic_short_text_black_24dp"
+            android:title="Users" />
         <item
             android:id="@+id/logout"
 

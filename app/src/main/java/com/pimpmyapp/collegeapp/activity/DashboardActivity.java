@@ -58,10 +58,13 @@ import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.fragment.AdminFragment;
 import com.pimpmyapp.collegeapp.fragment.NoticeFragment;
 import com.pimpmyapp.collegeapp.fragment.ResultFragment;
+import com.pimpmyapp.collegeapp.fragment.UserListingFragment;
 import com.pimpmyapp.collegeapp.fragment.WelcomeFragment;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.Calendar;
+
+import static com.pimpmyapp.collegeapp.R.id.users;
 
 //import com.pimpmyapp.collegeapp.Manifest;
 
@@ -149,7 +152,7 @@ public class DashboardActivity extends AppCompatActivity
                     admin_menu.setVisible(false);
                 }
                 boolean isSAdmin = dataSnapshot.child(user_id).child("sAdmin").getValue(boolean.class);
-                MenuItem users = admin_menu.getSubMenu().getItem(1);
+                MenuItem users = navigationView.getMenu().getItem(7);
                 if (!isSAdmin) {
                     users.setVisible(false);
                 }
@@ -255,7 +258,8 @@ public class DashboardActivity extends AppCompatActivity
 
         } else if (id == R.id.users) {
             setSupportActionBar(dashboardToolbar);
-            getSupportActionBar().setTitle("Extra");
+            getSupportActionBar().setTitle("Users");
+            changeFragment(new UserListingFragment());
 
         } else if (id == R.id.logout) {
             logout();

@@ -15,9 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/WithoutActionBar">
-        <activity android:name=".activity.LoginActivity">
-
-        </activity>
+        <activity android:name=".activity.LoginActivity"></activity>
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/WithoutActionBar">
@@ -41,7 +39,7 @@
         <activity android:name=".activity.CollegeDetailActivity" />
         <activity android:name=".activity.DepartmentDetailActivity" />
         <activity android:name=".activity.UserProfileActivity" />
-        <activity android:name=".activity.PayFeeActivtiy"></activity>
+        <activity android:name=".activity.PayFeeActivtiy" />
     </application>
 
 </manifest>

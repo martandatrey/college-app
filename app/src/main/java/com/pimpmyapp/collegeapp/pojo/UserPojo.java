@@ -6,7 +6,7 @@ package com.pimpmyapp.collegeapp.pojo;
 
 public class UserPojo {
     String profileImage = "";
-    String user_id;
+    String user_id = "";
     String name = "";
     String pass = "";
     String email = "";
