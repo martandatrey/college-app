@@ -96,11 +96,11 @@ public class DashboardActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Dashboard");
         init();
+        navigationView.setItemIconTintList(null);
         MenuItem mi = navigationView.getMenu().getItem(0);
         mi.setChecked(true);
         setValues();
         methodListener();
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -221,7 +221,6 @@ public class DashboardActivity extends AppCompatActivity
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.fragment_container, new WelcomeFragment());
             transaction.commit();
-            floatingActionMenu.setVisibility(View.GONE);
         }
 
         if (id == R.id.notices) {

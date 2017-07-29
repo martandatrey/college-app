@@ -38,6 +38,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="11dp"
             android:layout_marginLeft="11dp"
+            android:visibility="gone"
             android:layout_marginRight="11dp"
             fab:menu_animationDelayPerItem="55"
             fab:menu_backgroundColor="@color/transparent"

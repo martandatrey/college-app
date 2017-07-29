@@ -26,7 +26,7 @@
         />
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_below="@id/loginTitle"
+        android:layout_below="@+id/loginTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -35,7 +35,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/rectangle"
             android:layout_centerInParent="true"
             android:layout_margin="10dp"
