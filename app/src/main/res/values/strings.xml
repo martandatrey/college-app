@@ -2,8 +2,12 @@
     <string name="app_name">College Board</string>
     <string-array name="college_branches">
         <item>-- Select Branch --</item>
+        <item>Ceramic Engineering</item>
         <item>Civil Engineering</item>
         <item>Computer Science</item>
+        <item>Electrical Engineering</item>
+        <item>Electronics Engineering</item>
+        <item>Mechanical Engineering</item>
     </string-array>
     <string-array name="semester">
         <item>-- Select Semester --</item>

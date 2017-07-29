@@ -5,13 +5,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +38,9 @@ public class WelcomeFragment extends Fragment {
     LinearLayout collegeLay, departmentsLay, payFeeLay;
     TextView userName, userRollNo, userBranch;
     String user_id;
+    ImageView userImage;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,6 +53,8 @@ public class WelcomeFragment extends Fragment {
         userName = (TextView) view.findViewById(R.id.user_name);
         userRollNo = (TextView) view.findViewById(R.id.userRollNo);
         userBranch = (TextView) view.findViewById(R.id.userBranch);
+        userImage = (ImageView) view.findViewById(R.id.profile_image);
+
         setValues();
         methodListener();
         return view;
@@ -62,6 +71,15 @@ public class WelcomeFragment extends Fragment {
                 userName.setText(dataSnapshot.child(user_id).child("name").getValue(String.class));
                 userBranch.setText(dataSnapshot.child(user_id).child("branch").getValue(String.class));
                 userRollNo.setText(dataSnapshot.child(user_id).child("rollNo").getValue(String.class));
+                String imagePath = dataSnapshot.child(user_id).child("profileImage").getValue(String.class);
+                Log.d("1234", "onDataChange: " + imagePath);
+                Log.d("1234", "onDataChange: " + user_id);
+                if (!imagePath.equals(""))
+                    Glide.with(getActivity())
+                            .load(imagePath)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(userImage);
 
             }
 
