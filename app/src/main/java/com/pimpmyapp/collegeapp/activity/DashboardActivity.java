@@ -95,7 +95,6 @@ public class DashboardActivity extends AppCompatActivity
         init();
         MenuItem mi = navigationView.getMenu().getItem(0);
         mi.setChecked(true);
-        floatingActionMenu.setVisibility(View.GONE);
         setValues();
         methodListener();
 
@@ -118,9 +117,12 @@ public class DashboardActivity extends AppCompatActivity
            Snackbar.make(floatingActionMenu, "Your notice will be published shortly", Snackbar.LENGTH_LONG).show();
            i.putExtra("uploaded" , false);
        }
+        setValues();
+
+
     }
 
-    private void setValues() {
+    public void setValues() {
         SharedPreferences sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
         user_id = sharedPreferences.getString("user_id","Anonymous");
 
@@ -212,7 +214,10 @@ public class DashboardActivity extends AppCompatActivity
         if (id == R.id.dashboard) {
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Dashboard");
-            changeFragment(new WelcomeFragment());
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.add(R.id.fragment_container, new WelcomeFragment());
+            transaction.commit();
             floatingActionMenu.setVisibility(View.GONE);
         }
 
@@ -220,10 +225,12 @@ public class DashboardActivity extends AppCompatActivity
             changeFragment(new NoticeFragment());
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Notices");
+            floatingActionMenu.setVisibility(View.VISIBLE);
 
         } else if (id == R.id.TimeTable) {
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Time Table");
+            floatingActionMenu.setVisibility(View.VISIBLE);
 
         } else if (id == R.id.AcedemicCalender) {
             setSupportActionBar(dashboardToolbar);
@@ -232,6 +239,7 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.Documents) {
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Documents");
+            floatingActionMenu.setVisibility(View.VISIBLE);
 
         }else if (id == R.id.result) {
             setSupportActionBar(dashboardToolbar);
@@ -243,6 +251,7 @@ public class DashboardActivity extends AppCompatActivity
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Review Notice");
             changeFragment(new AdminFragment());
+            floatingActionMenu.setVisibility(View.VISIBLE);
 
         } else if (id == R.id.users) {
             setSupportActionBar(dashboardToolbar);
@@ -497,4 +506,6 @@ public class DashboardActivity extends AppCompatActivity
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+
 }

@@ -245,6 +245,8 @@ public class UserProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 insertValueOnServer();
+                branch.setText(branchSpinner.getSelectedItem().toString());
+                semester.setText(semSpinner.getSelectedItem().toString());
                 setUneditable();
             }
         });

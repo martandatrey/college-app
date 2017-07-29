@@ -60,7 +60,14 @@ public class WelcomeFragment extends Fragment {
         return view;
     }
 
-    private void setValues() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        setValues();
+
+    }
+
+    public void setValues() {
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userData", MODE_PRIVATE);
         user_id = sharedPreferences.getString("user_id", "Anonymous");
