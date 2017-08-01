@@ -87,8 +87,7 @@ public class DashboardActivity extends AppCompatActivity
     Toolbar dashboardToolbar;
     int imageViewCheck = 0;
     CoordinatorLayout cordlay;
-    UserPojo userPojo = new UserPojo();
-
+    boolean isBlocked;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +95,19 @@ public class DashboardActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Dashboard");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                UserPojo userPojo = dataSnapshot.child(user_id).getValue(UserPojo.class);
+                isBlocked=userPojo.isBlocked();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         init();
         navigationView.setItemIconTintList(null);
         MenuItem mi = navigationView.getMenu().getItem(0);
@@ -214,19 +226,8 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                userPojo = dataSnapshot.child(user_id).getValue(UserPojo.class);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        boolean isBlocked = userPojo.isBlocked();
+        Log.d("1234", "onNavigationItemSelected: " + isBlocked);
         int id = item.getItemId();
         if (id == R.id.dashboard) {
             setSupportActionBar(dashboardToolbar);

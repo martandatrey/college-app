@@ -62,8 +62,8 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean isAdmin = dataSnapshot.child(user_id).child("admin").getValue(boolean.class);
-                if(!isAdmin){
-                    holder.publishIV.setVisibility(View.INVISIBLE);
+                if(isAdmin){
+                    holder.publishIV.setVisibility(View.VISIBLE);
                 }
             }
 

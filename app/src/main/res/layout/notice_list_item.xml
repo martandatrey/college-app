@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:padding="5dp"
+                    android:visibility="invisible"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/ic_public_black_24dp" />
 
