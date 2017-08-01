@@ -1,6 +1,7 @@
 package com.pimpmyapp.collegeapp.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -183,6 +184,10 @@ public class NoticeFragment extends Fragment {
                 i.putExtra("notice_id", noticePojo.getNoticeID());
                 startActivity(i);            }
         });*/
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setMessage("Fetching Notices...");
+        dialog.setCancelable(false);
+        dialog.show();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("Notice");
         ref.addValueEventListener(new ValueEventListener() {
@@ -193,6 +198,7 @@ public class NoticeFragment extends Fragment {
                     if (notice.isPublished())
                         noticeList.add(notice);
                 }
+                dialog.cancel();
                 noticeAdapter.notifyDataSetChanged();
             }
 

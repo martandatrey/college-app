@@ -252,13 +252,17 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
                         noticepojo.setAddedOn(addedOn);
 
                         fileSize[0] = (float) taskSnapshot.getBytesTransferred();
+                        long imageSize= taskSnapshot.getTotalByteCount();
 
                         if (fileSize[0] < 1024) {
-                            noticepojo.setImageSize(fileSize[0] + "Bytes");
+                            noticepojo.setImageSize(imageSize);
+                            noticepojo.setImageSizeString(fileSize[0] + "Bytes");
                         } else if (fileSize[0] < (1024 * 1024) && fileSize[0] >= 1024) {
-                            noticepojo.setImageSize(fileSize[0] / 1024 + "KB");
+                            noticepojo.setImageSize(imageSize);
+                            noticepojo.setImageSizeString(fileSize[0] / 1024 + "KB");
                         } else if (fileSize[0] < (1024 * 1024 * 1024) && fileSize[0] >= (1024 * 1024)) {
-                            noticepojo.setImageSize(fileSize[0] / (1024 * 1024) + "MB");
+                            noticepojo.setImageSize(imageSize);
+                            noticepojo.setImageSizeString(fileSize[0] / (1024 * 1024) + "MB");
                         }
 
                         ref.child(noticeKey).setValue(noticepojo);

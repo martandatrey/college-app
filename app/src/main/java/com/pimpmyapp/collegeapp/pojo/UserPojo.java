@@ -18,6 +18,7 @@ public class UserPojo {
     boolean admin = false;
     boolean sAdmin = false;
     boolean wantsTobeAdmin = false;
+    boolean blocked = false;
 
     @Override
     public String toString() {
@@ -35,7 +36,16 @@ public class UserPojo {
                 ", admin=" + admin +
                 ", sAdmin=" + sAdmin +
                 ", wantsTobeAdmin=" + wantsTobeAdmin +
+                ", blocked=" + blocked +
                 '}';
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 
     public String getProfileImage() {
@@ -69,7 +79,6 @@ public class UserPojo {
     public void setsAdmin(boolean sAdmin) {
         this.sAdmin = sAdmin;
     }
-
 
 
     public String getSem() {

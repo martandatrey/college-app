@@ -12,8 +12,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -34,8 +34,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,12 +44,22 @@ import com.google.firebase.storage.StorageReference;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
+
+import static android.R.attr.data;
 
 public class NoticeViewActivity extends AppCompatActivity {
     TextView title, date, uploadedBy, fileSize, uploadedOn, desc, expand;
     Drawable expandDrawable, contractDrawable;
-    ImageView image, editIV, publishIV,deleteIV;
+    ImageView image, editIV, publishIV, deleteIV, downloadImage;
     String notice_id;
     EditText noticeTitle;
     Button dueDateBtn, addNoticeBtn, selectImageBtn;
@@ -89,13 +97,12 @@ public class NoticeViewActivity extends AppCompatActivity {
                 for (DataSnapshot child : dataSnapshot.getChildren())
                     if (child.getKey().equals(notice_id)) {
                         noticePojo = child.getValue(NoticePojo.class);
-                        Log.d("1234", "onDataChange: " + noticePojo);
                     }
                 isPublished = noticePojo.isPublished();
                 title.setText(noticePojo.getTitle());
-                date.setText("Due Date: "+noticePojo.getDate());
+                date.setText("Due Date: " + noticePojo.getDate());
                 uploadedBy.setText(noticePojo.getAddedBy());
-                fileSize.setText(noticePojo.getImageSize() + " Bytes");
+                fileSize.setText(noticePojo.getImageSizeString() + " Bytes");
                 uploadedOn.setText(noticePojo.getAddedOn());
                 Glide.with(NoticeViewActivity.this).load(noticePojo.getImage()).crossFade().into(image);
                 if (isPublished) {
@@ -152,7 +159,7 @@ public class NoticeViewActivity extends AppCompatActivity {
                 title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
                 title.setSelected(true);
             }
-        },3000);
+        }, 3000);
         date = (TextView) findViewById(R.id.date);
         uploadedBy = (TextView) findViewById(R.id.uploadedBy);
         editIV = (ImageView) findViewById(R.id.editIV);
@@ -165,6 +172,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         tabLay = (TableLayout) findViewById(R.id.tabLay);
         contractDrawable = this.getResources().getDrawable(R.drawable.ic_remove_circle_outline_black_24dp);
         expandDrawable = this.getResources().getDrawable(R.drawable.ic_add_circle_outline_black_24dp);
+        downloadImage = (ImageView) findViewById(R.id.downloadImage);
     }
 
 
@@ -198,6 +206,11 @@ public class NoticeViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 deleteNotice();
+            }
+        });
+        downloadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
             }
         });
     }
@@ -288,16 +301,15 @@ public class NoticeViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 enteredTitle = noticeTitle.getText().toString();
-                String category =catSpinner.getSelectedItem().toString();
+                String category = catSpinner.getSelectedItem().toString();
                 if (enteredTitle.equals("")) {
                     noticeTitle.setError("Select title for notice");
                 } else {
-                    if(!dueDateSelectedByUser.equals(""))
-                        noticePojo.setDate("Due Date: "+dueDateSelectedByUser);
-                    else if (category.equals("Select Category")){
+                    if (!dueDateSelectedByUser.equals(""))
+                        noticePojo.setDate("Due Date: " + dueDateSelectedByUser);
+                    else if (category.equals("Select Category")) {
                         Toast.makeText(NoticeViewActivity.this, "Select Category", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         noticePojo.setDate("No Due Date");
                         noticePojo.setTitle(enteredTitle);
                         noticePojo.setDesc(desc.getText().toString());
@@ -360,7 +372,7 @@ public class NoticeViewActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d("1234", "onClick: ref child notice id " + noticePojo.getNoticeID());
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference(noticePojo.getCategory()+"/" + noticePojo.getNoticeID());
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference(noticePojo.getCategory() + "/" + noticePojo.getNoticeID());
                 storageRef.delete();
                 ref.child(noticePojo.getNoticeID()).removeValue();
                 finish();

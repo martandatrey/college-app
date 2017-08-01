@@ -84,17 +84,13 @@ public class WelcomeFragment extends Fragment {
                 userBranch.setText(dataSnapshot.child(user_id).child("branch").getValue(String.class));
                 userRollNo.setText(dataSnapshot.child(user_id).child("rollNo").getValue(String.class));
                 String imagePath = dataSnapshot.child(user_id).child("profileImage").getValue(String.class);
-                Log.d("1234", "onDataChange: " + imagePath);
-                Log.d("1234", "onDataChange: " + user_id);
                 if (!imagePath.equals(""))
                     Glide.with(getActivity())
                             .load(imagePath)
                             .crossFade()
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(userImage);
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

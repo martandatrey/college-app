@@ -11,11 +11,12 @@ public class NoticePojo {
     String title = "";
     String noticeID = "";
     String desc = "";
-    String imageSize = "";
+    String imageSizeString = "";
     String addedBy = "";
     boolean published = false;
     String addedOn = "";
     String category = "";
+    long imageSize = 0;
 
     @Override
     public String toString() {
@@ -25,12 +26,21 @@ public class NoticePojo {
                 ", title='" + title + '\'' +
                 ", noticeID='" + noticeID + '\'' +
                 ", desc='" + desc + '\'' +
-                ", imageSize='" + imageSize + '\'' +
+                ", imageSizeString='" + imageSizeString + '\'' +
                 ", addedBy='" + addedBy + '\'' +
                 ", published=" + published +
                 ", addedOn='" + addedOn + '\'' +
                 ", category='" + category + '\'' +
+                ", imageSize=" + imageSize +
                 '}';
+    }
+
+    public long getImageSize() {
+        return imageSize;
+    }
+
+    public void setImageSize(long imageSize) {
+        this.imageSize = imageSize;
     }
 
     public String getCategory() {
@@ -41,12 +51,12 @@ public class NoticePojo {
         this.category = category;
     }
 
-    public String getImageSize() {
-        return imageSize;
+    public String getImageSizeString() {
+        return imageSizeString;
     }
 
-    public void setImageSize(String imageSize) {
-        this.imageSize = imageSize;
+    public void setImageSizeString(String imageSizeString) {
+        this.imageSizeString = imageSizeString;
     }
 
     public String getDesc() {
