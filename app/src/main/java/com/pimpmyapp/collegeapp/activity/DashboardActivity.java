@@ -19,7 +19,6 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -56,6 +55,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pimpmyapp.collegeapp.R;
+import com.pimpmyapp.collegeapp.fragment.AcademicCalendarFragment;
 import com.pimpmyapp.collegeapp.fragment.AdminFragment;
 import com.pimpmyapp.collegeapp.fragment.NoticeFragment;
 import com.pimpmyapp.collegeapp.fragment.ResultFragment;
@@ -253,6 +253,7 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.AcedemicCalender) {
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Academic Calendar");
+            changeFragment(new AcademicCalendarFragment());
 
         } else if (id == R.id.Documents) {
             setSupportActionBar(dashboardToolbar);
