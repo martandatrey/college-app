@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/WithoutActionBar">
-        <activity android:name=".activity.LoginActivity"></activity>
+        <activity android:name=".activity.LoginActivity" />
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/WithoutActionBar">
@@ -36,10 +36,19 @@
         <activity
             android:name=".activity.AddNewNoticeActivity"
             android:theme="@style/WithActionBar" />
-        <activity android:name=".activity.CollegeDetailActivity" />
-        <activity android:name=".activity.DepartmentDetailActivity" />
+        <activity
+            android:name=".activity.CollegeDetailActivity"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.DepartmentDetailActivity"
+            android:theme="@style/WithActionBar" />
         <activity android:name=".activity.UserProfileActivity" />
-        <activity android:name=".activity.PayFeeActivtiy" />
+        <activity
+            android:name=".activity.PayFeeActivity"
+            android:theme="@style/WithActionBar" />
+        <activity
+            android:name=".activity.SyllabusActivity"
+            android:theme="@style/WithActionBar"></activity>
     </application>
 
 </manifest>

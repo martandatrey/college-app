@@ -25,7 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.activity.CollegeDetailActivity;
 import com.pimpmyapp.collegeapp.activity.DepartmentDetailActivity;
-import com.pimpmyapp.collegeapp.activity.PayFeeActivtiy;
+import com.pimpmyapp.collegeapp.activity.PayFeeActivity;
+import com.pimpmyapp.collegeapp.activity.SyllabusActivity;
 import com.pimpmyapp.collegeapp.activity.UserProfileActivity;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -36,7 +37,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class WelcomeFragment extends Fragment {
     RelativeLayout userProfileLay;
-    LinearLayout collegeLay, departmentsLay, payFeeLay;
+    LinearLayout collegeLay, departmentsLay, payFeeLay, syllabusLay;
     TextView userName, userRollNo, userBranch;
     String user_id;
     ImageView userImage;
@@ -57,6 +58,7 @@ public class WelcomeFragment extends Fragment {
         userRollNo = (TextView) view.findViewById(R.id.userRollNo);
         userBranch = (TextView) view.findViewById(R.id.userBranch);
         userImage = (ImageView) view.findViewById(R.id.profile_image);
+        syllabusLay = (LinearLayout) view.findViewById(R.id.syllabusLay);
 
         setValues();
         methodListener();
@@ -118,7 +120,7 @@ public class WelcomeFragment extends Fragment {
         payFeeLay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), PayFeeActivtiy.class));
+                startActivity(new Intent(getActivity(), PayFeeActivity.class));
             }
         });
 
@@ -126,6 +128,13 @@ public class WelcomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), DepartmentDetailActivity.class));
+            }
+        });
+
+        syllabusLay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), SyllabusActivity.class));
             }
         });
 

@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/payfeeback"
+    tools:context="com.pimpmyapp.collegeapp.fragment.CollegeLoacationFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="College Address :"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        style="@style/sectionHeader" />
+
+    <TextView
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="College of Engineering &amp; Technology, Bikaner
+(An Autonomous Institute of Govt. of Rajasthan)
+Karni Industrial Area, Pugal Road, Bikaner - 334004
+Ph.: 0151-2250948, Fax:0151-2250949"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        style="@style/sectionHeader" />
+
+    <TextView
+        android:id="@+id/direction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Get Direction"
+        android:textSize="20sp"
+        android:textColor="#ff5252"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:drawableRight="@drawable/ic_directions_black_24dp"
+        android:drawablePadding="10dp" />
+
+
+</LinearLayout>

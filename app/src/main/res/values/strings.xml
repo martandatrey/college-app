@@ -27,6 +27,19 @@
         <item>VII</item>
         <item>VIII</item>
     </string-array>
+    <string-array name="year">
+
+        <item>-- Select Year/Branch --</item>
+        <item>I Year(All Branch)</item>
+        <item>Ceramic Engineering</item>
+        <item>Civil Engineering</item>
+        <item>Computer Science</item>
+        <item>Electrical Engineering</item>
+        <item>Electronics Engineering</item>
+        <item>Mechanical Engineering</item>
+
+
+    </string-array>
     <string-array name="category">
         <item>Select Category</item>
         <item>Notice</item>
@@ -39,4 +52,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="logout">Logout</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

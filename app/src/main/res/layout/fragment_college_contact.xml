@@ -1,0 +1,171 @@
+<android.support.v4.widget.NestedScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@drawable/payfeeback"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="College of Engineering &amp; Technology, Bikaner"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:drawableLeft="@drawable/ic_home_black_24dp"
+            android:drawablePadding="10dp"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Call us at  :-"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textColor="#000"
+            android:background="@drawable/rectangle_round_edge"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/phoneOffice1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0151-2250948        Office"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/phoneOffice2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0151-2250949        Office"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/phoneAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0151-2250185        Account"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/phoneProctor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0151-2250955        Proctor"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/phoneExam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0151-2250948        Exam Cell"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email us at  :-"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textColor="#000"
+            android:background="@drawable/rectangle_round_edge"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/emailPrincipal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="principal@cet-gov.ac.in"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_email_black_24dp"
+            android:layout_marginTop="5dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/emailAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="account@cet-gov.ac.in"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_email_black_24dp"
+            android:layout_marginTop="5dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/emailProctor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="proctor@cet-gov.ac.in"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_email_black_24dp"
+            android:layout_marginTop="5dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/emailExam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="exam@cet-gov.ac.in"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_email_black_24dp"
+            android:layout_marginTop="5dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Web"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textColor="#000"
+            android:background="@drawable/rectangle_round_edge"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/webAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="http://cet-gov.ac.in"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_web_black_24dp"
+            android:layout_marginTop="5dp"
+            android:drawablePadding="10dp"
+            android:textColor="#000" />
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/payfeeback"
+    tools:context="com.pimpmyapp.collegeapp.fragment.CollegeCampusFragment">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Campus Life At CET"
+        android:padding="10dp"
+        android:textSize="15sp"
+        android:textColor="#000"
+        android:layout_marginTop="5dp"
+        android:background="#ec407a" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:orientation="vertical"
+            android:background="@drawable/submit_button_gradient">
+
+            <TextView
+                android:id="@+id/aboutCampus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Welcome to College Of Engineering and Technology, Bikaner, Approved by AICTE, MHRD, Govt. of India and Affiliated to Rajasthan Technical University (RTU) Kota, was established in the year 2007 with present intake of 420 students per year in B. Tech and 60 students per year in MBA. This College is running with the aim to equip students with the latest engineering skills and knowledge to successfully meet the challenges posed by globalization and to provide comprehensive engineering education and necessary technical skills by developing a professional outlook in every walk of life. The college is a renowned institution in the field of Engineering and Management education. Result oriented committed approx. 120 Faculty Members, good Placement, cafeteria etc. are salient features of this college. Faculty members of this esteemed institution are providing consultancy services to various industries. For overall academic development of faculty members, college has conducted short term courses on bio fuel, communication skills, mechatronics, entrepreneurship, Physical Fitness Camp, NITTTR, National Science Day, and National Workshop etc. "
+                android:textColor="#000" />
+
+
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:id="@+id/collegeImage"
+                android:layout_width="match_parent"
+                android:layout_height="190px"
+                android:src="@drawable/campuscet"
+                android:background="#17cb80c3" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>
