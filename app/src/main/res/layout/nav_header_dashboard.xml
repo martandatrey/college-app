@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/nav_header"
+    android:background="@drawable/back2"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -18,8 +18,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
             android:padding="5dp"
             android:src="@drawable/ic_person_black_24dp"
             app:civ_border_color="#FF000000"
@@ -30,7 +30,7 @@
         android:layout_alignTop="@+id/profile_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="15sp"
         android:layout_marginLeft="5dp"
         android:text="name"
         android:textColor="#000"
@@ -46,8 +46,9 @@
         android:layout_toRightOf="@id/profile_image"
         android:layout_below="@id/nameTv"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:text="Computer Science"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textColor="#000"
         />
     <TextView
@@ -59,6 +60,7 @@
         android:layout_below="@id/branchTv"
         android:text="1st year 2nd sem"
         android:textSize="15sp"
+        android:layout_marginTop="5dp"
         android:textColor="#000"
         />
 

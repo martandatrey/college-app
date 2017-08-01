@@ -12,7 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -44,24 +43,14 @@ import com.google.firebase.storage.StorageReference;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Calendar;
 
-import static android.R.attr.data;
-
 public class NoticeViewActivity extends AppCompatActivity {
-    TextView title, date, uploadedBy, fileSize, uploadedOn, desc, expand;
+    TextView title, date, uploadedBy, fileSize, uploadedOn, noticeDes, expand;
     Drawable expandDrawable, contractDrawable;
     ImageView image, editIV, publishIV, deleteIV, downloadImage;
     String notice_id;
-    EditText noticeTitle;
+    EditText noticeTitle, desc;
     Button dueDateBtn, addNoticeBtn, selectImageBtn;
     String dueDateSelectedByUser = "";
     ImageView noticeImageView;
@@ -102,6 +91,7 @@ public class NoticeViewActivity extends AppCompatActivity {
                 title.setText(noticePojo.getTitle());
                 date.setText("Due Date: " + noticePojo.getDate());
                 uploadedBy.setText(noticePojo.getAddedBy());
+                noticeDes.setText(noticePojo.getDesc());
                 fileSize.setText(noticePojo.getImageSizeString() + " Bytes");
                 uploadedOn.setText(noticePojo.getAddedOn());
                 Glide.with(NoticeViewActivity.this).load(noticePojo.getImage()).crossFade().into(image);
@@ -117,6 +107,7 @@ public class NoticeViewActivity extends AppCompatActivity {
                         if (!isAdmin) {
                             editIV.setVisibility(View.GONE);
                             publishIV.setVisibility(View.GONE);
+                            deleteIV.setVisibility(View.GONE);
                         }
                     }
 
@@ -164,6 +155,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         uploadedBy = (TextView) findViewById(R.id.uploadedBy);
         editIV = (ImageView) findViewById(R.id.editIV);
         publishIV = (ImageView) findViewById(R.id.publishedIV);
+        noticeDes = (TextView) findViewById(R.id.noticeDes);
         deleteIV = (ImageView) findViewById(R.id.deleteIV);
         image = (ImageView) findViewById(R.id.imageView);
         fileSize = (TextView) findViewById(R.id.fileSize);
@@ -256,7 +248,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         addNoticeBtn = (Button) view.findViewById(R.id.addNoticeBtn);
         selectImageBtn = (Button) view.findViewById(R.id.selectImage);
         noticeImageView = (ImageView) view.findViewById(R.id.newNoticeAddImage);
-        desc = (TextView) view.findViewById(R.id.noticeDescEditText);
+        desc = (EditText) view.findViewById(R.id.noticeDescEditText);
         catSpinner = (Spinner) findViewById(R.id.catSpinner);
 
         desc.setText(noticePojo.getDesc());

@@ -242,19 +242,27 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
         }
         holder.title.setText(noticePojo.getTitle());
         holder.date.setText(noticePojo.getDate());
-        holder.image.setImageDrawable(null);
-        Ion.with(context)
-                .load(noticePojo.getImage())
-                .withBitmap()
-                .crossfade(true)
-                .smartSize(true)
-                .intoImageView(holder.image)
-                .setCallback(new FutureCallback<ImageView>() {
-                    @Override
-                    public void onCompleted(Exception e, ImageView result) {
-                        holder.progressBar.setVisibility(View.GONE);
-                    }
-                });
+        holder.des.setText(noticePojo.getDesc());
+        if (noticePojo.getImage().equals("")) {
+            holder.image.setVisibility(View.GONE);
+            holder.progressBar.setVisibility(View.GONE);
+        } else {
+            holder.des.setVisibility(View.GONE);
+            holder.image.setImageDrawable(null);
+            Ion.with(context)
+                    .load(noticePojo.getImage())
+                    .withBitmap()
+                    .crossfade(true)
+                    .smartSize(true)
+                    .intoImageView(holder.image)
+                    .setCallback(new FutureCallback<ImageView>() {
+                        @Override
+                        public void onCompleted(Exception e, ImageView result) {
+                            holder.progressBar.setVisibility(View.GONE);
+
+                        }
+                    });
+        }
        /* Glide.with(context)
                 .load(noticePojo.getImage())
                 .crossFade()
@@ -282,7 +290,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
 
     public static class PersonViewHolder extends RecyclerView.ViewHolder{
 
-        TextView title, date;
+        TextView title, date, des;
         ImageView image, publishIV;
         ProgressBar progressBar;
         public PersonViewHolder(View itemView) {
@@ -292,6 +300,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
            image = (ImageView) itemView.findViewById(imageView);
            publishIV = (ImageView) itemView.findViewById(R.id.publishedIv);
            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+            des = (TextView) itemView.findViewById(R.id.noticeDes);
         }
 
     }

@@ -46,7 +46,9 @@
         <activity
             android:name=".activity.DepartmentDetailActivity"
             android:theme="@style/WithActionBar" />
-        <activity android:name=".activity.UserProfileActivity" />
+        <activity
+            android:name=".activity.UserProfileActivity"
+            android:theme="@style/WithActionBar" />
         <activity
             android:name=".activity.PayFeeActivity"
             android:theme="@style/WithActionBar" />

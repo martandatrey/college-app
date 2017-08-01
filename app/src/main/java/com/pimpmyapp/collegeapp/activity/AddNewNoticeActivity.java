@@ -79,11 +79,13 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_notice);
         getSupportActionBar().setTitle("Add New Notice");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         checkPermissions();
         init();
         methodListener();
 
     }
+
 
     private void checkPermissions() {
         if(!checkCameraPermission() || !checkGalleryPermission()){
@@ -156,13 +158,16 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.publish) {
+        if (id == android.R.id.home) {
+            this.finish();
+            return true;
+        } else if (id == R.id.publish) {
             enteredTitle = noticeTitle.getText().toString();
             enteredDes = noticeDes.getText().toString();
             if (enteredTitle.equals("")) {
                 noticeTitle.setError("Select title for notice");
-            } else if (imageViewCheck == 0) {
-                Snackbar.make(corLay, "Select Image", Snackbar.LENGTH_SHORT).show();
+            } else if (enteredDes.equals("")) {
+                noticeDes.setError("Description can't be empty");
             } else if (catSpinner.getSelectedItem().toString().equals("Select Category")) {
                 Snackbar.make(corLay, "Select Category", Snackbar.LENGTH_SHORT).show();
             } else {
@@ -275,6 +280,21 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
                     }
                 });
             }
+        } else {
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference ref = database.getReference(cat);
+            final String noticeKey = ref.push().getKey();
+            SharedPreferences sharedPreference = getSharedPreferences("userData", MODE_PRIVATE);
+            String user_name = sharedPreference.getString("name", "unknown");
+            noticepojo.setAddedBy(user_name);
+            noticepojo.setNoticeID(noticeKey);
+            noticepojo.setAddedOn(addedOn);
+            ref.child(noticeKey).setValue(noticepojo);
+            dialog.cancel();
+            Intent i = new Intent(AddNewNoticeActivity.this, DashboardActivity.class);
+            i.putExtra("uploaded", true);
+            startActivity(i);
+            finish();
         }
 
 

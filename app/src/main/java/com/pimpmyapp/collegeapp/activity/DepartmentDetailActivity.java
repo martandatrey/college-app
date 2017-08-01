@@ -19,9 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
-import static com.pimpmyapp.collegeapp.R.id.branch;
-import static com.pimpmyapp.collegeapp.R.id.userBranch;
-
 public class DepartmentDetailActivity extends AppCompatActivity {
     WebView webView;
 
