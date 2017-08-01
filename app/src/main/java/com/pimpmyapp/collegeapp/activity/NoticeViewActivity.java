@@ -105,9 +105,9 @@ public class NoticeViewActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         boolean isAdmin = dataSnapshot.child(user_id).child("admin").getValue(boolean.class);
                         if (!isAdmin) {
-                            editIV.setVisibility(View.GONE);
-                            publishIV.setVisibility(View.GONE);
-                            deleteIV.setVisibility(View.GONE);
+                            editIV.setVisibility(View.INVISIBLE);
+                            publishIV.setVisibility(View.INVISIBLE);
+                            deleteIV.setVisibility(View.INVISIBLE);
                         }
                     }
 
