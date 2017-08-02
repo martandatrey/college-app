@@ -87,6 +87,7 @@
                 android:drawableLeft="@drawable/ic_date_range_black_24dp"
                 android:padding="10dp"
                 android:text="Due Date"
+                android:drawableTint="#000"
                 android:textAllCaps="false" />
         </LinearLayout>
 

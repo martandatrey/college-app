@@ -30,7 +30,7 @@ public class DepartmentDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_department_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Department");
+        getSupportActionBar().setTitle("department");
         webView = (WebView) findViewById(R.id.webView);
         getBranch();
 
@@ -122,51 +122,5 @@ public class DepartmentDetailActivity extends AppCompatActivity {
         webView.reload();
     }
 
-    private void loadWebView() {
-
-
-        webView.setWebViewClient(new WebViewClient() {
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(DepartmentDetailActivity.this, "Oh no! " + description, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        webView.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int progress) {
-                DepartmentDetailActivity.this.setProgress(progress * 1000);
-            }
-        });
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(false);
-        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.clearView();
-        webView.measure(100, 100);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        /*switch (uBranch) {
-            case "Ceramic Engineering":
-                webView.loadUrl("http://cet-gov.ac.in/cre.php#tab25");
-                break;
-            case "Civil Engineering":
-                webView.loadUrl("http://cet-gov.ac.in/ce.php#tab25");
-                break;
-            case "Computer Science":
-                webView.loadUrl("http://cet-gov.ac.in/cse.php#tab25");
-                break;
-            case "Electrical Engineering":
-                webView.loadUrl("http://cet-gov.ac.in/ee.php#tab25");
-                break;
-            case "Electronics Engineering":
-                webView.loadUrl("http://cet-gov.ac.in/ece.php#tab25");
-                break;
-            case "Mechanical Engineering":
-                webView.loadUrl("http://cet-gov.ac.in/me.php#tab25");
-                break;
-        }*/
-        webView.canGoBackOrForward(1000);
-
-    }
 
 }

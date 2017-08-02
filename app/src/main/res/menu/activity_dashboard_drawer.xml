@@ -13,7 +13,8 @@
         <item
             android:id="@+id/TimeTable"
             android:icon="@drawable/ic_access_time_black_24dp"
-            android:title="Time Table" />
+            android:title="Time Table"
+            android:visible="false" />
         <item
             android:id="@+id/AcedemicCalender"
             android:icon="@drawable/ic_date_range_black_24dp"
@@ -21,7 +22,8 @@
         <item
             android:id="@+id/Documents"
             android:icon="@drawable/ic_note_black_24dp"
-            android:title="Documents" />
+            android:title="Documents"
+            android:visible="false" />
         <item
             android:id="@+id/result"
             android:icon="@drawable/result"
@@ -51,6 +53,10 @@
 
             android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="Logout" />
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_details_black_24dp"
+            android:title="About" />
 
     </group>
 </menu>

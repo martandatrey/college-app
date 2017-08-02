@@ -173,17 +173,6 @@ public class NoticeFragment extends Fragment {
             }
         });
 
-        /*lv = (ListView) view.findViewById(R.id.listView);
-        noticeAdapter = new NoticeAdapter(getActivity(), R.layout.notice_list_item, noticeList);
-        lv.setAdapter(noticeAdapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                NoticePojo noticePojo = noticeList.get(position);
-                Intent i = new Intent(getActivity(), NoticeViewActivity.class);
-                i.putExtra("notice_id", noticePojo.getNoticeID());
-                startActivity(i);            }
-        });*/
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setMessage("Fetching Notices...");
         dialog.setCancelable(false);

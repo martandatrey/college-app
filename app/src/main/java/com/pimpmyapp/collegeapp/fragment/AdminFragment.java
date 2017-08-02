@@ -131,10 +131,6 @@ public class AdminFragment extends Fragment {
         View view = inflater.inflate(R.layout.admin_fragment, null);
         floatingActionMenu = (FloatingActionMenu) getActivity().findViewById(R.id.material_design_android_floating_action_menu);
 
-
-       /* lv = (ListView) view.findViewById(R.id.listView);
-        noticeAdapter = new NoticeAdapter(getActivity(), R.layout.notice_list_item, noticeList);
-        lv.setAdapter(noticeAdapter);*/
         rv = (RecyclerView) view.findViewById(R.id.rv);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -184,17 +180,6 @@ public class AdminFragment extends Fragment {
         });
 
 
-
-
-       /* lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                NoticePojo noticePojo = noticeList.get(position);
-                Intent i = new Intent(getActivity(), NoticeViewActivity.class);
-                i.putExtra("notice_id", noticePojo.getNoticeID());
-                startActivity(i);
-            }
-        });*/
         return view;
     }
 

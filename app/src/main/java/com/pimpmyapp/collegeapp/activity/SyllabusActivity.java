@@ -16,7 +16,6 @@ public class SyllabusActivity extends AppCompatActivity {
     Spinner yearSpinner;
     Button downloadBtn;
     String selectedYear;
-    String selectedBranch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

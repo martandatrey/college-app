@@ -250,7 +250,8 @@ public class RegisterActivity extends AppCompatActivity {
             else{
                 ref.child(user_ID).setValue(user);
                 dialog.cancel();
-                Snackbar.make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(this, "You have sucessfully registered.", Toast.LENGTH_SHORT).show();
+                /*Snackbar .make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();*/
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 finish();
             }

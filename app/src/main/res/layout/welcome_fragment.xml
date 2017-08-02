@@ -98,7 +98,8 @@
                     android:layout_height="130dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="3"
-                    android:src="@drawable/college_new" />
+                    android:padding="10dp"
+                    android:src="@drawable/college1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -131,8 +132,8 @@
                     android:layout_height="130dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="3"
-                    android:padding="10dp"
-                    android:src="@drawable/departments_new" />
+                    android:paddingTop="15dp"
+                    android:src="@drawable/department" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -208,7 +209,7 @@
                     android:layout_height="130dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="3"
-                    android:padding="15dp"
+                    android:padding="20dp"
                     android:src="@drawable/syllabus" />
 
                 <TextView

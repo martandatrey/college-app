@@ -3,7 +3,6 @@ package com.pimpmyapp.collegeapp.adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,6 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.ArrayList;
 
-import static com.pimpmyapp.collegeapp.R.id.content_main;
 import static com.pimpmyapp.collegeapp.R.id.imageView;
 
 /**
@@ -100,16 +98,10 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
                         }
                     });
         }
-       /* Glide.with(context)
-                .load(noticePojo.getImage())
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.image);
 
-        holder.progressBar.setVisibility(View.GONE);*/
     }
 
-
+//This code can be used to remove image flickering
    /* @Override
     public void onViewRecycled(PersonViewHolder holder) {
         holder.image.setImageDrawable(null);

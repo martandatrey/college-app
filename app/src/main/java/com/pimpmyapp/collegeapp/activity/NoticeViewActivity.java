@@ -369,7 +369,6 @@ public class NoticeViewActivity extends AppCompatActivity {
                 ref.child(noticePojo.getNoticeID()).removeValue();
                 finish();
 
-//  startActivity(new Intent(NoticeViewActivity.this,DashboardActivity.class));
 
             }
 
