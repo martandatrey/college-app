@@ -30,11 +30,9 @@ public class DepartmentDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_department_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("department");
+        getSupportActionBar().setTitle("Department");
         webView = (WebView) findViewById(R.id.webView);
         getBranch();
-
-
     }
 
     private void getBranch() {

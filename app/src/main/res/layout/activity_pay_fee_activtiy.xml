@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@drawable/payfeeback"
+    android:background="@drawable/dashboard_back"
     android:padding="5dp"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -16,7 +16,8 @@
         android:layout_marginTop="5dp"
         android:textColor="#000"
         android:textSize="15sp"
-        android:background="@drawable/rectangle_round_edge" />
+
+        android:background="#2c000000" />
 
 
     <TextView
@@ -27,7 +28,7 @@
         android:padding="15dp"
         android:textColor="#000"
         android:textSize="15sp"
-        android:background="@drawable/rectangle_round_edge"
+        android:background="#2c000000"
         android:layout_marginTop="10dp" />
 
 

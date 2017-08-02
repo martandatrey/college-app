@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:padding="10dp"
     android:orientation="vertical"
-    android:background="@drawable/payfeeback"
+    android:background="@drawable/dashboard_back"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView

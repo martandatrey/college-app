@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
-    android:background="@drawable/payfeeback"
+    android:background="@drawable/dashboard_back"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Spinner
