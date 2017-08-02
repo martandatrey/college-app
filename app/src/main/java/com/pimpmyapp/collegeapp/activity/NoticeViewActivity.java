@@ -199,6 +199,9 @@ public class NoticeViewActivity extends AppCompatActivity {
         downloadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //download the image code goes here
+                Intent ceramicIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(noticePojo.getImage()));
+                startActivity(ceramicIntent);
             }
         });
     }
