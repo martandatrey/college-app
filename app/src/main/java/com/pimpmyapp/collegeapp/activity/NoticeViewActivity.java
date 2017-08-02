@@ -246,7 +246,6 @@ public class NoticeViewActivity extends AppCompatActivity {
         dueDateBtn = (Button) view.findViewById(R.id.DueDateBtn);
         noticeTitle = (EditText) view.findViewById(R.id.noticeTitleEditText);
         addNoticeBtn = (Button) view.findViewById(R.id.addNoticeBtn);
-        selectImageBtn = (Button) view.findViewById(R.id.selectImage);
         noticeImageView = (ImageView) view.findViewById(R.id.newNoticeAddImage);
         desc = (EditText) view.findViewById(R.id.noticeDescEditText);
         catSpinner = (Spinner) view.findViewById(R.id.categorySpinner);
@@ -273,20 +272,6 @@ public class NoticeViewActivity extends AppCompatActivity {
 
                 datePickerDialog.show();
 
-            }
-        });
-        selectImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkGalleryPermission()) {
-                    i = new Intent();
-                    i.setAction(Intent.ACTION_GET_CONTENT);
-                    i.setType("image/*");
-                    startActivityForResult(i, 0);
-                } else {
-
-                    ActivityCompat.requestPermissions(NoticeViewActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 12);
-                }
             }
         });
 
@@ -329,10 +314,6 @@ public class NoticeViewActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private boolean checkGalleryPermission() {
-        boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        return flag;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

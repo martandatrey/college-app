@@ -100,7 +100,7 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
         dueDateBtn = (Button) findViewById(R.id.DueDateBtn);
         selectImageBtn = (Button) findViewById(R.id.selectImage);
         noticeImageView = (ImageView) findViewById(R.id.newNoticeAddImage);
-        catSpinner = (Spinner) findViewById(R.id.categorySpinner);
+        catSpinner = (Spinner) findViewById(R.id.catSpinner);
         corLay = (CoordinatorLayout) findViewById(R.id.newPostrootLay);
 
     }
