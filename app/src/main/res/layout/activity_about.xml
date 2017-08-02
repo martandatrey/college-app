@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="#f9f9f9"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        android:id="@+id/creditTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Credits"
+        android:fontFamily="sans-serif-smallcaps"
+        android:textSize="40sp"
+        android:padding="20dp" />
+
+    <RelativeLayout
+        android:id="@+id/aboutAjay"
+        android:layout_below="@id/creditTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageAjay"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:padding="5dp"
+            android:src="@drawable/ajayimage"
+            app:civ_border_color="#FF000000"
+            android:layout_marginLeft="15dp" />
+
+        <TextView
+            android:id="@+id/nameAjayTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ajay Choudhary"
+            android:layout_toRightOf="@id/imageAjay"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:layout_marginLeft="10dp"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Developer"
+            android:fontFamily="sans-serif-smallcaps"
+            android:layout_toRightOf="@id/imageAjay"
+            android:layout_below="@id/nameAjayTv"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/aboutMartand"
+        android:layout_below="@id/aboutAjay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageMartand"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:padding="5dp"
+            android:src="@drawable/imagemartand"
+            app:civ_border_color="#FF000000"
+            android:layout_marginLeft="15dp" />
+
+        <TextView
+            android:id="@+id/nameMartandTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Martand Atrey"
+            android:layout_toRightOf="@id/imageMartand"
+            android:fontFamily="sans-serif-smallcaps"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Developer"
+            android:layout_toRightOf="@id/imageMartand"
+            android:layout_below="@id/nameMartandTv"
+            android:fontFamily="sans-serif-smallcaps"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/aboutMahesh"
+        android:layout_below="@id/aboutMartand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageMahesh"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:padding="5dp"
+            android:src="@drawable/maheshimage"
+            app:civ_border_color="#FF000000"
+            android:layout_marginLeft="15dp" />
+
+        <TextView
+            android:id="@+id/nameMaheshTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mahesh Gora"
+            android:layout_toRightOf="@id/imageMahesh"
+            android:fontFamily="sans-serif-smallcaps"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Developer"
+            android:layout_toRightOf="@id/imageMahesh"
+            android:layout_below="@id/nameMaheshTv"
+            android:fontFamily="sans-serif-smallcaps"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/viewLine"
+        android:layout_below="@id/aboutMahesh"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="15dp"
+        android:background="#c0c0c0"
+        android:layout_marginLeft="0dp" />
+
+    <TextView
+        android:id="@+id/bugTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewLine"
+        android:text="Any bug report us on :"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/emaiAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bugTv"
+        android:text="pimpmyapp910@gmail.com"
+        android:drawableLeft="@drawable/ic_email_black_24dp"
+        android:textColor="#000"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:drawablePadding="10dp"
+
+        />
+
+</RelativeLayout>

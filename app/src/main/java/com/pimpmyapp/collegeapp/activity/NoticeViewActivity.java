@@ -1,20 +1,16 @@
 package com.pimpmyapp.collegeapp.activity;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -283,12 +279,12 @@ public class NoticeViewActivity extends AppCompatActivity {
                 if (enteredTitle.equals("")) {
                     noticeTitle.setError("Select title for notice");
                 } else {
-                    if (!dueDateSelectedByUser.equals(""))
-                        noticePojo.setDate("Due Date: " + dueDateSelectedByUser);
+                    if (dueDateSelectedByUser.equals(""))
+                        noticePojo.setDate("No Due Date");
                     else if (category.equals("Select Category")) {
                         Toast.makeText(NoticeViewActivity.this, "Select Category", Toast.LENGTH_SHORT).show();
                     } else {
-                        noticePojo.setDate("No Due Date");
+                        noticePojo.setDate("Due Date :" + dueDateSelectedByUser);
                         noticePojo.setTitle(enteredTitle);
                         noticePojo.setDesc(desc.getText().toString());
                         noticePojo.setImage(noticePojo.getImage());
@@ -303,7 +299,9 @@ public class NoticeViewActivity extends AppCompatActivity {
                         Glide.with(NoticeViewActivity.this).load(noticePojo.getImage()).crossFade().into(image);
                         dialog.cancel();
                     }
+
                 }
+
             }
         });
 

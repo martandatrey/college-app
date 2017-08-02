@@ -3,7 +3,6 @@ package com.pimpmyapp.collegeapp.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -20,8 +19,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -158,6 +155,7 @@ public class DashboardActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+
             super.onBackPressed();
         }
     }
@@ -255,12 +253,18 @@ public class DashboardActivity extends AppCompatActivity
 
         } else if (id == R.id.logout) {
             logout();
+        } else if (id == R.id.about) {
+            Intent i = new Intent(this, AboutActivity.class);
+            startActivity(i);
+            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
         }
         navigationView.setCheckedItem(id);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
+
 
     private void init() {
         //initialized nav view

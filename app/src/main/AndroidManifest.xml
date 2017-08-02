@@ -54,7 +54,8 @@
             android:theme="@style/WithActionBar" />
         <activity
             android:name=".activity.SyllabusActivity"
-            android:theme="@style/WithActionBar"></activity>
+            android:theme="@style/WithActionBar" />
+        <activity android:name=".activity.AboutActivity"></activity>
     </application>
 
 </manifest>
