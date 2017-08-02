@@ -52,19 +52,13 @@ public class DashboardActivity extends AppCompatActivity
 
     FloatingActionMenu floatingActionMenu;
     FloatingActionButton fabDoc, fabGal;
-    Uri selectedImageUriFromGallery;
-    EditText noticeTitle;
     RelativeLayout relativeLayoutFab;
-    Intent i;
     View view;
     TextView nameTv, branchTv, yearTv;
-    Button dueDateBtn, addNoticeBtn, selectImageBtn;
-    String dueDateSelectedByUser, user_id;
-    ImageView noticeImageView, profileImage;
-    String enteredTitle;
+    String  user_id;
+    ImageView  profileImage;
     NavigationView navigationView;
     Toolbar dashboardToolbar;
-    int imageViewCheck = 0;
     CoordinatorLayout cordlay;
     boolean isBlocked;
     @Override

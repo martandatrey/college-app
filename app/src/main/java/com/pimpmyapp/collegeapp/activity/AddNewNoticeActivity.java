@@ -88,8 +88,8 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
 
 
     private void checkPermissions() {
-        if(!checkCameraPermission() || !checkGalleryPermission()){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, 12);
+        if (!checkCameraPermission() || !checkGalleryPermission()) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 12);
         }
     }
 
@@ -100,7 +100,7 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
         dueDateBtn = (Button) findViewById(R.id.DueDateBtn);
         selectImageBtn = (Button) findViewById(R.id.selectImage);
         noticeImageView = (ImageView) findViewById(R.id.newNoticeAddImage);
-        catSpinner = (Spinner) findViewById(R.id.catSpinner);
+        catSpinner = (Spinner) findViewById(R.id.categorySpinner);
         corLay = (CoordinatorLayout) findViewById(R.id.newPostrootLay);
 
     }
@@ -136,8 +136,9 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
         boolean flag = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         return flag;
     }
-    private boolean checkCameraPermission(){
-        return ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+
+    private boolean checkCameraPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -166,8 +167,6 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
             enteredDes = noticeDes.getText().toString();
             if (enteredTitle.equals("")) {
                 noticeTitle.setError("Select title for notice");
-            } else if (enteredDes.equals("")) {
-                noticeDes.setError("Description can't be empty");
             } else if (catSpinner.getSelectedItem().toString().equals("Select Category")) {
                 Snackbar.make(corLay, "Select Category", Snackbar.LENGTH_SHORT).show();
             } else {
@@ -257,16 +256,16 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
                         noticepojo.setAddedOn(addedOn);
 
                         fileSize[0] = (float) taskSnapshot.getBytesTransferred();
-                        long imageSize= taskSnapshot.getTotalByteCount();
-
+                        long imageSize = taskSnapshot.getTotalByteCount();
+                        noticepojo.setImageSize(imageSize);
                         if (fileSize[0] < 1024) {
-                            noticepojo.setImageSize(imageSize);
+
                             noticepojo.setImageSizeString(fileSize[0] + "Bytes");
                         } else if (fileSize[0] < (1024 * 1024) && fileSize[0] >= 1024) {
-                            noticepojo.setImageSize(imageSize);
+
                             noticepojo.setImageSizeString(fileSize[0] / 1024 + "KB");
                         } else if (fileSize[0] < (1024 * 1024 * 1024) && fileSize[0] >= (1024 * 1024)) {
-                            noticepojo.setImageSize(imageSize);
+
                             noticepojo.setImageSizeString(fileSize[0] / (1024 * 1024) + "MB");
                         }
 
@@ -308,10 +307,10 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
     }
 
     private void openGallery() {
-            i = new Intent();
-            i.setAction(Intent.ACTION_GET_CONTENT);
-            i.setType("image/*");
-            startActivityForResult(i, 0);
+        i = new Intent();
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        i.setType("image/*");
+        startActivityForResult(i, 0);
     }
 
     private void openDialog() {

@@ -249,7 +249,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         selectImageBtn = (Button) view.findViewById(R.id.selectImage);
         noticeImageView = (ImageView) view.findViewById(R.id.newNoticeAddImage);
         desc = (EditText) view.findViewById(R.id.noticeDescEditText);
-        catSpinner = (Spinner) findViewById(R.id.catSpinner);
+        catSpinner = (Spinner) view.findViewById(R.id.categorySpinner);
 
         desc.setText(noticePojo.getDesc());
         noticeTitle.setText(noticePojo.getTitle());
@@ -262,6 +262,7 @@ public class NoticeViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
+
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NoticeViewActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -269,8 +270,8 @@ public class NoticeViewActivity extends AppCompatActivity {
                         dueDateBtn.setText(dueDateSelectedByUser);
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.show();
 
+                datePickerDialog.show();
 
             }
         });
@@ -312,6 +313,7 @@ public class NoticeViewActivity extends AppCompatActivity {
                         DatabaseReference ref = database.getReference(catSpinner.getSelectedItem().toString());
                         ref.child(notice_id).setValue(noticePojo);
                         title.setText(noticePojo.getTitle());
+                        noticeDes.setText(noticePojo.getDesc());
                         date.setText(noticePojo.getDate());
                         Glide.with(NoticeViewActivity.this).load(noticePojo.getImage()).crossFade().into(image);
                         dialog.cancel();
