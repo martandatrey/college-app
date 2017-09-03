@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@drawable/back1"
+    android:background="@drawable/login_background"
     android:animateLayoutChanges="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -10,6 +10,9 @@
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+
+
         >
 
     <TextView
@@ -38,13 +41,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/rectangle"
             android:layout_centerInParent="true"
-            android:layout_margin="10dp"
-            android:padding="15dp">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/loginTextInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            android:layout_margin="10dp">
 
 
                 <EditText
@@ -58,15 +55,8 @@
 
                     />
 
-            </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/passTextInput"
-                android:layout_below="@id/loginTextInput">
-
-                <EditText
+            <EditText
                     android:id="@+id/loginPass"
                     android:maxLines="1"
                     android:layout_width="match_parent"
@@ -79,19 +69,16 @@
                     android:inputType="textPassword"
                     />
 
-            </android.support.design.widget.TextInputLayout>
-
             <Button
-                android:layout_below="@id/passTextInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/loginBtn"
-                android:textColor="#000"
+                android:textColor="#fff"
                 android:text="login"
-                android:background="#60ffffff"
-                android:layout_marginTop="10dp"
+                android:background="@drawable/loginbtn_background"
+                android:layout_marginTop="20dp"
                 android:clickable="true"
-                android:layout_marginBottom="50dp"/>
+                android:layout_marginBottom="50dp" />
 
 
         </LinearLayout>
@@ -104,7 +91,7 @@
         android:layout_alignParentBottom="true"
         android:text="Not registered? Sign up."
         android:textSize="20sp"
-        android:textColor="#000"
+        android:textColor="#fff"
         android:gravity="center_horizontal"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"

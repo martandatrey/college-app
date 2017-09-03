@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/regback">
+    android:background="@drawable/login_background">
 
     <TextView
         android:id="@+id/regTitle"
@@ -30,7 +30,7 @@
             android:id="@+id/scrollLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+            android:layout_margin="10dp"
             android:paddingBottom="60dp"
             android:layout_marginBottom="150dp"
             android:orientation="vertical"
@@ -59,7 +59,12 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#6cffffff"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+
+                >
 
                 <EditText
                     android:id="@+id/nameET"
@@ -67,41 +72,66 @@
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/ic_person_black_24dp"
                     android:hint="Name"
-                    android:maxLines="1" />
+                    android:background="@color/transparent"
+                    android:maxLines="1"
+                    android:layout_margin="5dp" />
 
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#6cffffff"
+                android:layout_marginTop="10dp"
+                android:padding="5dp">
 
                 <EditText
                     android:id="@+id/rollNoET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Roll Number"
-                    android:maxLength="10" />
+                    android:maxLength="10"
+                    android:background="@color/transparent"
+                    android:paddingBottom="5dp" />
 
 
             </android.support.design.widget.TextInputLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#6cffffff"
+                android:layout_marginTop="10dp">
             <Spinner
                 android:id="@+id/branch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/college_branches"
                 android:paddingBottom="10dp"
-                android:paddingTop="20dp" />
+                android:paddingTop="20dp"
+                android:backgroundTint="@color/emphasis"
 
+
+                />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#6cffffff"
+                android:layout_marginTop="10dp">
             <Spinner
                 android:id="@+id/semester"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/semester"
-                android:paddingBottom="5dp"
-                android:paddingTop="10dp" />
+                android:paddingBottom="10dp"
+                android:backgroundTint="@color/emphasis"
+                android:paddingTop="20dp" />
 
+            </LinearLayout>
             <TextView
                 android:id="@+id/errorSpinner"
                 android:layout_width="wrap_content"
@@ -112,7 +142,10 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#6cffffff"
+                android:layout_marginTop="10dp"
+                android:padding="5dp">
 
                 <EditText
                     android:id="@+id/emailET"
@@ -120,15 +153,20 @@
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/ic_email_black_24dp"
                     android:hint="Email"
+                    android:background="@color/transparent"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:paddingBottom="5dp" />
 
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#6cffffff"
+                android:layout_marginTop="10dp"
+                android:padding="5dp">
 
                 <EditText
                     android:id="@+id/phnoET"
@@ -138,23 +176,30 @@
                     android:hint="Phone Number"
                     android:inputType="phone"
                     android:maxLength="10"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:background="@color/transparent"
+                    android:paddingBottom="5dp" />
 
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#6cffffff"
+                android:layout_marginTop="10dp"
+                android:padding="5dp">
 
                 <EditText
                     android:id="@+id/passET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_vpn_key_black_24dp"
+                    android:drawableRight="@drawable/ic_vpn_key_green_24dp"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:background="@color/transparent"
+                    android:paddingBottom="5dp" />
 
 
             </android.support.design.widget.TextInputLayout>
@@ -162,7 +207,10 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#6cffffff"
+                android:layout_marginTop="10dp"
+                android:padding="5dp">
 
                 <EditText
                     android:id="@+id/cpassET"
@@ -170,7 +218,9 @@
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:background="@color/transparent"
+                    android:paddingBottom="5dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -178,7 +228,10 @@
                 android:id="@+id/checkBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Apply For Admin" />
+                android:text="Apply For Admin"
+                android:textColor="#fff"
+                android:layout_marginTop="5dp"
+                android:buttonTint="#fff" />
 
         </LinearLayout>
     </ScrollView>
@@ -189,7 +242,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="end"
-        android:background="#4f5c5c5c"
+        android:background="@color/emphasis"
         android:text="Register"
         android:textAllCaps="false"
         android:textColor="@color/registercolor"
