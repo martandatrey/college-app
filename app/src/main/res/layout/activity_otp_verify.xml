@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e53935">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Verify OTP"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="100dp"
+    android:textSize="30sp"
+    android:textColor="#fff"/>
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/textDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#FFF"
+            android:text="Enter the OTP recieved on your number."
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/enterOtpET"
+            android:layout_width="200dp"
+            android:hint="Enter the OTP"
+            android:background="#FFF"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColorHint="#a2000000"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/submitBtn"
+            android:layout_width="200dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/enterOtpET"
+            android:text="Submit"
+            android:background="#df221e"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+
+</RelativeLayout>
