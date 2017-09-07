@@ -11,7 +11,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -49,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
     LinearLayout linLay;
     Uri selectedImageUriFromGallery;
     CheckBox checkBox;
-    int profileImageSelected= 0;
+    int profileImageSelected = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0)
             if (resultCode == RESULT_OK) {
-                profileImageSelected =1;
+                profileImageSelected = 1;
                 selectedImageUriFromGallery = data.getData();
                 Glide.with(RegisterActivity.this)
                         .load(selectedImageUriFromGallery)
@@ -176,8 +175,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (!cpass.equals(pass)) {
             focusOnView(cpasswordET);
             cpasswordET.setError("password doesn't matches");
-        } else
-        {
+        } else {
             final ProgressDialog dialog = new ProgressDialog(this);
             dialog.setMessage("Registering...");
             dialog.setCancelable(false);
@@ -194,7 +192,7 @@ public class RegisterActivity extends AppCompatActivity {
             final String user_ID = ref.push().getKey();
             user.setUser_id(user_ID);
             user.setSem(sem);
-            if(checkBox.isChecked())
+            if (checkBox.isChecked())
                 user.setWantsTobeAdmin(true);
             else
                 user.setWantsTobeAdmin(false);
@@ -224,7 +222,7 @@ public class RegisterActivity extends AppCompatActivity {
                     user.setYear("4th");
                     break;
             }
-            if(profileImageSelected==1) {
+            if (profileImageSelected == 1) {
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference("Profile_Images/" + user_ID);
                 final UploadTask uploadTask = storageReference.putFile(selectedImageUriFromGallery);
                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -235,6 +233,7 @@ public class RegisterActivity extends AppCompatActivity {
                         ref.child(user_ID).setValue(user);
                         dialog.cancel();
                         Snackbar.make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();
+                        dialog.cancel();
                         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                         finish();
                     }
@@ -246,14 +245,17 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Image Upload Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-            else{
+            } else {
+                user.setProfileImage("");
                 ref.child(user_ID).setValue(user);
-                dialog.cancel();
-                Toast.makeText(this, "You have sucessfully registered.", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "You have sucessfully registered.", Toast.LENGTH_SHORT).show();
                 /*Snackbar .make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();*/
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                dialog.cancel();
+                Intent i = new Intent(RegisterActivity.this, OtpVerifyActivity.class);
+                i.putExtra("phno",phno);
+                startActivity(i);
                 finish();
+
             }
 
         }

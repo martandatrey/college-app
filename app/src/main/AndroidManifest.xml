@@ -24,8 +24,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SplashActivity"
-            android:theme="@style/WithoutActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/WithoutActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,38 +38,39 @@
         <activity
             android:name=".activity.DashboardActivity"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/WithoutActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/WithoutActionBar" />
         <activity
             android:name=".activity.NoticeViewActivity"
-            android:theme="@style/WithActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/WithActionBar" />
         <activity
             android:name=".activity.AddNewNoticeActivity"
-            android:theme="@style/WithActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/WithActionBar" />
         <activity
             android:name=".activity.CollegeDetailActivity"
-            android:theme="@style/MyMaterialTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".activity.DepartmentDetailActivity"
-            android:theme="@style/WithActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/WithActionBar" />
         <activity
             android:name=".activity.UserProfileActivity"
-            android:theme="@style/WithActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/WithActionBar" />
         <activity
             android:name=".activity.PayFeeActivity"
-            android:theme="@style/WithActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/WithActionBar" />
         <activity
             android:name=".activity.SyllabusActivity"
             android:theme="@style/WithActionBar" />
         <activity
             android:name=".activity.AboutActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.OtpVerifyActivity"></activity>
     </application>
 
 </manifest>
