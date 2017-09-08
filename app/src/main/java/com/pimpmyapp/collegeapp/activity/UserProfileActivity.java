@@ -41,10 +41,12 @@ import com.google.firebase.storage.UploadTask;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserProfileActivity extends AppCompatActivity {
     EditText name, branch, year, rollNo, semester, email, phoneNo;
     TextView changePass, changeImage;
-    ImageView profileImage;
+    CircleImageView profileImage;
     Button submitBtn;
     String user_id;
     Intent i;
@@ -77,7 +79,7 @@ public class UserProfileActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         phoneNo = (EditText) findViewById(R.id.phoneNo);
         changePass = (TextView) findViewById(R.id.changePass);
-        profileImage = (ImageView) findViewById(R.id.profileImage);
+        profileImage = (CircleImageView) findViewById(R.id.profileImage);
         submitBtn = (Button) findViewById(R.id.submitBtn);
         changeImage = (TextView) findViewById(R.id.changeImage);
         branch = (EditText) findViewById(R.id.branch);
@@ -251,7 +253,7 @@ public class UserProfileActivity extends AppCompatActivity {
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(UserProfileActivity.this, ChangePasswordActivity.class));
             }
         });
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,12 +37,14 @@ import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
 import java.util.regex.Pattern;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RegisterActivity extends AppCompatActivity {
 
     EditText nameET, emailET, passwordET, rollnoET, phnoET, cpasswordET;
     Button regBtn;
-    ImageView profileImage;
-    TextView errorSpinner;
+    CircleImageView profileImage;
+    TextView errorSpinner, regTitle;
     Spinner branch, semester;
     Intent i;
     ScrollView scrollView;
@@ -49,11 +52,13 @@ public class RegisterActivity extends AppCompatActivity {
     Uri selectedImageUriFromGallery;
     CheckBox checkBox;
     int profileImageSelected = 0;
+    Typeface custom_font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        custom_font = Typeface.createFromAsset(getAssets(), "fonts/akaDora.ttf");
         init();
         methodListner();
     }
@@ -70,10 +75,12 @@ public class RegisterActivity extends AppCompatActivity {
         errorSpinner = (TextView) findViewById(R.id.errorSpinner);
         errorSpinner.setVisibility(View.GONE);
         semester = (Spinner) findViewById(R.id.semester);
-        profileImage = (ImageView) findViewById(R.id.profileImage);
+        profileImage = (CircleImageView) findViewById(R.id.profileImage);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         linLay = (LinearLayout) findViewById(R.id.linLay);
         checkBox = (CheckBox) findViewById(R.id.checkBox);
+        regTitle = (TextView) findViewById(R.id.regTitle);
+        regTitle.setTypeface(custom_font);
     }
 
     private void methodListner() {
@@ -233,7 +240,6 @@ public class RegisterActivity extends AppCompatActivity {
                         ref.child(user_ID).setValue(user);
                         dialog.cancel();
                         Snackbar.make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();
-                        dialog.cancel();
                         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                         finish();
                     }
@@ -246,16 +252,12 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                user.setProfileImage("");
                 ref.child(user_ID).setValue(user);
-               // Toast.makeText(this, "You have sucessfully registered.", Toast.LENGTH_SHORT).show();
-                /*Snackbar .make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();*/
                 dialog.cancel();
-                Intent i = new Intent(RegisterActivity.this, OtpVerifyActivity.class);
-                i.putExtra("phno",phno);
-                startActivity(i);
+                Toast.makeText(this, "You have sucessfully registered.", Toast.LENGTH_SHORT).show();
+                /*Snackbar .make(regBtn, "You have sucessfully registered.", Snackbar.LENGTH_SHORT).show();*/
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 finish();
-
             }
 
         }

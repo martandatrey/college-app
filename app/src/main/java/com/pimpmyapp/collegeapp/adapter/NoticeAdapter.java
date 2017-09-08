@@ -23,6 +23,8 @@ import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.util.ArrayList;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 import static com.pimpmyapp.collegeapp.R.id.imageView;
 
 /**
@@ -33,7 +35,6 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
 
     private ArrayList<NoticePojo> noticePojoList = new ArrayList<>();
     private Context context;
-
     NoticePojo noticePojo;
 
     public NoticeAdapter( Context context,ArrayList<NoticePojo> noticePojoList) {
@@ -98,6 +99,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.PersonView
                         }
                     });
         }
+
 
     }
 

@@ -203,6 +203,7 @@ public class DashboardActivity extends AppCompatActivity
         if (id == R.id.dashboard) {
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Dashboard");
+            floatingActionMenu.setVisibility(View.GONE);
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.fragment_container, new WelcomeFragment());
@@ -216,6 +217,7 @@ public class DashboardActivity extends AppCompatActivity
             if (!isBlocked) {
                 floatingActionMenu.setVisibility(View.VISIBLE);
             }
+
         } else if (id == R.id.TimeTable) {
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Time Table");
@@ -226,6 +228,7 @@ public class DashboardActivity extends AppCompatActivity
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Academic Calendar");
             changeFragment(new AcademicCalendarFragment());
+            floatingActionMenu.setVisibility(View.GONE);
 
         } else if (id == R.id.Documents) {
             setSupportActionBar(dashboardToolbar);
@@ -250,6 +253,7 @@ public class DashboardActivity extends AppCompatActivity
             setSupportActionBar(dashboardToolbar);
             getSupportActionBar().setTitle("Users");
             changeFragment(new UserListingFragment());
+            floatingActionMenu.setVisibility(View.GONE);
 
         } else if (id == R.id.logout) {
             logout();

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -28,13 +29,15 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText loginId, loginpass;
     Button loginBtn;
-    TextView registerTextView;
+    TextView registerTextView, loginTitle;
+    Typeface custom_font;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        custom_font = Typeface.createFromAsset(getAssets(), "fonts/akaDora.ttf");
 
         intit();
         methodListener();
@@ -46,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         loginpass = (EditText) findViewById(R.id.loginPass);
         loginBtn = (Button) findViewById(R.id.loginBtn);
         registerTextView = (TextView) findViewById(R.id.registerTextView);
+        loginTitle = (TextView) findViewById(R.id.loginTitle);
+        loginTitle.setTypeface(custom_font);
     }
 
     private void methodListener() {

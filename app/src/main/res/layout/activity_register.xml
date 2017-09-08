@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true"
     android:background="@drawable/login_background">
 
@@ -11,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:fontFamily="cursive"
         android:text="Student Register"
         android:textColor="#000"
         android:textSize="40dp"
@@ -42,19 +42,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profileImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_person_black_24dp"
-                    android:tint="#636363" />
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="1px"
+                    android:src="@drawable/ic_person_black_24dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Choose Profile Picture" />
+                    android:text="Choose Profile Picture"
+                    android:layout_marginTop="5dp" />
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -70,7 +72,7 @@
                     android:id="@+id/nameET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_person_black_24dp"
+                    android:drawableRight="@drawable/ic_person_emphasis_24dp"
                     android:hint="Name"
                     android:background="@color/transparent"
                     android:maxLines="1"
@@ -151,7 +153,7 @@
                     android:id="@+id/emailET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_email_black_24dp"
+                    android:drawableRight="@drawable/ic_email_emphasis_24dp"
                     android:hint="Email"
                     android:background="@color/transparent"
                     android:inputType="textEmailAddress"
@@ -194,7 +196,7 @@
                     android:id="@+id/passET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_vpn_key_green_24dp"
+                    android:drawableRight="@drawable/ic_vpn_key_emphasis_24dp"
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:maxLines="1"

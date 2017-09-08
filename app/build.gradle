@@ -40,8 +40,10 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.kbeanie:multipicker:1.1.31@aar'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.commit451:PhotoView:1.2.4'
     testCompile 'junit:junit:4.12'
 }
+
 
 
 

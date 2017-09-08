@@ -10,8 +10,10 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/WithoutActionBar">
@@ -70,7 +72,9 @@
         <activity
             android:name=".activity.AboutActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.OtpVerifyActivity"></activity>
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:theme="@style/WithActionBar"></activity>
     </application>
 
 </manifest>

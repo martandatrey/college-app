@@ -4,6 +4,8 @@ package com.pimpmyapp.collegeapp.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.database.DataSnapshot;
@@ -132,9 +135,9 @@ public class NoticeFragment extends Fragment {
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
-        noticeAdapter = new NoticeAdapter(getActivity(),noticeList);
+        noticeAdapter = new NoticeAdapter(getActivity(), noticeList);
         rv.setAdapter(noticeAdapter);
-        rv.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),new RecyclerItemClickListener.OnItemClickListener(){
+        rv.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
 
             @Override
             public void onItemClick(View view, int position) {
@@ -172,33 +175,42 @@ public class NoticeFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-
-        final ProgressDialog dialog = new ProgressDialog(getActivity());
-        dialog.setMessage("Fetching Notices...");
-        dialog.setCancelable(false);
-        dialog.show();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("Notice");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
-                    if (notice.isPublished())
-                        noticeList.add(notice);
+        if (!isNetworkAvailable()) {
+            Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+        } else {
+            final ProgressDialog dialog = new ProgressDialog(getActivity());
+            dialog.setMessage("Fetching Notices...");
+            dialog.setCancelable(false);
+            dialog.show();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("Notice");
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                        NoticePojo notice = childSnapshot.getValue(NoticePojo.class);
+                        if (notice.isPublished())
+                            noticeList.add(notice);
+                    }
+                    dialog.cancel();
+                    noticeAdapter.notifyDataSetChanged();
                 }
-                dialog.cancel();
-                noticeAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
-
+        }
         return view;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 

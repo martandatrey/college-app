@@ -2,6 +2,7 @@ package com.pimpmyapp.collegeapp.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,7 +10,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +42,16 @@ import com.google.firebase.storage.StorageReference;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class NoticeViewActivity extends AppCompatActivity {
     TextView title, date, uploadedBy, fileSize, uploadedOn, noticeDes, expand;
@@ -58,9 +70,84 @@ public class NoticeViewActivity extends AppCompatActivity {
     DatabaseReference ref;
     NoticePojo noticePojo = new NoticePojo();
     boolean isPublished;
+    PhotoViewAttacher mAttacher;
+
 
 
     DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Users");
+
+    class DownloadFileFromURL extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            System.out.println("Starting download");
+        }
+
+        /**
+         * Downloading file in background thread
+         */
+        @Override
+        protected String doInBackground(String... f_url) {
+            int count;
+            try {
+                String root = Environment.getExternalStorageDirectory().toString();
+                System.out.println("Downloading");
+                URL url = new URL(f_url[0]);
+
+                URLConnection conection = url.openConnection();
+                conection.connect();
+                // getting file length
+                int lenghtOfFile = conection.getContentLength();
+
+                // input stream to read file - with 8k buffer
+                InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+                // Output stream to write file
+                File mydir = getDir(root + "/College Board", Context.MODE_PRIVATE); //Creating an internal dir;
+                if (!mydir.exists()) {
+                    /*Environment.getExternalStorageDirectory().createNewFile();*/
+                    mydir.mkdirs();
+                }
+                String noticeId = noticePojo.getNoticeID();
+                OutputStream output = new FileOutputStream(mydir + "/" + noticeId + ".jpg");
+                byte data[] = new byte[1024];
+
+                long total = 0;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+
+                    // writing data to file
+                    output.write(data, 0, count);
+
+                }
+
+                // flushing output
+                output.flush();
+
+                // closing streams
+                output.close();
+                input.close();
+
+            } catch (Exception e) {
+                Log.e("Error: ", e.getMessage());
+            }
+
+            return null;
+        }
+
+
+        /**
+         * After completing background task
+         **/
+        @Override
+        protected void onPostExecute(String file_url) {
+            System.out.println("Downloaded");
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +241,7 @@ public class NoticeViewActivity extends AppCompatActivity {
         noticeDes = (TextView) findViewById(R.id.noticeDes);
         deleteIV = (ImageView) findViewById(R.id.deleteIV);
         image = (ImageView) findViewById(R.id.imageView);
+        mAttacher = new PhotoViewAttacher(image);
         fileSize = (TextView) findViewById(R.id.fileSize);
         uploadedOn = (TextView) findViewById(R.id.uploadedOn);
         expand = (TextView) findViewById(R.id.expand);
@@ -200,8 +288,10 @@ public class NoticeViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //download the image code goes here
-                Intent ceramicIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(noticePojo.getImage()));
-                startActivity(ceramicIntent);
+                Log.d("1234", noticePojo.getImage());
+                new DownloadFileFromURL().execute(noticePojo.getImage());
+               /* Intent ceramicIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(noticePojo.getImage()));
+                startActivity(ceramicIntent);*/
             }
         });
     }
