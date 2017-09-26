@@ -20,6 +20,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,13 @@ import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,11 +56,17 @@ import com.kbeanie.multipicker.api.Picker;
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
 import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.pimpmyapp.collegeapp.R;
+import com.pimpmyapp.collegeapp.URLhelper;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.support.design.widget.Snackbar.make;
 
@@ -72,6 +86,7 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
     Calendar calendar;
     NoticePojo noticepojo;
     CameraImagePicker cameraPicker;
+    //flag to check if the user selected the camera option or from the gallery option
     int flagCheck = 0;
 
     @Override
@@ -215,13 +230,56 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
                 final String noticeKey = ref.push().getKey();
                 final StorageReference reference = storage.getReference(cat + "/" + noticeKey);
                 final UploadTask[] uploadTask = {null};
-                if (flagCheck == 1) {
-                    Bitmap src = BitmapFactory.decodeFile(selectedImageUriFromGallery.toString());
+                if (flagCheck == 1) //check it the user selected the camera option
+                {
+                    Bitmap src = BitmapFactory.decodeFile(selectedImageUriFromGallery.getPath());
+                    final String encodedString = getStringImage(src); //convert bitmap to string
+                    Log.d("123", "addpost:bitmapstring " + encodedString);
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URLhelper.uploadNotice,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String s) {
+                                    try {
+                                        JSONObject response = new JSONObject(s);
+                                        String message = response.getString("message");
+                                        Toast.makeText(AddNewNoticeActivity.this, message, Toast.LENGTH_SHORT).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+
+                            //Adding parameters
+                            params.put("bill", encodedString);
+                            Log.d("123", "getParams: bitmapstring " + encodedString);
+                            params.put("imageName","notice");
+                            //returning parameters
+                            return params;
+                        }
+                    };
+
+                    //Creating a Request Queue
+                    RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+                    //Adding request to the queue
+                    requestQueue.add(stringRequest);
+
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     src.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     byte[] data = baos.toByteArray();
                     uploadTask[0] = reference.putBytes(data);
-                } else if (flagCheck == 2) {
+                } else if (flagCheck == 2) //check if the image is selected from the gallery
+                {
                     uploadTask[0] = reference.putFile(selectedImageUriFromGallery);
                 }
 
@@ -416,5 +474,13 @@ public class AddNewNoticeActivity extends AppCompatActivity implements ImagePick
     @Override
     public void onError(String s) {
         Toast.makeText(this, "Oops! something went wrong", Toast.LENGTH_SHORT).show();
+    }
+
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, 0);
+        return encodedImage;
     }
 }

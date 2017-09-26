@@ -74,9 +74,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ChangePasswordActivity"
-            android:theme="@style/WithActionBar"/>
-        <activity android:name=".activity.OtpVerifyActivity"
-            android:screenOrientation="portrait"/>
+            android:theme="@style/WithActionBar" />
+        <activity
+            android:name=".activity.OtpVerifyActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.EnterRollnoActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>
