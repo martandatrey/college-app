@@ -30,27 +30,26 @@ public class LoginActivity extends AppCompatActivity {
     EditText loginId, loginpass;
     Button loginBtn;
     TextView registerTextView, loginTitle;
-    Typeface custom_font;
+   //Typeface custom_font;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        init();
         //custom_font = Typeface.createFromAsset(getAssets(), "fonts/akaDora.ttf");
-
-        intit();
         methodListener();
     }
 
-    private void intit() {
+    private void init() {
 
         loginId = (EditText) findViewById(R.id.loginId);
         loginpass = (EditText) findViewById(R.id.loginPass);
         loginBtn = (Button) findViewById(R.id.loginBtn);
         registerTextView = (TextView) findViewById(R.id.registerTextView);
         loginTitle = (TextView) findViewById(R.id.loginTitle);
-        //loginTitle.setTypeface(custom_font);
+       // loginTitle.setTypeface(custom_font);
     }
 
     private void methodListener() {

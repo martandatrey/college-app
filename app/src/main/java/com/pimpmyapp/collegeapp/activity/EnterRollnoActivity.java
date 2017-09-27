@@ -2,6 +2,7 @@ package com.pimpmyapp.collegeapp.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -61,7 +62,9 @@ ImageButton checkBtn;
     }
 
     private void verify() {
-        //enter the code to set a password
+        Intent i = new Intent(EnterRollnoActivity.this,RegisterActivity.class);
+        i.putExtra("rollno",sRollNo);
+        startActivity(i);
         String enteredMName = mName.getText().toString().trim().toUpperCase();
         if (enteredMName.equals(sMName)) {
             Toast.makeText(this, "verified", Toast.LENGTH_SHORT).show();
@@ -127,7 +130,7 @@ ImageButton checkBtn;
     private void init() {
         title = (TextView) findViewById(R.id.titleTV);
         name = (EditText) findViewById(R.id.nameET);
-        rollNo = (EditText) findViewById(R.id.rollNoET);
+        rollNo = (EditText) findViewById(R.id.ErollNoET);
         mName = (EditText) findViewById(R.id.motherNameET);
         submit = (Button) findViewById(R.id.submitBtn1);
         checkBtn = (ImageButton)findViewById(R.id.checkBtn);

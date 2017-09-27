@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true"
     android:background="@drawable/login_background">
 
@@ -21,20 +21,19 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/registerBtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/regTitle"
-        android:layout_above="@+id/registerBtn">
+        android:layout_below="@+id/regTitle">
 
         <LinearLayout
             android:id="@+id/scrollLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:paddingBottom="60dp"
             android:layout_marginBottom="150dp"
             android:orientation="vertical"
-            >
+            android:paddingBottom="60dp">
 
             <LinearLayout
                 android:id="@+id/linLay"
@@ -47,36 +46,35 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_person_black_24dp"
                     app:civ_border_color="#FF000000"
-                    app:civ_border_width="1px"
-                    android:src="@drawable/ic_person_black_24dp" />
+                    app:civ_border_width="1px" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Choose Profile Picture"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="5dp"
+                    android:text="Choose Profile Picture" />
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#6cffffff"
                 android:layout_marginTop="10dp"
-                android:padding="5dp"
-
-                >
+                android:background="#6cffffff"
+                android:padding="5dp">
 
                 <EditText
-                    android:id="@+id/nameET"
+                    android:id="@+id/RnameET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_person_emphasis_24dp"
-                    android:hint="Name"
+                    android:layout_margin="5dp"
                     android:background="@color/transparent"
-                    android:maxLines="1"
-                    android:layout_margin="5dp" />
+                    android:drawableRight="@drawable/ic_person_emphasis_24dp"
+
+                    android:hint="Name"
+                    android:maxLines="1" />
 
 
             </android.support.design.widget.TextInputLayout>
@@ -84,17 +82,78 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#6cffffff"
                 android:layout_marginTop="10dp"
+                android:background="#6cffffff"
+                android:padding="5dp">
+
+                <EditText
+                    android:id="@+id/fnameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@color/transparent"
+                    android:editable="false"
+                    android:hint="Father's Name"
+                    android:maxLines="1" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#6cffffff"
+                android:padding="5dp">
+
+                <EditText
+                    android:id="@+id/mnameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@color/transparent"
+                    android:editable="false"
+                    android:hint="Mother's Name"
+                    android:maxLines="1" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#6cffffff"
+                android:padding="5dp">
+
+                <EditText
+                    android:id="@+id/genderET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@color/transparent"
+                    android:editable="false"
+                    android:hint="Gender"
+                    android:maxLines="1" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#6cffffff"
                 android:padding="5dp">
 
                 <EditText
                     android:id="@+id/rollNoET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:editable="false"
                     android:hint="Roll Number"
                     android:maxLength="10"
-                    android:background="@color/transparent"
                     android:paddingBottom="5dp" />
 
 
@@ -104,58 +163,70 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#6cffffff"
-                android:layout_marginTop="10dp">
-            <Spinner
-                android:id="@+id/branch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/college_branches"
-                android:paddingBottom="10dp"
-                android:paddingTop="20dp"
-                android:backgroundTint="@color/emphasis"
+                android:layout_marginTop="10dp"
+                android:background="#6cffffff">
 
+                <EditText
+                    android:id="@+id/course"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/transparent"
+                    android:editable="false"
+                    android:hint="Course"
 
-                />
+                    android:paddingBottom="10dp"
+                    android:paddingTop="20dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="#6cffffff"
-                android:layout_marginTop="10dp">
-            <Spinner
-                android:id="@+id/semester"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/semester"
-                android:paddingBottom="10dp"
-                android:backgroundTint="@color/emphasis"
-                android:paddingTop="20dp" />
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <EditText
+                    android:id="@+id/yearET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/transparent"
+                    android:editable="false"
+                    android:hint="Year"
+
+                    android:paddingBottom="10dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="20dp" />
+
+                <EditText
+                    android:id="@+id/semester"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/transparent"
+                    android:editable="false"
+                    android:hint="Semester"
+                    android:paddingBottom="10dp"
+
+                    android:paddingTop="20dp" />
 
             </LinearLayout>
-            <TextView
-                android:id="@+id/errorSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="#ff0000"
-                android:textSize="16sp" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#6cffffff"
                 android:layout_marginTop="10dp"
+                android:background="#6cffffff"
                 android:padding="5dp">
 
                 <EditText
                     android:id="@+id/emailET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/transparent"
                     android:drawableRight="@drawable/ic_email_emphasis_24dp"
                     android:hint="Email"
-                    android:background="@color/transparent"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:paddingBottom="5dp" />
@@ -166,20 +237,20 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#6cffffff"
                 android:layout_marginTop="10dp"
+                android:background="#6cffffff"
                 android:padding="5dp">
 
                 <EditText
                     android:id="@+id/phnoET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/transparent"
                     android:drawableRight="@drawable/ic_call_black_24dp"
                     android:hint="Phone Number"
                     android:inputType="phone"
                     android:maxLength="10"
                     android:maxLines="1"
-                    android:background="@color/transparent"
                     android:paddingBottom="5dp" />
 
 
@@ -188,19 +259,19 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#6cffffff"
                 android:layout_marginTop="10dp"
+                android:background="#6cffffff"
                 android:padding="5dp">
 
                 <EditText
                     android:id="@+id/passET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/transparent"
                     android:drawableRight="@drawable/ic_vpn_key_emphasis_24dp"
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:background="@color/transparent"
                     android:paddingBottom="5dp" />
 
 
@@ -210,18 +281,18 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#6cffffff"
                 android:layout_marginTop="10dp"
+                android:background="#6cffffff"
                 android:padding="5dp">
 
                 <EditText
                     android:id="@+id/cpassET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/transparent"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:background="@color/transparent"
                     android:paddingBottom="5dp" />
 
             </android.support.design.widget.TextInputLayout>
@@ -230,10 +301,10 @@
                 android:id="@+id/checkBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Apply For Admin"
-                android:textColor="#fff"
                 android:layout_marginTop="5dp"
-                android:buttonTint="#fff" />
+                android:buttonTint="#fff"
+                android:text="Apply For Admin"
+                android:textColor="#fff" />
 
         </LinearLayout>
     </ScrollView>

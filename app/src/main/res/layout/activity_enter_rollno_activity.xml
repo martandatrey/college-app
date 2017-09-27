@@ -43,7 +43,7 @@
                         android:padding="5dp">
 
                         <EditText
-                            android:id="@+id/rollNoET"
+                            android:id="@+id/ErollNoET"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/transparent"
