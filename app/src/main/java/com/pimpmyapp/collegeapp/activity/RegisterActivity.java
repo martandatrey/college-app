@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,17 +11,23 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,54 +38,134 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pimpmyapp.collegeapp.R;
+import com.pimpmyapp.collegeapp.URLhelper;
 import com.pimpmyapp.collegeapp.pojo.UserPojo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText nameET, emailET, passwordET, rollnoET, phnoET, cpasswordET;
+    EditText nameET, emailET, passwordET, rollnoET, phnoET, cpasswordET, course, semester, fnameET, mnameET, genderET, yearET;
     Button regBtn;
     CircleImageView profileImage;
-    TextView errorSpinner, regTitle;
-    Spinner branch, semester;
-    Intent i;
+    TextView regTitle;
+    Intent i, rollIntent;
     ScrollView scrollView;
     LinearLayout linLay;
     Uri selectedImageUriFromGallery;
     CheckBox checkBox;
     int profileImageSelected = 0;
-    Typeface custom_font;
+    // Typeface custom_font;
+    HashMap<String, String> userData = new HashMap<>();
+    String stName, stfName, stmName, stYear, stSem, stRollNo, stGender, stCourse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        custom_font = Typeface.createFromAsset(getAssets(), "fonts/akaDora.ttf");
+//        custom_font = Typeface.createFromAsset(getAssets(), "fonts/akaDora.ttf");
+        rollIntent = getIntent();
+        userData.put("rollno", rollIntent.getStringExtra("rollno"));
+        Log.d("1234", "onCreate: " + rollIntent.getStringExtra("rollno"));
+
         init();
         methodListner();
+        setUserData();
+        getUserData();
     }
 
+    private void setUserData() {
+        Log.d("1234", "setUserData: ");
+        nameET.setText(stName);
+        fnameET.setText(stfName);
+        mnameET.setText(stmName);
+        course.setText(stCourse);
+        semester.setText(stSem);
+        rollnoET.setText(stRollNo);
+        yearET.setText(stYear);
+        genderET.setText(stGender);
+    }
+
+    private void getUserData() {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Getting User Data...");
+        dialog.setCancelable(false);
+        dialog.show();
+        StringRequest request = new StringRequest(Request.Method.POST, URLhelper.checkUser, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    stName = jsonObject.getString("name");
+                    stCourse = jsonObject.getString("course");
+                    stmName = jsonObject.getString("mname");
+                    stfName = jsonObject.getString("fname");
+                    stGender = jsonObject.getString("gender");
+                    stYear = jsonObject.getString("year");
+                    stSem = jsonObject.getString("sem");
+                    stRollNo = jsonObject.getString("rollno");
+                    Log.d("1234", "onResponse: "+ stRollNo);
+                   /* userData.put("name", stName);
+                    userData.put("mname", jsonObject.getString("mname"));
+                    userData.put("fname", jsonObject.getString("fname"));
+                    userData.put("year", jsonObject.getString("year"));
+                    userData.put("sem", jsonObject.getString("sem"));
+                    userData.put("rollno", jsonObject.getString("rolno"));
+                    userData.put("gender", jsonObject.getString("gender"));
+                    userData.put("course", jsonObject.getString("course"));*/
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("1234", "onResponse: " + e.toString());
+                }
+
+
+                dialog.cancel();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.cancel();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("rollno", rollIntent.getStringExtra("rollno"));
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request);
+    }
+
+
     private void init() {
-        nameET = (EditText) findViewById(R.id.nameET);
+        nameET = (EditText) findViewById(R.id.RnameET);
         emailET = (EditText) findViewById(R.id.emailET);
         passwordET = (EditText) findViewById(R.id.passET);
         cpasswordET = (EditText) findViewById(R.id.cpassET);
         phnoET = (EditText) findViewById(R.id.phnoET);
         rollnoET = (EditText) findViewById(R.id.rollNoET);
-        branch = (Spinner) findViewById(R.id.branch);
+        course = (EditText) findViewById(R.id.course);
         regBtn = (Button) findViewById(R.id.registerBtn);
-        errorSpinner = (TextView) findViewById(R.id.errorSpinner);
-        errorSpinner.setVisibility(View.GONE);
-        semester = (Spinner) findViewById(R.id.semester);
+        semester = (EditText) findViewById(R.id.semester);
+        yearET = (EditText) findViewById(R.id.yearET);
         profileImage = (CircleImageView) findViewById(R.id.profileImage);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         linLay = (LinearLayout) findViewById(R.id.linLay);
         checkBox = (CheckBox) findViewById(R.id.checkBox);
         regTitle = (TextView) findViewById(R.id.regTitle);
-        regTitle.setTypeface(custom_font);
+        fnameET = (EditText) findViewById(R.id.fnameET);
+        mnameET = (EditText) findViewById(R.id.mnameET);
+        genderET = (EditText) findViewById(R.id.genderET);
+        // regTitle.setTypeface(custom_font);
     }
 
     private void methodListner() {
@@ -138,10 +223,12 @@ public class RegisterActivity extends AppCompatActivity {
         final String email = emailET.getText().toString();
         String pass = passwordET.getText().toString();
         String cpass = cpasswordET.getText().toString();
-        String selBranch = branch.getSelectedItem().toString();
-        String sem = semester.getSelectedItem().toString();
-
-        errorSpinner.setText("");
+        String selCourse = course.getText().toString();
+        String sem = semester.getText().toString();
+        String year = yearET.getText().toString();
+        String fname = fnameET.getText().toString();
+        String mname = mnameET.getText().toString();
+        String gender = genderET.getText().toString();
 
         if (name.equals("")) {
             nameET.setError("Name is required.");
@@ -150,14 +237,24 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (rollNo.equals("")) {
             rollnoET.setError("Roll Number is required.");
             focusOnView(rollnoET);
-        } else if (selBranch.equals("-- Select Branch --")) {
-            errorSpinner.setVisibility(View.VISIBLE);
-            errorSpinner.setText("Select your branch");
-            focusOnView(errorSpinner);
-        } else if (sem.equals("-- Select Semester --")) {
-            errorSpinner.setVisibility(View.VISIBLE);
-            errorSpinner.append("Enter your semester.");
-            focusOnView(errorSpinner);
+        } else if (gender.equals("")) {
+            rollnoET.setError("Gender is required.");
+            focusOnView(genderET);
+        } else if (fname.equals("")) {
+            rollnoET.setError("Father's Name is required.");
+            focusOnView(fnameET);
+        } else if (mname.equals("")) {
+            rollnoET.setError("Mother's Name is required.");
+            focusOnView(mnameET);
+        } else if (selCourse.equals("")) {
+            course.setError("Enter Branch");
+            focusOnView(course);
+        } else if (sem.equals("")) {
+            semester.setError("Enter Semester");
+            focusOnView(semester);
+        } else if (year.equals("")) {
+            yearET.setError("Enter Year");
+            focusOnView(semester);
         } else if (email.equals("")) {
             emailET.setError("Email is required.");
             focusOnView(emailET);
@@ -193,42 +290,18 @@ public class RegisterActivity extends AppCompatActivity {
             user.setName(name);
             user.setEmail(email);
             user.setPass(pass);
-            user.setBranch(selBranch);
+            user.setBranch(selCourse);
             user.setRollNo(rollNo);
             user.setPhoneNo(phno);
             final String user_ID = ref.push().getKey();
             user.setUser_id(user_ID);
             user.setSem(sem);
+            user.setYear(year);
             if (checkBox.isChecked())
                 user.setWantsTobeAdmin(true);
             else
                 user.setWantsTobeAdmin(false);
-            switch (sem) {
-                case "I":
-                    user.setYear("1st");
-                    break;
-                case "II":
-                    user.setYear("1st");
-                    break;
-                case "III":
-                    user.setYear("2nd");
-                    break;
-                case "IV":
-                    user.setYear("2nd");
-                    break;
-                case "V":
-                    user.setYear("3rd");
-                    break;
-                case "VI":
-                    user.setYear("3rd");
-                    break;
-                case "VII":
-                    user.setYear("4th");
-                    break;
-                case "VIII":
-                    user.setYear("4th");
-                    break;
-            }
+
             if (profileImageSelected == 1) {
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference("Profile_Images/" + user_ID);
                 final UploadTask uploadTask = storageReference.putFile(selectedImageUriFromGallery);
