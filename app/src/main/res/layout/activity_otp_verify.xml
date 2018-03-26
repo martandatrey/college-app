@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e53935">
+    android:background="@drawable/login_background">
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -10,7 +10,7 @@
     android:layout_centerHorizontal="true"
     android:layout_marginTop="100dp"
     android:textSize="30sp"
-    android:textColor="#fff"/>
+    android:textColor="#000" />
     <LinearLayout
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
@@ -23,8 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textColor="#FFF"
-            android:text="Enter the OTP recieved on your number."
+            android:text="Enter the OTP recieved on your mobile number."
             android:textSize="20sp"/>
 
         <EditText
@@ -34,6 +33,7 @@
             android:background="#FFF"
             android:padding="10dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
             android:layout_gravity="center_horizontal"
             android:textColorHint="#a2000000"
             android:layout_height="wrap_content" />
@@ -44,7 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/enterOtpET"
             android:text="Submit"
-            android:background="#df221e"
+            android:textColor="#fff"
+            android:background="@drawable/loginbtn_background"
             android:textAllCaps="false" />
     </LinearLayout>
 

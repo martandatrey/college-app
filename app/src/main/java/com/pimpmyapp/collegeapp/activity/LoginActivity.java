@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //custom_font = Typeface.createFromAsset(getAssets(), "fonts/akaDora.ttf");
+        //custom_font = Typeface.createFromAsset(getAssets(), "fonts/Akadora.ttf");
 
         intit();
         methodListener();
