@@ -2,7 +2,6 @@ package com.pimpmyapp.collegeapp.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,11 +39,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.kbeanie.multipicker.api.CacheLocation;
+import com.kbeanie.multipicker.api.CameraImagePicker;
 import com.pimpmyapp.collegeapp.R;
 import com.pimpmyapp.collegeapp.pojo.NoticePojo;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -62,6 +63,7 @@ public class NoticeViewActivity extends AppCompatActivity {
     Button dueDateBtn, addNoticeBtn, selectImageBtn;
     String dueDateSelectedByUser = "";
     ImageView noticeImageView;
+    TableRow cameraRow, galleryRow;
     Intent i;
     Spinner catSpinner;
     Uri selectedImageUriFromGallery;
@@ -71,6 +73,8 @@ public class NoticeViewActivity extends AppCompatActivity {
     NoticePojo noticePojo = new NoticePojo();
     boolean isPublished;
     PhotoViewAttacher mAttacher;
+    int flagCheck = 0;
+    CameraImagePicker cameraPicker;
 
 
 
@@ -107,13 +111,15 @@ public class NoticeViewActivity extends AppCompatActivity {
                 InputStream input = new BufferedInputStream(url.openStream(), 8192);
 
                 // Output stream to write file
-                File mydir = getDir(root + "/College Board", Context.MODE_PRIVATE); //Creating an internal dir;
+               /* File mydir = getDir(root + "/college_board" , Context.MODE_PRIVATE); //Creating an internal dir;
                 if (!mydir.exists()) {
-                    /*Environment.getExternalStorageDirectory().createNewFile();*/
+
+                    Environment.getExternalStorageDirectory().createNewFile();
+
                     mydir.mkdirs();
-                }
+                }*/
                 String noticeId = noticePojo.getNoticeID();
-                OutputStream output = new FileOutputStream(mydir + "/" + noticeId + ".jpg");
+                OutputStream output = new FileOutputStream(root + "/" + noticeId + ".jpg");
                 byte data[] = new byte[1024];
 
                 long total = 0;
@@ -346,6 +352,12 @@ public class NoticeViewActivity extends AppCompatActivity {
         else
             dueDateBtn.setText(noticePojo.getDate());
         Glide.with(this).load(noticePojo.getImage()).crossFade().into(noticeImageView);
+        /*selectImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });*/
         dueDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -450,5 +462,53 @@ public class NoticeViewActivity extends AppCompatActivity {
 
         Dialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void openDialog() {
+        LayoutInflater inflator = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflator.inflate(R.layout.image_dialog_item, null);
+        final Dialog dialog = new Dialog(this);
+        cameraRow = (TableRow) view.findViewById(R.id.cameraRow);
+        galleryRow = (TableRow) view.findViewById(R.id.galleryRow);
+        cameraRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flagCheck = 1;
+                takePicture();
+
+                dialog.cancel();
+
+            }
+        });
+
+        galleryRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flagCheck = 2;
+                openGallery();
+                dialog.cancel();
+            }
+
+        });
+        dialog.setContentView(view);
+        dialog.setCancelable(true);
+        dialog.show();
+    }
+
+    public void takePicture() {
+        cameraPicker = new CameraImagePicker(this);
+        cameraPicker.setDebugglable(true);
+        cameraPicker.setCacheLocation(CacheLocation.EXTERNAL_STORAGE_APP_DIR);
+        // cameraPicker.setImagePickerCallback(this);
+        cameraPicker.shouldGenerateMetadata(true);
+        cameraPicker.shouldGenerateThumbnails(true);
+        selectedImageUriFromGallery = Uri.parse(cameraPicker.pickImage());
+    }
+
+    private void openGallery() {
+        i = new Intent();
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        i.setType("image/*");
+        startActivityForResult(i, 0);
     }
 }
